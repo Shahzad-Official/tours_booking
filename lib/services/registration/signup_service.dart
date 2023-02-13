@@ -35,7 +35,7 @@ class SignupService {
           } else {
             FirebaseFirestore.instance.collection("users").doc(uid).set({
               "email": email,
-              "role": "lister",
+              "role": "user",
               "uid": uid,
               "userName": displayName,
               "profile": photoURL,
@@ -70,7 +70,7 @@ class SignupService {
         uid: authCredentials.user!.uid,
         email: email,
         displayName: userName,
-        photoURL: "photoURL",
+        photoURL: "",
       );
 
       await LoginService.loginUser(email: email, password: password);
@@ -97,9 +97,7 @@ class SignupService {
           displayName: user.user!.displayName!,
           photoURL: user.user!.photoURL!,
         );
-      } else {
-        AppSnackbar.snackBar(title: "Message", message: "User Not available");
-      }
+      } else {}
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }

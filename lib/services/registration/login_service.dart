@@ -22,13 +22,14 @@ class LoginService {
           if (element.id == uId) {
             _userData.getUserData(uId);
             if (element.data()["email"] == _userData.userProfile.email &&
-                element.data()['role'] == "user") {
+                element.data()['role'] == "lister") {
               AppSnackbar.snackBar(
                   title: "Error", message: "User Already Exists.");
+              _googleSignIn.signOut();
               Get.offAll(() => Login());
               return true;
             } else if (element.data()["email"] == _userData.userProfile.email &&
-                element.data()['role'] == "lister") {
+                element.data()['role'] == "user") {
               AppSnackbar.snackBar(
                   title: "Message", message: "Successfully LogedIn");
               Get.offAll(() => const MainPage());
@@ -39,8 +40,9 @@ class LoginService {
           } else {
             AppSnackbar.snackBar(
                 title: "Message", message: "User not available! SignUp first");
+            _googleSignIn.signOut();
             Get.offAll(() => SignUp());
-            return false;
+            return true;
           }
         },
       );

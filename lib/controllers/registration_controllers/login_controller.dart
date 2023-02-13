@@ -60,8 +60,10 @@ class LoginController extends GetxController {
         backgroundColor: AppColors.primarycolor,
       );
     } else {
+      isLoading = true;
+      update();
       await LoginService.loginUser(email: email.text, password: password.text);
-
+      isLoading = false;
       update();
     }
     update();
@@ -70,14 +72,5 @@ class LoginController extends GetxController {
   passwordHide() {
     isObsecure = !isObsecure;
     update();
-  }
-
-  getUserData() async {
-    await FirebaseFirestore.instance
-        .collection("UsersData")
-        .doc(email.text)
-        .get();
-
-    return userModel;
   }
 }
