@@ -3,27 +3,48 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tours_booking/services/get_user_data.dart';
 
 import '../../utils/app_snackbar.dart';
 import '../../views/main_page/main_page.dart';
+import '../../views/registeration/login.dart';
 import '../../views/registeration/sign_up.dart';
 
 class LoginService {
+  final GetUserData _userData = GetUserData();
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  doesContainId(uId) async {
-    var lis = await FirebaseFirestore.instance.collection("listers").get();
-    var res = lis.docs.any((element) => element.id == uId);
 
-    if (res) {
-      AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
-      Get.offAll(() => MainPage());
-    } else {
-      AppSnackbar.snackBar(
-          title: "Message", message: "User not available! SignUp first");
-      Get.offAll(() => SignUp());
-    }
-    return res;
+  doesContainId(uId) async {
+    await FirebaseFirestore.instance.collection("users").get().then((value) {
+      value.docs.any(
+        (element) {
+          if (element.id == uId) {
+            _userData.getUserData(uId);
+            if (element.data()["email"] == _userData.userProfile.email &&
+                element.data()['role'] == "user") {
+              AppSnackbar.snackBar(
+                  title: "Error", message: "User Already Exists.");
+              Get.offAll(() => Login());
+              return true;
+            } else if (element.data()["email"] == _userData.userProfile.email &&
+                element.data()['role'] == "lister") {
+              AppSnackbar.snackBar(
+                  title: "Message", message: "Successfully LogedIn");
+              Get.offAll(() => const MainPage());
+              return true;
+            } else {
+              return false;
+            }
+          } else {
+            AppSnackbar.snackBar(
+                title: "Message", message: "User not available! SignUp first");
+            Get.offAll(() => SignUp());
+            return false;
+          }
+        },
+      );
+    });
   }
 
   static loginUser({
@@ -34,7 +55,7 @@ class LoginService {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
-      Get.offAll(() => MainPage());
+      Get.offAll(() => const MainPage());
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }

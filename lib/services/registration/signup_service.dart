@@ -7,11 +7,56 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../constants/dummy_data.dart';
 import '../../utils/app_snackbar.dart';
 import '../../views/main_page/main_page.dart';
+import '../../views/registeration/sign_up.dart';
 import 'login_service.dart';
 
 class SignupService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  verifyUser({
+    required String uid,
+    required String email,
+    required String displayName,
+    required String photoURL,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .get()
+        .then((value) async {
+      value.docs.any(
+        (element) {
+          if (element.id == uid) {
+            AppSnackbar.snackBar(
+                title: "Error", message: "User Already Exists.");
+            _googleSignIn.signOut();
+            Get.offAll(() => SignUp());
+            return true;
+          } else {
+            FirebaseFirestore.instance.collection("users").doc(uid).set({
+              "email": email,
+              "role": "lister",
+              "uid": uid,
+              "userName": displayName,
+              "profile": photoURL,
+              "dob": "10-10-2000",
+              "phoneNo": "+923000000000",
+              "isVerified": false,
+              "emailVerified": true,
+              "created_on": DateTime.now(),
+              "disabled": false,
+              "commission": "5",
+            });
+            AppSnackbar.snackBar(
+                title: "Message", message: "Successfully LogedIn");
+            Get.offAll(() => const MainPage());
+            return true;
+          }
+        },
+      );
+    });
+  }
+
   registerUser(
       {required String userName,
       required String email,
@@ -21,23 +66,12 @@ class SignupService {
     try {
       UserCredential authCredentials = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(authCredentials.user!.uid)
-          .set({
-        "profile": DummyData.profilePic,
-        "userName": userName,
-        "dob": "01-01-2000",
-        "uid": authCredentials.user!.uid,
-        "email": email,
-        "phoneNo": phoneNo,
-        "isVerified": false,
-        "emailVerified": false,
-        "created_on": DateTime.now(),
-        "disabled": false,
-        "commission": "5",
-        "role": "user",
-      });
+      await verifyUser(
+        uid: authCredentials.user!.uid,
+        email: email,
+        displayName: userName,
+        photoURL: "photoURL",
+      );
 
       await LoginService.loginUser(email: email, password: password);
     } catch (e) {
@@ -57,25 +91,12 @@ class SignupService {
 
       var user = await _firebaseAuth.signInWithCredential(credential);
       if (user.user != null) {
-        await FirebaseFirestore.instance
-            .collection("users")
-            .doc(user.user!.uid)
-            .set({
-          "email": user.user!.email,
-          "uid": user.user!.uid,
-          "userName": user.user!.displayName,
-          "profile": user.user!.photoURL,
-          "dob": "10-10-2000",
-          "phoneNo": "+923000000000",
-          "isVerified": false,
-          "emailVerified": true,
-          "created_on": DateTime.now(),
-          "disabled": false,
-          "commission": "5",
-          "role": "user",
-        });
-        AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
-        Get.offAll(() => MainPage());
+        await verifyUser(
+          uid: user.user!.uid,
+          email: user.user!.email!,
+          displayName: user.user!.displayName!,
+          photoURL: user.user!.photoURL!,
+        );
       } else {
         AppSnackbar.snackBar(title: "Message", message: "User Not available");
       }
@@ -93,25 +114,12 @@ class SignupService {
       var user = await FirebaseAuth.instance
           .signInWithCredential(facebookAuthCredential);
       if (user.user != null) {
-        await FirebaseFirestore.instance
-            .collection("users")
-            .doc(user.user!.uid)
-            .set({
-          "email": user.user!.email,
-          "uid": user.user!.uid,
-          "userName": user.user!.displayName,
-          "profile": user.user!.photoURL,
-          "dob": "10-10-2000",
-          "phoneNo": "+923000000000",
-          "isVerified": false,
-          "emailVerified": true,
-          "created_on": DateTime.now(),
-          "disabled": false,
-          "commission": "5",
-          "role": "user",
-        });
-        AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
-        Get.offAll(() => MainPage());
+        await verifyUser(
+          uid: user.user!.uid,
+          email: user.user!.email!,
+          displayName: user.user!.displayName!,
+          photoURL: user.user!.photoURL!,
+        );
       } else {
         AppSnackbar.snackBar(title: "Message", message: "User Not available");
       }
