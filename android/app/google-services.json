@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "533343553586",
+    "firebase_url": "https://go-17dd4-default-rtdb.firebaseio.com",
+    "project_id": "go-17dd4",
+    "storage_bucket": "go-17dd4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533343553586:android:27856f614730fd0a09142b",
+        "android_client_info": {
+          "package_name": "com.example.tour_lister_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533343553586-enqtjup1u4l5e5mj3u5pl5e0jh7dsobh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tour_lister_app",
+            "certificate_hash": "a469dce48bfa4f18f6b0be9249d608a866971160"
+          }
+        },
+        {
+          "client_id": "533343553586-8a5auu03ge7kddrisb5f1cm6tolvq3im.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR5Kl1RScb47IZqAsfykc_2QHiD9o649o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533343553586-8a5auu03ge7kddrisb5f1cm6tolvq3im.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "533343553586-o0v5e8e6n3bd00qteat5pl032vm3ktla.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tourListerApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533343553586:android:3fb41a8077f790fd09142b",
+        "android_client_info": {
+          "package_name": "com.example.tours_booking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533343553586-8a5auu03ge7kddrisb5f1cm6tolvq3im.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR5Kl1RScb47IZqAsfykc_2QHiD9o649o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533343553586-8a5auu03ge7kddrisb5f1cm6tolvq3im.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "533343553586-o0v5e8e6n3bd00qteat5pl032vm3ktla.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tourListerApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
