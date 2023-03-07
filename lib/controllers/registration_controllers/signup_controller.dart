@@ -117,28 +117,20 @@ class SignupController extends GetxController {
       update();
     }
   }
-}
 
-Future<User?> createAccount(
-    String name, String email, String phone, String password) async {
-  FirebaseAuth auth = FirebaseAuth.instance;
+  googleSignUp() async {
+    isLoading = true;
+    update();
+    await _signupService.googleSignUpService();
+    isLoading = false;
+    update();
+  }
 
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  try {
-    UserCredential userCrendetial = await auth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    userCrendetial.user!.updateDisplayName(name);
-
-    await firestore.collection('users').doc(auth.currentUser!.uid).set({
-      "name": name,
-      "email": email,
-      "phone": phone,
-      "uid": auth.currentUser!.uid,
-    });
-
-    return userCrendetial.user;
-  } catch (e) {
-    return null;
+  facebookSignUp() async {
+    isLoading = true;
+    update();
+    await _signupService.faceBookSignUpService();
+    isLoading = false;
+    update();
   }
 }

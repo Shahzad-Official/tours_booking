@@ -92,18 +92,19 @@ class _AllPackagesState extends State<AllPackages> {
                       ),
                       InkWell(
                         onTap: () => showModalBottomSheet(
-                            isScrollControlled: true,
-                            shape: const OutlineInputBorder(
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(10),
-                                    topLeft: Radius.circular(10))),
-                            context: context,
-                            builder: (context) {
-                              return const FractionallySizedBox(
-                                heightFactor: 0.75,
-                                child: FilterSheet(),
-                              );
-                            }),
+                          isScrollControlled: true,
+                          shape: const OutlineInputBorder(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(10),
+                                  topLeft: Radius.circular(10))),
+                          context: context,
+                          builder: (context) {
+                            return const FractionallySizedBox(
+                              heightFactor: 0.75,
+                              child: FilterSheet(),
+                            );
+                          },
+                        ),
                         child: Container(
                           height: 50,
                           width: MediaQuery.of(context).size.width * 0.16,

@@ -10,6 +10,7 @@ class LoginController extends GetxController {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   UserModel userModel = UserModel();
+  final LoginService _loginService = LoginService();
 
   bool isObsecure = true;
   bool isLoading = false;
@@ -62,7 +63,7 @@ class LoginController extends GetxController {
     } else {
       isLoading = true;
       update();
-      await LoginService.loginUser(email: email.text, password: password.text);
+      await _loginService.loginUser(email: email.text, password: password.text);
       isLoading = false;
       update();
     }
@@ -71,6 +72,22 @@ class LoginController extends GetxController {
 
   passwordHide() {
     isObsecure = !isObsecure;
+    update();
+  }
+
+  googleSignIn() async {
+    isLoading = true;
+    update();
+    await _loginService.googleSignInService();
+    isLoading = false;
+    update();
+  }
+
+  facebookSignIn() async {
+    isLoading = true;
+    update();
+    await _loginService.faceBookLoginService();
+    isLoading = false;
     update();
   }
 }

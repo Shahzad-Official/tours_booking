@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tours_booking/models/user_profile/profile_model.dart';
 import 'package:tours_booking/services/get_user_data.dart';
 
 import '../../utils/app_snackbar.dart';
@@ -16,48 +17,50 @@ class LoginService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   doesContainId(uId) async {
-    await FirebaseFirestore.instance.collection("users").get().then((value) {
-      value.docs.any(
-        (element) {
-          if (element.id == uId) {
-            _userData.getUserData(uId);
-            if (element.data()["email"] == _userData.userProfile.email &&
-                element.data()['role'] == "lister") {
-              AppSnackbar.snackBar(
-                  title: "Error", message: "User Already Exists.");
-              _googleSignIn.signOut();
-              Get.offAll(() => Login());
-              return true;
-            } else if (element.data()["email"] == _userData.userProfile.email &&
-                element.data()['role'] == "user") {
-              AppSnackbar.snackBar(
-                  title: "Message", message: "Successfully LogedIn");
-              Get.offAll(() => const MainPage());
-              return true;
-            } else {
-              return false;
-            }
-          } else {
-            AppSnackbar.snackBar(
-                title: "Message", message: "User not available! SignUp first");
-            _googleSignIn.signOut();
-            Get.offAll(() => SignUp());
-            return true;
-          }
-        },
-      );
+    await FirebaseFirestore.instance
+        .collection("users")
+        .get()
+        .then((value) async {
+      if (value.docs.isEmpty) {
+        AppSnackbar.snackBar(
+            title: "Message", message: "User not available! SignUp first");
+        _googleSignIn.signOut();
+        Get.offAll(() => SignUp());
+      } else {
+        await _userData.getUserData(uId);
+
+        if (_userData.userProfile.uid == null) {
+          AppSnackbar.snackBar(
+              title: "Message", message: "User not available! SignUp first");
+          _googleSignIn.signOut();
+          Get.offAll(() => SignUp());
+        } else if (_userData.userProfile.uid == uId &&
+            _userData.userProfile.role == "lister") {
+          AppSnackbar.snackBar(title: "Error", message: "User Already Exists.");
+          _googleSignIn.signOut();
+          Get.offAll(() => Login());
+          return true;
+        } else if (_userData.userProfile.uid == uId &&
+            _userData.userProfile.role == "user") {
+          AppSnackbar.snackBar(
+              title: "Message", message: "Successfully LogedIn");
+          Get.offAll(() => const MainPage());
+          return true;
+        }
+      }
     });
   }
 
-  static loginUser({
+  loginUser({
     required String email,
     required String password,
   }) async {
     try {
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
-      Get.offAll(() => const MainPage());
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then(
+            (value) => doesContainId(value.user!.uid),
+          );
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }
@@ -87,10 +90,10 @@ class LoginService {
 
       final OAuthCredential facebookAuthCredential =
           FacebookAuthProvider.credential(loginResult.accessToken!.token);
-      var user =
-          await _firebaseAuth.signInWithCredential(facebookAuthCredential);
-      var userId = user.user!.uid;
-      doesContainId(userId);
+
+      await _firebaseAuth.signInWithCredential(facebookAuthCredential).then(
+            (value) => doesContainId(value.user!.uid),
+          );
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }

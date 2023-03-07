@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tours_booking/services/authentications/authentications_services.dart';
 import 'package:tours_booking/views/splash_screen.dart';
 
 import 'firebase_options.dart';
@@ -18,7 +16,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
 
   @override
   Widget build(BuildContext context) {

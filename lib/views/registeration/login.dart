@@ -7,7 +7,6 @@ import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/constants/svg_icons.dart';
 import 'package:tours_booking/controllers/registration_controllers/login_controller.dart';
-import 'package:tours_booking/services/registration/login_service.dart';
 import 'package:tours_booking/widgets/app_button.dart';
 import 'package:tours_booking/widgets/app_input_field.dart';
 
@@ -15,8 +14,7 @@ import '../../widgets/app_text.dart';
 import 'sign_up.dart';
 
 class Login extends StatelessWidget {
-  Login({Key? key}) : super(key: key);
-  final LoginService _loginService = LoginService();
+  const Login({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
@@ -133,18 +131,22 @@ class Login extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         InkWell(
-                          onTap: () async {
-                            await _loginService.googleSignInService();
-                          },
+                          onTap: logincontroller.isLoading
+                              ? null
+                              : () async {
+                                  await logincontroller.googleSignIn();
+                                },
                           child: SizedBox(
                             height: 80,
                             child: Image.asset("assets/googleLogo.png"),
                           ),
                         ),
                         InkWell(
-                          onTap: () async {
-                            await _loginService.faceBookLoginService();
-                          },
+                          onTap: logincontroller.isLoading
+                              ? null
+                              : () async {
+                                  await logincontroller.facebookSignIn();
+                                },
                           child: SizedBox(
                             height: 80,
                             child: Image.asset("assets/fLogo.png"),

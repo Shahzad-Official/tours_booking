@@ -9,7 +9,12 @@ class GetUserData {
         .doc(uid)
         .get()
         .then((value) {
-      userProfile = ProfileModel.fromJson(value.data()!);
+      if (value.data() == null) {
+        userProfile = ProfileModel();
+      } else {
+        userProfile = ProfileModel.fromJson(value.data()!);
+      }
     });
+    return userProfile;
   }
 }

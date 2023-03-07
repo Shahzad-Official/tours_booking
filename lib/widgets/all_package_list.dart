@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'app_text.dart';
 
 class PackagesList extends StatelessWidget {
-  String eventImage, eventName, eventDate, eventLocation, eventDuration;
-  Color eventDurationColor;
-  void Function()? onTap;
-  PackagesList({
+  final String eventImage, eventName, eventDate, eventLocation, eventDuration;
+  final Color eventDurationColor;
+  final void Function()? onTap;
+  const PackagesList({
     Key? key,
     required this.eventImage,
     required this.eventName,

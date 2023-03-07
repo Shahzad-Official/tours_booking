@@ -1,16 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/views/checkout/checkout.dart';
+import 'package:tours_booking/views/registeration/login.dart';
 import 'package:tours_booking/widgets/app_button.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
 
 import '../../constants/app_colors.dart';
 import '../../widgets/app_text.dart';
 
-class ReviewPage extends StatelessWidget {
+class ReviewPage extends StatefulWidget {
   const ReviewPage({super.key});
+
+  @override
+  State<ReviewPage> createState() => _ReviewPageState();
+}
+
+class _ReviewPageState extends State<ReviewPage> {
+  bool? isLogedIn;
+
+  checkLogin() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    isLogedIn = preferences.getBool("isLogedIn");
+  }
+
+  @override
+  void initState() {
+    checkLogin();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -243,40 +264,48 @@ class ReviewPage extends StatelessWidget {
               AppButton(
                 btnText: "Book Now",
                 ontap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: AppText(
-                        text: "Terms and Condition!",
-                        textcolor: Colors.black,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      content: Container(
-                        height: 30,
-                      ),
-                      actions: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: AppText(
-                            text: "I have agreed to the terms and conditions",
-                            textcolor: Colors.black,
-                            fontWeight: FontWeight.w500,
+                  isLogedIn!
+                      ? showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: AppText(
+                              text: "Terms and Condition!",
+                              textcolor: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            content: Container(
+                              height: 30,
+                            ),
+                            actions: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AppText(
+                                  text:
+                                      "I have agreed to the terms and conditions",
+                                  textcolor: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AppButton(
+                                    btnText: "Agree",
+                                    ontap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Checkout(),
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            ],
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: AppButton(
-                              btnText: "Agree",
-                              ontap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const Checkout()));
-                              }),
-                        ),
-                      ],
-                    ),
-                  );
+                        )
+                      : Get.offAll(
+                          () => const Login(),
+                        );
                 },
               ),
               AppPadding.heightSpace30,

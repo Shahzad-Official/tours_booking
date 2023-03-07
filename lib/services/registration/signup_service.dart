@@ -3,16 +3,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tours_booking/services/get_user_data.dart';
 
-import '../../constants/dummy_data.dart';
+import '../../models/user_profile/profile_model.dart';
 import '../../utils/app_snackbar.dart';
 import '../../views/main_page/main_page.dart';
+import '../../views/registeration/login.dart';
 import '../../views/registeration/sign_up.dart';
 import 'login_service.dart';
 
 class SignupService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GetUserData _userData = GetUserData();
+  final LoginService _loginService = LoginService();
+  List<ProfileModel> usersList = [];
 
   verifyUser({
     required String uid,
@@ -24,36 +29,56 @@ class SignupService {
         .collection("users")
         .get()
         .then((value) async {
-      value.docs.any(
-        (element) {
-          if (element.id == uid) {
-            AppSnackbar.snackBar(
-                title: "Error", message: "User Already Exists.");
-            _googleSignIn.signOut();
-            Get.offAll(() => SignUp());
-            return true;
-          } else {
-            FirebaseFirestore.instance.collection("users").doc(uid).set({
-              "email": email,
-              "role": "user",
-              "uid": uid,
-              "userName": displayName,
-              "profile": photoURL,
-              "dob": "10-10-2000",
-              "phoneNo": "+923000000000",
-              "isVerified": false,
-              "emailVerified": true,
-              "created_on": DateTime.now(),
-              "disabled": false,
-              "commission": "5",
-            });
-            AppSnackbar.snackBar(
-                title: "Message", message: "Successfully LogedIn");
-            Get.offAll(() => const MainPage());
-            return true;
-          }
-        },
-      );
+      if (value.docs.isEmpty) {
+        FirebaseFirestore.instance.collection("users").doc(uid).set({
+          "email": email,
+          "role": "user",
+          "uid": uid,
+          "userName": displayName,
+          "profile": photoURL,
+          "dob": "10-10-2000",
+          "phoneNo": "+923000000000",
+          "isVerified": false,
+          "emailVerified": true,
+          "created_on": DateTime.now(),
+          "disabled": false,
+          "commission": "5",
+        });
+        AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
+        Get.offAll(() => const MainPage());
+      } else {
+        await _userData.getUserData(uid);
+
+        if (_userData.userProfile.uid == null) {
+          FirebaseFirestore.instance.collection("users").doc(uid).set({
+            "email": email,
+            "role": "user",
+            "uid": uid,
+            "userName": displayName,
+            "profile": photoURL,
+            "dob": "10-10-2000",
+            "phoneNo": "+923000000000",
+            "isVerified": false,
+            "emailVerified": true,
+            "created_on": DateTime.now(),
+            "disabled": false,
+            "commission": "5",
+          });
+          AppSnackbar.snackBar(
+              title: "Message", message: "Successfully LogedIn");
+          Get.offAll(() => const MainPage());
+        } else if (_userData.userProfile.uid == uid &&
+            _userData.userProfile.role == "lister") {
+          AppSnackbar.snackBar(title: "Error", message: "User Already Exists.");
+          _googleSignIn.signOut();
+          Get.offAll(() => Login());
+        } else if (_userData.userProfile.uid == uid &&
+            _userData.userProfile.role == "user") {
+          AppSnackbar.snackBar(title: "Error", message: "User Account Exists.");
+          _googleSignIn.signOut();
+          Get.offAll(() => Login());
+        }
+      }
     });
   }
 
@@ -73,7 +98,7 @@ class SignupService {
         photoURL: "",
       );
 
-      await LoginService.loginUser(email: email, password: password);
+      await _loginService.loginUser(email: email, password: password);
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }

@@ -9,7 +9,7 @@ import '../../services/authentications/authentications_services.dart';
 import '../bookings/ongoing_bookings.dart';
 import '../registeration/login.dart';
 import '../user_account/account_settings.dart';
-import 'main_screens/all_tours.dart';
+import 'main_screens/all_packages.dart';
 import 'main_screens/home_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -58,7 +58,7 @@ class _MainPageState extends State<MainPage> {
     final List<Widget> mainScreens = [
       const HomePage(),
       const AllPackages(),
-      OngoingBookings(),
+      isLogedIn! ? OngoingBookings() : const Login(),
       profileWidget(),
     ];
     MainPageController mainPageController = Get.put(MainPageController());

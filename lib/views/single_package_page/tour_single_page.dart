@@ -324,10 +324,11 @@ class PackageSinglePage extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Timer(),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Timer(),
+                    ),
+                  );
                 },
                 child: Container(
                   height: 120,

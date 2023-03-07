@@ -175,18 +175,22 @@ class SignUp extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         InkWell(
-                          onTap: () async {
-                            await _signUpService.googleSignUpService();
-                          },
+                          onTap: signupController.isLoading
+                              ? null
+                              : () async {
+                                  await signupController.googleSignUp();
+                                },
                           child: SizedBox(
                             height: 80,
                             child: Image.asset("assets/googleLogo.png"),
                           ),
                         ),
                         InkWell(
-                          onTap: () async {
-                            await _signUpService.faceBookSignUpService();
-                          },
+                          onTap: signupController.isLoading
+                              ? null
+                              : () async {
+                                  await signupController.facebookSignUp();
+                                },
                           child: SizedBox(
                             height: 80,
                             child: Image.asset("assets/fLogo.png"),
