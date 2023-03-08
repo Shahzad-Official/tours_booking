@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tours_booking/constants/app_colors.dart';
+import 'package:tours_booking/constants/app_padding.dart';
+import 'package:tours_booking/widgets/app_cache_image.dart';
 import 'app_text.dart';
 
 class PackagesList extends StatelessWidget {
@@ -43,8 +46,10 @@ class PackagesList extends StatelessWidget {
                 width: 120,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
-                      image: AssetImage(eventImage), fit: BoxFit.cover),
+                  color: AppColors.primarycolor,
+                ),
+                child: AppCachedImage(
+                  picUrl: eventImage,
                 ),
               ),
               const SizedBox(
@@ -54,47 +59,58 @@ class PackagesList extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        AppText(text: eventName, fontSize: 18),
-                        AppText(text: eventDate, fontSize: 14),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.location_on_outlined,
-                              size: 14,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          AppText(text: eventName, fontSize: 18),
+                          AppPadding.heightSpace10,
+                          AppText(text: eventDate, fontSize: 14),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on_outlined,
+                                  size: 14,
+                                ),
+                                Expanded(
+                                  child: AppText(
+                                    overflow: TextOverflow.ellipsis,
+                                    text: eventLocation,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
                             ),
-                            AppText(text: eventLocation, fontSize: 14),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          children: const [
-                            Icon(Icons.circle,
-                                size: 16, color: Colors.blueAccent),
-                            Icon(Icons.circle,
-                                size: 16, color: Colors.blueAccent),
-                            Icon(Icons.circle,
-                                size: 16, color: Colors.blueAccent),
-                            Icon(Icons.circle,
-                                size: 16, color: Colors.blueAccent),
-                            Icon(Icons.circle,
-                                size: 16, color: Colors.blueAccent),
-                          ],
-                        ),
-                      ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            children: const [
+                              Icon(Icons.circle,
+                                  size: 16, color: Colors.blueAccent),
+                              Icon(Icons.circle,
+                                  size: 16, color: Colors.blueAccent),
+                              Icon(Icons.circle,
+                                  size: 16, color: Colors.blueAccent),
+                              Icon(Icons.circle,
+                                  size: 16, color: Colors.blueAccent),
+                              Icon(Icons.circle,
+                                  size: 16, color: Colors.blueAccent),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 38,
-                          width: 38,
+                          height: 30,
+                          width: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(100),
@@ -110,6 +126,7 @@ class PackagesList extends StatelessWidget {
                             child: Icon(
                               Icons.favorite,
                               color: Colors.red,
+                              size: 20,
                             ),
                           ),
                         ),
@@ -117,8 +134,8 @@ class PackagesList extends StatelessWidget {
                           height: 10,
                         ),
                         Container(
-                          height: 40,
-                          width: 40,
+                          height: 30,
+                          width: 30,
                           decoration: BoxDecoration(
                             color: eventDurationColor,
                             borderRadius: BorderRadius.circular(100),

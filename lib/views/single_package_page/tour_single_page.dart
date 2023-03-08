@@ -1,13 +1,22 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
+import 'package:tours_booking/models/packages/packages_model.dart';
+import 'package:tours_booking/utils/danger_rating_data.dart';
+import 'package:tours_booking/utils/date_utils.dart/format_date.dart';
 import 'package:tours_booking/views/timer/timer.dart';
 import 'package:tours_booking/widgets/app_text.dart';
 
 class PackageSinglePage extends StatelessWidget {
-  const PackageSinglePage({Key? key}) : super(key: key);
+  final PackagesModel packageData;
+  const PackageSinglePage({
+    Key? key,
+    required this.packageData,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +26,7 @@ class PackageSinglePage extends StatelessWidget {
           Column(
             children: [
               Container(
-                height: 400,
+                height: 420,
                 width: MediaQuery.of(context).size.width * 1,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -169,7 +178,7 @@ class PackageSinglePage extends StatelessWidget {
                         RichText(
                           text: TextSpan(children: [
                             TextSpan(
-                              text: "Pantai Dreamland ",
+                              text: packageData.packageName,
                               style: GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
@@ -197,8 +206,9 @@ class PackageSinglePage extends StatelessWidget {
                       ],
                     ),
                     AppText(
-                      text: "Paris",
+                      text: packageData.location!.address.toString(),
                       textcolor: Colors.grey,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(
                       height: 10,
@@ -209,12 +219,15 @@ class PackageSinglePage extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            AppText(
+                            const AppText(
                               text: "Start Date & Time",
                               fontSize: 12,
                             ),
                             AppText(
-                              text: "17/09/22 | 23:04",
+                              text: "${FormatDate.formatedDate(
+                                formatPattern: "dd/MM/yyyy",
+                                date: packageData.startDate.toString(),
+                              )} | ${packageData.startTime}",
                               fontSize: 10,
                               textcolor: Colors.blueAccent,
                             ),
@@ -223,12 +236,15 @@ class PackageSinglePage extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            AppText(
+                            const AppText(
                               text: "Duration",
                               fontSize: 12,
                             ),
                             AppText(
-                              text: "17/09/22 | 1+ hour",
+                              text: "${FormatDate.formatedDate(
+                                formatPattern: "dd/MM/yyyy",
+                                date: packageData.endDate.toString(),
+                              )} | 1+ hour",
                               fontSize: 10,
                               textcolor: Colors.blueAccent,
                             ),
@@ -238,7 +254,9 @@ class PackageSinglePage extends StatelessWidget {
                           children: [
                             const Icon(Icons.star_border),
                             AppText(
-                              text: "Easy going",
+                              text: DangerRatingData.danger(
+                                packageData.dangerRating.toString(),
+                              ),
                               fontSize: 10,
                               textcolor: Colors.grey,
                             ),
@@ -261,7 +279,7 @@ class PackageSinglePage extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 20.0),
                           child: AppText(
-                            text: "+3",
+                            text: packageData.ageSuitability.toString(),
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             textcolor: Colors.grey,
@@ -269,7 +287,9 @@ class PackageSinglePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const myslider(),
+                    Myslider(
+                      value: int.parse(packageData.ageSuitability!),
+                    ),
                     const SizedBox(
                       height: 25,
                     ),
@@ -285,7 +305,7 @@ class PackageSinglePage extends StatelessWidget {
                               textcolor: Colors.grey,
                             ),
                             AppText(
-                              text: "Adventure",
+                              text: packageData.typeOfTour.toString(),
                               fontSize: 12,
                               textcolor: Colors.black,
                             ),
@@ -449,15 +469,13 @@ class PackageSinglePage extends StatelessWidget {
   }
 }
 
-class myslider extends StatefulWidget {
-  const myslider({Key? key}) : super(key: key);
+class Myslider extends StatelessWidget {
+  final int value;
+  const Myslider({
+    Key? key,
+    required this.value,
+  }) : super(key: key);
 
-  @override
-  State<myslider> createState() => _mysliderState();
-}
-
-class _mysliderState extends State<myslider> {
-  int _value = 6;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -468,18 +486,14 @@ class _mysliderState extends State<myslider> {
           Expanded(
               child: Slider(
                   thumbColor: Colors.white,
-                  value: _value.toDouble(),
+                  value: value.toDouble(),
                   min: 1.0,
                   max: 20.0,
                   divisions: 15,
                   activeColor: Colors.blueAccent,
                   inactiveColor: Colors.black45,
-                  label: 'count',
-                  onChanged: (double newValue) {
-                    setState(() {
-                      _value = newValue.round();
-                    });
-                  },
+                  label: 'Age',
+                  onChanged: (double newValue) {},
                   semanticFormatterCallback: (double newValue) {
                     return '${newValue.round()} dollars';
                   })),

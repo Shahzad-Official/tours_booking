@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tours_booking/utils/app_snackbar.dart';
 
 import '../../models/packages/packages_model.dart';

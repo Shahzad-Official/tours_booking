@@ -16,7 +16,7 @@ class MainPage extends StatefulWidget {
   final int currentIndex;
   const MainPage({
     Key? key,
-    this.currentIndex = 0,
+    this.currentIndex = 1,
   }) : super(key: key);
 
   @override
@@ -27,11 +27,11 @@ class _MainPageState extends State<MainPage> {
   final AuthenticationServices authervices = AuthenticationServices();
 
   final MainPageController controller = Get.put(MainPageController());
-  bool? isLogedIn;
+  bool isLogedIn = false;
   checkLogin() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await authervices.isUserLogedIn();
-    isLogedIn = preferences.getBool("isLogedIn");
+    isLogedIn = preferences.getBool("isLogedIn")!;
   }
 
   @override
@@ -44,8 +44,8 @@ class _MainPageState extends State<MainPage> {
     return FutureBuilder(
       future: checkLogin(),
       builder: (context, snapshot) {
-        if (isLogedIn!) {
-          return const AccountSettings();
+        if (isLogedIn) {
+          return AccountSettings();
         } else {
           return Login();
         }
@@ -57,8 +57,8 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final List<Widget> mainScreens = [
       const HomePage(),
-      const AllPackages(),
-      isLogedIn! ? OngoingBookings() : const Login(),
+      AllPackages(),
+      isLogedIn ? OngoingBookings() : const Login(),
       profileWidget(),
     ];
     MainPageController mainPageController = Get.put(MainPageController());

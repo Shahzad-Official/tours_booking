@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tours_booking/models/user_profile/profile_model.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_padding.dart';
@@ -11,14 +12,10 @@ import '../../widgets/app_text.dart';
 import 'edit_profile.dart';
 
 class UserProfile extends StatelessWidget {
-  final String profileUrl;
-  final String? email, phoneNo, dOB;
+  final ProfileModel userData;
   const UserProfile({
     super.key,
-    required this.profileUrl,
-    this.phoneNo,
-    this.dOB,
-    this.email,
+    required this.userData,
   });
 
   @override
@@ -39,7 +36,7 @@ class UserProfile extends StatelessWidget {
             ),
           ),
         ),
-        title: AppText(
+        title: const AppText(
           text: "Profile",
           fontWeight: FontWeight.w600,
           fontSize: 23,
@@ -79,14 +76,14 @@ class UserProfile extends StatelessWidget {
                     width: 20,
                   ),
                   AppCircularCachedImage(
-                    picUrl: profileUrl,
+                    picUrl: userData.profile.toString(),
                   ),
                 ],
               ),
               const SizedBox(
                 height: 30,
               ),
-              AppText(
+              const AppText(
                 text: "Email",
                 textcolor: AppColors.headTextColor,
                 fontSize: 15,
@@ -94,14 +91,14 @@ class UserProfile extends StatelessWidget {
               ),
               AppPadding.heightSpace10,
               AppText(
-                text: email ?? DummyData.profileData['email'],
+                text: userData.email ?? DummyData.profileData['email'],
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
               AppPadding.heightSpace10,
               const Divider(),
               AppPadding.heightSpace20,
-              AppText(
+              const AppText(
                 text: "Phone Number",
                 textcolor: AppColors.headTextColor,
                 fontSize: 15,
@@ -109,14 +106,14 @@ class UserProfile extends StatelessWidget {
               ),
               AppPadding.heightSpace10,
               AppText(
-                text: phoneNo ?? DummyData.profileData['phoneNo'],
+                text: userData.phoneNo ?? DummyData.profileData['phoneNo'],
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
               AppPadding.heightSpace10,
               const Divider(),
               AppPadding.heightSpace20,
-              AppText(
+              const AppText(
                 text: "Date of Birth",
                 textcolor: AppColors.headTextColor,
                 fontSize: 15,
@@ -124,7 +121,7 @@ class UserProfile extends StatelessWidget {
               ),
               AppPadding.heightSpace10,
               AppText(
-                text: dOB ?? DummyData.profileData['DOB'],
+                text: userData.dob ?? DummyData.profileData['DOB'],
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),

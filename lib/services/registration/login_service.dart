@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:tours_booking/models/user_profile/profile_model.dart';
+
 import 'package:tours_booking/services/get_user_data.dart';
 
 import '../../utils/app_snackbar.dart';
@@ -62,7 +62,7 @@ class LoginService {
             (value) => doesContainId(value.user!.uid),
           );
     } catch (e) {
-      AppSnackbar.snackBar(title: "Error", message: e.toString());
+      AppSnackbar.snackBar(title: "Error", message: "Server Error");
     }
   }
 
@@ -80,7 +80,7 @@ class LoginService {
       var userId = user.user!.uid;
       doesContainId(userId);
     } catch (e) {
-      AppSnackbar.snackBar(title: "Error", message: e.toString());
+      AppSnackbar.snackBar(title: "Error", message: "Server Error");
     }
   }
 
@@ -95,7 +95,7 @@ class LoginService {
             (value) => doesContainId(value.user!.uid),
           );
     } catch (e) {
-      AppSnackbar.snackBar(title: "Error", message: e.toString());
+      AppSnackbar.snackBar(title: "Error", message: "Server Error");
     }
   }
 }

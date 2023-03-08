@@ -1,12 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tours_booking/services/registration/signup_service.dart';
 
 import '../../constants/app_colors.dart';
-import '../../models/user_model.dart';
-import '../../views/main_page/main_page.dart';
 
 class SignupController extends GetxController {
   TextEditingController email = TextEditingController();
@@ -15,7 +11,7 @@ class SignupController extends GetxController {
 
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
-  UserModel userModel = UserModel();
+
   final SignupService _signupService = SignupService();
   bool isObsecure = true;
   bool isLoading = false;

@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/constants/dummy_data.dart';
+import 'package:tours_booking/controllers/main_page_controller/main_pages_controllers/all_packages_controller.dart';
+import 'package:tours_booking/models/packages/packages_model.dart';
+import 'package:tours_booking/services/package_services/get_all_packages.dart';
+import 'package:tours_booking/utils/date_utils.dart/calculate_days.dart';
+import 'package:tours_booking/utils/date_utils.dart/format_date.dart';
 import 'package:tours_booking/views/single_package_page/tour_single_page.dart';
 import 'package:tours_booking/widgets/all_package_list.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
@@ -10,14 +16,10 @@ import 'package:tours_booking/widgets/app_text.dart';
 import '../../../constants/svg_icons.dart';
 import '../../../widgets/filter_sheet.dart';
 
-class AllPackages extends StatefulWidget {
-  const AllPackages({Key? key}) : super(key: key);
+class AllPackages extends StatelessWidget {
+  AllPackages({super.key});
+  final GetAllPackages _getAllPackages = GetAllPackages();
 
-  @override
-  State<AllPackages> createState() => _AllPackagesState();
-}
-
-class _AllPackagesState extends State<AllPackages> {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
@@ -36,7 +38,7 @@ class _AllPackagesState extends State<AllPackages> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      AppText(
+                      const AppText(
                         text: "All Packages",
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -51,161 +53,239 @@ class _AllPackagesState extends State<AllPackages> {
               ),
             ),
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: AppPadding.defaultPadding,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        // height: 60,
-                        width: MediaQuery.of(context).size.width * 0.70,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: const Offset(1, 2),
-                              color: Colors.grey.withOpacity(0.4),
-                              blurRadius: 5,
-                            ),
-                          ],
-                        ),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            prefixIcon: const Icon(
-                              Icons.search,
-                              color: Colors.grey,
-                            ),
-                            hintText: 'Search for tours',
-                            fillColor: Colors.white,
-                            filled: true,
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 18),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () => showModalBottomSheet(
-                          isScrollControlled: true,
-                          shape: const OutlineInputBorder(
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  topLeft: Radius.circular(10))),
-                          context: context,
-                          builder: (context) {
-                            return const FractionallySizedBox(
-                              heightFactor: 0.75,
-                              child: FilterSheet(),
+          body: GetBuilder<AllPackagesController>(
+              init: AllPackagesController(),
+              builder: (_) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: AppPadding.defaultPadding,
+                    child: FutureBuilder<List<PackagesModel>>(
+                        future: _getAllPackages.getAllPackages(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.70,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            offset: const Offset(1, 2),
+                                            color: Colors.grey.withOpacity(0.4),
+                                            blurRadius: 5,
+                                          ),
+                                        ],
+                                      ),
+                                      child: TextFormField(
+                                        onChanged: (value) {
+                                          _.searchPackage(
+                                            value,
+                                            snapshot.data!,
+                                          );
+                                        },
+                                        decoration: InputDecoration(
+                                          prefixIcon: const Icon(
+                                            Icons.search,
+                                            color: Colors.grey,
+                                          ),
+                                          hintText: 'Search for tours',
+                                          fillColor: Colors.white,
+                                          filled: true,
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 18),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            borderSide: BorderSide.none,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () => showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        shape: const OutlineInputBorder(
+                                            borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(10),
+                                                topLeft: Radius.circular(10))),
+                                        context: context,
+                                        builder: (context) {
+                                          return const FractionallySizedBox(
+                                            heightFactor: 0.75,
+                                            child: FilterSheet(),
+                                          );
+                                        },
+                                      ),
+                                      child: Container(
+                                        height: 50,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.16,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              offset: const Offset(1, 2),
+                                              color:
+                                                  Colors.grey.withOpacity(0.4),
+                                              blurRadius: 5,
+                                            ),
+                                          ],
+                                        ),
+                                        child: Center(
+                                          child: SvgPicture.string(
+                                            SvgIcons.filter,
+                                            height: 25,
+                                            width: 25,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 30),
+                                Column(
+                                  children: List<Widget>.generate(
+                                    _.isSearching
+                                        ? _.newPackagesList.length
+                                        : snapshot.data!.length,
+                                    (index) {
+                                      return PackagesList(
+                                        eventImage: _.isSearching
+                                            ? _.newPackagesList[index]
+                                                .thumbnailUrl
+                                                .toString()
+                                            : snapshot.data![index].thumbnailUrl
+                                                .toString(),
+                                        eventName: _.isSearching
+                                            ? _.newPackagesList[index]
+                                                .packageName
+                                                .toString()
+                                            : snapshot.data![index].packageName
+                                                .toString(),
+                                        eventDate: "${FormatDate.formatedDate(
+                                          formatPattern: "dd MMM",
+                                          date: _.isSearching
+                                              ? _.newPackagesList[index]
+                                                  .startDate
+                                                  .toString()
+                                              : snapshot.data![index].startDate
+                                                  .toString(),
+                                        )}-${FormatDate.formatedDate(
+                                          formatPattern: "dd MMM",
+                                          date: _.isSearching
+                                              ? _.newPackagesList[index].endDate
+                                                  .toString()
+                                              : snapshot.data![index].endDate
+                                                  .toString(),
+                                        )}",
+                                        eventLocation: _.isSearching
+                                            ? _.newPackagesList[index].location!
+                                                .address
+                                                .toString()
+                                            : snapshot
+                                                .data![index].location!.address
+                                                .toString(),
+                                        eventDuration:
+                                            CalculateDays.daysBetweenDates(
+                                          startDate: _.isSearching
+                                              ? _.newPackagesList[index]
+                                                  .startDate
+                                                  .toString()
+                                              : snapshot.data![index].startDate
+                                                  .toString(),
+                                          endDate: _.isSearching
+                                              ? _.newPackagesList[index].endDate
+                                                  .toString()
+                                              : snapshot.data![index].endDate
+                                                  .toString(),
+                                        ).toString(),
+                                        eventDurationColor: CalculateDays
+                                                    .daysBetweenDates(
+                                                  startDate: _.isSearching
+                                                      ? _.newPackagesList[index]
+                                                          .startDate
+                                                          .toString()
+                                                      : snapshot.data![index]
+                                                          .startDate
+                                                          .toString(),
+                                                  endDate: _.isSearching
+                                                      ? _.newPackagesList[index]
+                                                          .endDate
+                                                          .toString()
+                                                      : snapshot
+                                                          .data![index].endDate
+                                                          .toString(),
+                                                ) >=
+                                                3
+                                            ? Colors.red
+                                            : CalculateDays.daysBetweenDates(
+                                                      startDate: _.isSearching
+                                                          ? _
+                                                              .newPackagesList[
+                                                                  index]
+                                                              .startDate
+                                                              .toString()
+                                                          : snapshot
+                                                              .data![index]
+                                                              .startDate
+                                                              .toString(),
+                                                      endDate: _.isSearching
+                                                          ? _
+                                                              .newPackagesList[
+                                                                  index]
+                                                              .endDate
+                                                              .toString()
+                                                          : snapshot
+                                                              .data![index]
+                                                              .endDate
+                                                              .toString(),
+                                                    ) ==
+                                                    2
+                                                ? Colors.yellow
+                                                : Colors.green,
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PackageSinglePage(
+                                                packageData:
+                                                    snapshot.data![index],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
                             );
-                          },
-                        ),
-                        child: Container(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.16,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: const Offset(1, 2),
-                                color: Colors.grey.withOpacity(0.4),
-                                blurRadius: 5,
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child: SvgPicture.string(
-                              SvgIcons.filter,
-                              height: 25,
-                              width: 25,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                  Column(
-                    children: List<Widget>.generate(
-                      packagesListData.length,
-                      (index) {
-                        return PackagesList(
-                          eventImage: packagesListData[index]["eventImage"],
-                          eventName: packagesListData[index]["eventName"],
-                          eventDate: packagesListData[index]["eventDate"],
-                          eventLocation: packagesListData[index]
-                              ["eventLocation"],
-                          eventDuration: packagesListData[index]
-                              ["eventDuration"],
-                          eventDurationColor: packagesListData[index]
-                              ["eventDurationColor"],
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const PackageSinglePage(),
-                              ),
+                          } else if (_.allPackages.isEmpty) {
+                            return const Center(
+                              child: AppText(text: "NO Package Available"),
                             );
-                          },
-                        );
-                      },
-                    ),
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        }),
                   ),
-                ],
-              ),
-            ),
-          ),
+                );
+              }),
         ),
       ),
     );
   }
-
-  List<Map<String, dynamic>> packagesListData = [
-    {
-      "eventImage": "assets/image2.png",
-      "eventName": "Event culture",
-      "eventDate": "12 Feb - 1 March",
-      "eventLocation": "Paris, Europe",
-      "eventDuration": "3 Days",
-      "eventDurationColor": const Color(0xffFF4A4A),
-    },
-    {
-      "eventImage": "assets/image1.png",
-      "eventName": "Event culture",
-      "eventDate": "12 Feb - 1 March",
-      "eventLocation": "Paris, Europe",
-      "eventDuration": "2 Days",
-      "eventDurationColor": const Color(0xffDEA042),
-    },
-    {
-      "eventImage": "assets/image1.png",
-      "eventName": "Event culture",
-      "eventDate": "12 Feb - 1 March",
-      "eventLocation": "Paris, Europe",
-      "eventDuration": "0 Days",
-      "eventDurationColor": const Color(0xff12AD0F),
-    },
-    {
-      "eventImage": "assets/image1.png",
-      "eventName": "Event culture",
-      "eventDate": "12 Feb - 1 March",
-      "eventLocation": "Paris, Europe",
-      "eventDuration": "3 Days",
-      "eventDurationColor": const Color(0xffFF4A4A),
-    },
-    {
-      "eventImage": "assets/image1.png",
-      "eventName": "Event culture",
-      "eventDate": "12 Feb - 1 March",
-      "eventLocation": "Paris, Europe",
-      "eventDuration": "3 Days",
-      "eventDurationColor": const Color(0xffFF4A4A),
-    },
-  ];
 }

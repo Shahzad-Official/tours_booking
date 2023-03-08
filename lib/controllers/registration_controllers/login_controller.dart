@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../constants/app_colors.dart';
-import '../../models/user_model.dart';
+
 import '../../services/registration/login_service.dart';
 
 class LoginController extends GetxController {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  UserModel userModel = UserModel();
+
   final LoginService _loginService = LoginService();
 
   bool isObsecure = true;
