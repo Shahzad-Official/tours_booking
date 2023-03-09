@@ -1,7 +1,4 @@
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../services/authentications/authentications_services.dart';
 
 class MainPageController extends GetxController {
   int currentIndex = 0;

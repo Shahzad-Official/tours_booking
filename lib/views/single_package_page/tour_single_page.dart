@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -7,8 +5,10 @@ import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/models/packages/packages_model.dart';
 import 'package:tours_booking/utils/danger_rating_data.dart';
+import 'package:tours_booking/utils/date_utils.dart/calculate_days.dart';
 import 'package:tours_booking/utils/date_utils.dart/format_date.dart';
 import 'package:tours_booking/views/timer/timer.dart';
+import 'package:tours_booking/widgets/app_cache_image.dart';
 import 'package:tours_booking/widgets/app_text.dart';
 
 class PackageSinglePage extends StatelessWidget {
@@ -28,141 +28,161 @@ class PackageSinglePage extends StatelessWidget {
               Container(
                 height: 420,
                 width: MediaQuery.of(context).size.width * 1,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  color: AppColors.primarycolor.withOpacity(0.3),
+                  borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(25),
                     bottomRight: Radius.circular(25),
                   ),
-                  image: DecorationImage(
-                    image: AssetImage("assets/image2.png"),
-                    fit: BoxFit.cover,
-                  ),
                 ),
-                child: Padding(
-                  padding: AppPadding.defaultPadding,
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 65,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 420,
+                      width: MediaQuery.of(context).size.width * 1,
+                      decoration: BoxDecoration(
+                        color: AppColors.primarycolor.withOpacity(0.3),
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(25),
+                          bottomRight: Radius.circular(25),
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: AppCachedImage(
+                        picUrl: packageData.thumbnailUrl.toString(),
+                      ),
+                    ),
+                    Padding(
+                      padding: AppPadding.defaultPadding,
+                      child: Column(
                         children: [
-                          InkWell(
-                            onTap: () => Navigator.pop(context),
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                boxShadow: [
-                                  BoxShadow(
-                                    offset: const Offset(1, 2),
-                                    color: Colors.grey.withOpacity(0.4),
+                          const SizedBox(
+                            height: 65,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () => Navigator.pop(context),
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: const Offset(1, 2),
+                                        color: Colors.grey.withOpacity(0.4),
+                                      ),
+                                    ],
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.white.withOpacity(0.7),
+                                        Colors.white.withOpacity(0.11),
+                                      ],
+                                    ),
+                                  ),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.arrow_back_ios_new_rounded,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Icon(
+                                Icons.share,
+                                color: Colors.blueAccent,
+                                size: 35,
+                              )
+                            ],
+                          ),
+                          const Expanded(
+                            child: SizedBox(),
+                          ),
+                          Container(
+                            height: 90,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white.withOpacity(0.6),
+                                  Colors.white.withOpacity(0.11),
+                                ],
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  offset: Offset(1, 2),
+                                  color: Colors.grey.withOpacity(0.4),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    height: 70,
+                                    width: 70,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: const DecorationImage(
+                                        image: AssetImage("assets/image1.png"),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 70,
+                                    width: 70,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: const DecorationImage(
+                                          image:
+                                              AssetImage("assets/image1.png"),
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 70,
+                                    width: 70,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: const DecorationImage(
+                                          image:
+                                              AssetImage("assets/image1.png"),
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 70,
+                                    width: 70,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: const DecorationImage(
+                                          image:
+                                              AssetImage("assets/image1.png"),
+                                          fit: BoxFit.cover),
+                                    ),
+                                    child: Center(
+                                      child: AppText(
+                                        text: "+5",
+                                        fontSize: 18,
+                                        textcolor: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ],
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.white.withOpacity(0.7),
-                                    Colors.white.withOpacity(0.11),
-                                  ],
-                                ),
-                              ),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.arrow_back_ios_new_rounded,
-                                  color: Colors.white,
-                                ),
                               ),
                             ),
                           ),
-                          const Icon(
-                            Icons.share,
-                            color: Colors.blueAccent,
-                            size: 35,
-                          )
+                          const SizedBox(
+                            height: 20,
+                          ),
                         ],
                       ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
-                      Container(
-                        height: 90,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.white.withOpacity(0.6),
-                              Colors.white.withOpacity(0.11),
-                            ],
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              offset: Offset(1, 2),
-                              color: Colors.grey.withOpacity(0.4),
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                height: 70,
-                                width: 70,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: const DecorationImage(
-                                      image: AssetImage("assets/image1.png"),
-                                      fit: BoxFit.cover),
-                                ),
-                              ),
-                              Container(
-                                height: 70,
-                                width: 70,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: const DecorationImage(
-                                      image: AssetImage("assets/image1.png"),
-                                      fit: BoxFit.cover),
-                                ),
-                              ),
-                              Container(
-                                height: 70,
-                                width: 70,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: const DecorationImage(
-                                      image: AssetImage("assets/image1.png"),
-                                      fit: BoxFit.cover),
-                                ),
-                              ),
-                              Container(
-                                height: 70,
-                                width: 70,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: const DecorationImage(
-                                      image: AssetImage("assets/image1.png"),
-                                      fit: BoxFit.cover),
-                                ),
-                                child: Center(
-                                  child: AppText(
-                                    text: "+5",
-                                    fontSize: 18,
-                                    textcolor: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(
@@ -346,7 +366,9 @@ class PackageSinglePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Timer(),
+                      builder: (context) => Timer(
+                        packageData: packageData,
+                      ),
                     ),
                   );
                 },
@@ -379,7 +401,7 @@ class PackageSinglePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AppText(
-                          text: "\$29.99",
+                          text: "\$${packageData.startPrice}",
                           fontWeight: FontWeight.w700,
                           textcolor: AppColors.primarycolor,
                         ),
@@ -404,7 +426,8 @@ class PackageSinglePage extends StatelessWidget {
                                 ),
                                 child: Center(
                                   child: AppText(
-                                    text: "2D",
+                                    text:
+                                        "${CalculateDays.dateDiffrence(startDate: packageData.startDate!, endDate: packageData.endDate!).day}D",
                                     fontSize: 10,
                                     fontWeight: FontWeight.w400,
                                     textcolor: Colors.blue,
@@ -425,7 +448,8 @@ class PackageSinglePage extends StatelessWidget {
                                 ),
                                 child: Center(
                                   child: AppText(
-                                    text: "9H",
+                                    text:
+                                        "${CalculateDays.dateDiffrence(startDate: packageData.startDate!, endDate: packageData.endDate!).hour}H",
                                     fontSize: 10,
                                     fontWeight: FontWeight.w400,
                                     textcolor: Colors.blue,
@@ -446,7 +470,8 @@ class PackageSinglePage extends StatelessWidget {
                                 ),
                                 child: Center(
                                   child: AppText(
-                                    text: "7M",
+                                    text:
+                                        "${CalculateDays.dateDiffrence(startDate: packageData.startDate!, endDate: packageData.endDate!).minute}M",
                                     fontSize: 10,
                                     fontWeight: FontWeight.w400,
                                     textcolor: Colors.blue,

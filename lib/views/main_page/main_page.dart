@@ -53,12 +53,25 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  Widget bookingWidget() {
+    return FutureBuilder(
+      future: checkLogin(),
+      builder: (context, snapshot) {
+        if (isLogedIn) {
+          return OngoingBookings();
+        } else {
+          return Login();
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> mainScreens = [
       const HomePage(),
       AllPackages(),
-      isLogedIn ? OngoingBookings() : const Login(),
+      bookingWidget(),
       profileWidget(),
     ];
     MainPageController mainPageController = Get.put(MainPageController());

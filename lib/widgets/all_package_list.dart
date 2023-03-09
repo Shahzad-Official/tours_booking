@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
+import 'package:tours_booking/widgets/rating_bar/tour_rating_bar.dart';
 import 'app_text.dart';
 
 class PackagesList extends StatelessWidget {
   final String eventImage, eventName, eventDate, eventLocation, eventDuration;
   final Color eventDurationColor;
+  final double rating;
   final void Function()? onTap;
   const PackagesList({
     Key? key,
     required this.eventImage,
+    required this.rating,
     required this.eventName,
     required this.eventDate,
     required this.eventLocation,
@@ -87,19 +91,8 @@ class PackagesList extends StatelessWidget {
                           const SizedBox(
                             height: 5,
                           ),
-                          Row(
-                            children: const [
-                              Icon(Icons.circle,
-                                  size: 16, color: Colors.blueAccent),
-                              Icon(Icons.circle,
-                                  size: 16, color: Colors.blueAccent),
-                              Icon(Icons.circle,
-                                  size: 16, color: Colors.blueAccent),
-                              Icon(Icons.circle,
-                                  size: 16, color: Colors.blueAccent),
-                              Icon(Icons.circle,
-                                  size: 16, color: Colors.blueAccent),
-                            ],
+                          TourRatingBar(
+                            initialRating: rating,
                           ),
                         ],
                       ),

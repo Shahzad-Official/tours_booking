@@ -8,12 +8,15 @@ class AppButton extends StatelessWidget {
   String btnText;
   void Function() ontap;
   bool isLoading;
-
+  final double? width;
+  final EdgeInsetsGeometry? margin;
   AppButton({
     Key? key,
     required this.btnText,
+    this.margin,
     this.isLoading = false,
     required this.ontap,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -22,6 +25,8 @@ class AppButton extends StatelessWidget {
       onTap: ontap,
       child: Container(
         height: 58,
+        width: width,
+        margin: margin,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           gradient: const LinearGradient(

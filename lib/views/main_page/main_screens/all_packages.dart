@@ -160,6 +160,7 @@ class AllPackages extends StatelessWidget {
                                         : snapshot.data!.length,
                                     (index) {
                                       return PackagesList(
+                                        rating: 0,
                                         eventImage: _.isSearching
                                             ? _.newPackagesList[index]
                                                 .thumbnailUrl
@@ -208,7 +209,7 @@ class AllPackages extends StatelessWidget {
                                                   .toString()
                                               : snapshot.data![index].endDate
                                                   .toString(),
-                                        ).toString(),
+                                        ).inDays.toString(),
                                         eventDurationColor: CalculateDays
                                                     .daysBetweenDates(
                                                   startDate: _.isSearching
@@ -225,7 +226,7 @@ class AllPackages extends StatelessWidget {
                                                       : snapshot
                                                           .data![index].endDate
                                                           .toString(),
-                                                ) >=
+                                                ).inDays >=
                                                 3
                                             ? Colors.red
                                             : CalculateDays.daysBetweenDates(
@@ -249,7 +250,7 @@ class AllPackages extends StatelessWidget {
                                                               .data![index]
                                                               .endDate
                                                               .toString(),
-                                                    ) ==
+                                                    ).inDays ==
                                                     2
                                                 ? Colors.yellow
                                                 : Colors.green,
