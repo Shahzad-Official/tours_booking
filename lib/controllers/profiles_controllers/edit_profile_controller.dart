@@ -10,6 +10,7 @@ class EditProfileController extends GetxController {
   TextEditingController email = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController name = TextEditingController();
+  TextEditingController dob = TextEditingController();
   String gender = "Male";
   List<String> genders = [
     "Male",

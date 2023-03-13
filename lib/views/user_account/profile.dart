@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tours_booking/models/user_profile/profile_model.dart';
+import 'package:tours_booking/utils/date_utils.dart/format_date.dart';
 
 import '../../constants/app_colors.dart';
 import '../../constants/app_padding.dart';
@@ -59,13 +60,14 @@ class UserProfile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       AppText(
-                        text: "Hi! Pawan",
+                        text: "Hi! ${userData.userName}",
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         textcolor: const Color(0xff232332),
                       ),
                       AppText(
-                        text: "Joined - Mar 2021",
+                        text:
+                            "Joined - ${FormatDate.formatDateFromTimeStamp(formatPattern: "MMM yyyy", timestamp: userData.createdOn!)}",
                         fontWeight: FontWeight.w500,
                         fontSize: 13,
                         textcolor: const Color(0xff8E89A9),
@@ -137,7 +139,9 @@ class UserProfile extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: ((context) => EditProfile()),
+                      builder: ((context) => EditProfile(
+                            userData: userData,
+                          )),
                     ),
                   );
                 },

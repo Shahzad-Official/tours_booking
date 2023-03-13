@@ -45,7 +45,8 @@ class AccountSettings extends StatelessWidget {
                     Row(
                       children: [
                         AppCircularCachedImage(
-                          picUrl: DummyData.profilePic,
+                          picUrl:
+                              snapshot.data!.profile ?? DummyData.profilePic,
                         ),
                         const SizedBox(
                           width: 20,
@@ -195,7 +196,7 @@ class AccountSettings extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const TermsandConditionPage(),
+                            builder: (context) => TermsandConditionPage(),
                           ),
                         );
                       },

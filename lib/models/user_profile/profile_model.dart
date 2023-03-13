@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ProfileModel {
   String? profile;
   String? dob;
@@ -7,6 +9,7 @@ class ProfileModel {
   String? uid;
   String? role;
   bool? isVerified;
+  Timestamp? createdOn;
 
   ProfileModel({
     this.profile,
@@ -17,6 +20,7 @@ class ProfileModel {
     this.uid,
     this.isVerified,
     this.role,
+    this.createdOn,
   });
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +32,7 @@ class ProfileModel {
     uid = json['uid'];
     isVerified = json['isVerified'];
     role = json['role'];
+    createdOn = json['created_on'];
   }
 
   Map<String, dynamic> toJson() {

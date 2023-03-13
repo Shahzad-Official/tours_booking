@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/controllers/profiles_controllers/edit_profile_controller.dart';
+import 'package:tours_booking/models/user_profile/profile_model.dart';
 import 'package:tours_booking/views/main_page/main_page.dart';
-import 'package:tours_booking/views/main_page/main_screens/home_page.dart';
 import 'package:tours_booking/widgets/app_button.dart';
 import 'package:tours_booking/widgets/app_input_field.dart';
 
@@ -18,8 +16,33 @@ import '../../widgets/app_cache_image.dart';
 import '../../widgets/app_text.dart';
 import 'package:image_picker/image_picker.dart';
 
-class EditProfile extends StatelessWidget {
-  const EditProfile({super.key});
+class EditProfile extends StatefulWidget {
+  final ProfileModel userData;
+  const EditProfile({
+    super.key,
+    required this.userData,
+  });
+
+  @override
+  State<EditProfile> createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
+  final EditProfileController _controller = Get.put(EditProfileController());
+  isDataAvailabe() {
+    if (widget.userData.uid != null) {
+      _controller.name.text = widget.userData.userName.toString();
+      _controller.email.text = widget.userData.email.toString();
+      _controller.phone.text = widget.userData.phoneNo.toString();
+      _controller.dob.text = widget.userData.dob.toString();
+    }
+  }
+
+  @override
+  void initState() {
+    isDataAvailabe();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +62,7 @@ class EditProfile extends StatelessWidget {
             ),
           ),
         ),
-        title: AppText(
+        title: const AppText(
           text: "Edit Profile",
           fontWeight: FontWeight.w600,
           fontSize: 23,
@@ -76,7 +99,8 @@ class EditProfile extends StatelessWidget {
                               } else {
                                 return AppCircularCachedImage(
                                   picRadius: 60,
-                                  picUrl: DummyData.profilePic,
+                                  picUrl: widget.userData.profile ??
+                                      DummyData.profilePic,
                                 );
                               }
                             },
@@ -153,14 +177,14 @@ class EditProfile extends StatelessWidget {
                     height: 50,
                   ),
                   AppInputField(
-                    hintText: "Pawan Kumar",
+                    hintText: widget.userData.userName.toString(),
                     controller: _.name,
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   AppInputField(
-                    hintText: "abc@gmail.com",
+                    hintText: widget.userData.email.toString(),
                     controller: _.email,
                     keyboardtype: TextInputType.emailAddress,
                   ),
@@ -168,7 +192,7 @@ class EditProfile extends StatelessWidget {
                     height: 20,
                   ),
                   AppInputField(
-                    hintText: "+971455656",
+                    hintText: widget.userData.phoneNo.toString(),
                     controller: _.phone,
                     keyboardtype: TextInputType.number,
                   ),
@@ -176,11 +200,12 @@ class EditProfile extends StatelessWidget {
                     height: 20,
                   ),
                   AppInputField(
+                    controller: _.dob,
                     enabled: false,
                     onTap: () async {
                       await _.selectDate(context);
                     },
-                    hintText: _.date ?? _.currentDate(),
+                    hintText: _.date ?? widget.userData.dob.toString(),
                   ),
                   const SizedBox(
                     height: 70,

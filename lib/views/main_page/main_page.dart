@@ -16,7 +16,7 @@ class MainPage extends StatefulWidget {
   final int currentIndex;
   const MainPage({
     Key? key,
-    this.currentIndex = 1,
+    this.currentIndex = 3,
   }) : super(key: key);
 
   @override

@@ -6,6 +6,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui' as ui;
 
+import '../../../models/packages/packages_model.dart';
+
 class HomeController extends GetxController {
   bool isTapped = false;
   double? latitude, longitude;
@@ -64,5 +66,35 @@ class HomeController extends GetxController {
       target: LatLng(latitude!, longitude!),
       zoom: 14.4746,
     );
+  }
+
+  List<PackagesModel> newPackagesList = [];
+  bool isLoading = false;
+  bool isSearching = false;
+
+  searchPackage(String query, List<PackagesModel> packagesList) {
+    Set<PackagesModel> set = packagesList.toSet();
+
+    isSearching = true;
+    update();
+
+    if (packagesList.isNotEmpty) {
+      if (query.trim().isEmpty) {
+        isSearching = false;
+        update();
+        newPackagesList.clear();
+      } else {
+        var list = set
+            .where(
+              (element) => element.packageName!.toLowerCase().contains(
+                    query.toLowerCase(),
+                  ),
+            )
+            .toList();
+        newPackagesList = list;
+      }
+    } else {
+      print("no package found");
+    }
   }
 }
