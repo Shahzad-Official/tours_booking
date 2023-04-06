@@ -112,106 +112,125 @@ class Users {
 }
 
 class PackagesModel {
-  String? startDate;
-  String? noOfPersonsInPackage;
-  String? listerId;
-  String? extraInfo;
-  String? endPrice;
-  Timestamp? createdOn;
+  String? startPrice;
   List<String>? otherImage;
   String? endDate;
+  String? typeOfTour;
+  String? cuttOffTime;
+  String? ageSuitability;
+  String? packageId;
+  String? description;
+  String? endPrice;
+  String? termsAndConditions;
+  bool? isLive;
+  String? noOfPersonsInPackage;
+  Timestamp? createdOn;
+  String? startTime;
+  Location? location;
+  String? listerId;
   String? dangerRating;
   String? packageName;
-  bool? isLive;
-  String? thumbnailUrl;
-  String? packageId;
-  String? typeOfTour;
-  String? ageSuitability;
-  String? foodServed;
-  String? startTime;
   String? endTime;
-  Location? location;
-  String? startPrice;
-  String? termsAndConditions;
-  String? cuttOffTime;
+  String? startDate;
+  List<Inclusions>? inclusions;
+  String? status;
+  String? extraInfo;
+  String? thumbnailUrl;
+  String? availablePackages;
 
   PackagesModel({
-    this.startDate,
-    this.noOfPersonsInPackage,
-    this.listerId,
-    this.extraInfo,
-    this.endPrice,
+    this.startPrice,
     this.otherImage,
     this.endDate,
+    this.typeOfTour,
+    this.cuttOffTime,
+    this.ageSuitability,
+    this.packageId,
+    this.description,
+    this.endPrice,
+    this.termsAndConditions,
+    this.isLive,
+    this.noOfPersonsInPackage,
+    this.createdOn,
+    this.startTime,
+    this.location,
+    this.listerId,
     this.dangerRating,
     this.packageName,
-    this.isLive,
-    this.thumbnailUrl,
-    this.packageId,
-    this.typeOfTour,
-    this.ageSuitability,
-    this.foodServed,
-    this.startTime,
     this.endTime,
-    this.location,
-    this.startPrice,
-    this.termsAndConditions,
-    this.createdOn,
-    this.cuttOffTime,
+    this.startDate,
+    this.inclusions,
+    this.status,
+    this.extraInfo,
+    this.thumbnailUrl,
+    this.availablePackages,
   });
 
   PackagesModel.fromJson(Map<String, dynamic> json) {
-    startDate = json['startDate'];
-    noOfPersonsInPackage = json['noOfPersonsInPackage'];
-    listerId = json['listerId'];
-    extraInfo = json['extraInfo'];
-    endPrice = json['endPrice'];
+    startPrice = json['startPrice'];
     otherImage = json['otherImage'].cast<String>();
     endDate = json['endDate'];
+    typeOfTour = json['typeOfTour'];
+    cuttOffTime = json['cuttOffTime'];
+    ageSuitability = json['ageSuitability'];
+    packageId = json['packageId'];
+    description = json['description'];
+    endPrice = json['endPrice'];
+    termsAndConditions = json['termsAndConditions'];
+    isLive = json['isLive'];
+    noOfPersonsInPackage = json['noOfPersonsInPackage'];
+    createdOn = json['created_on'];
+    startTime = json['startTime'];
+    location = json['location'] != null
+        ? new Location.fromJson(json['location'])
+        : null;
+    listerId = json['listerId'];
     dangerRating = json['dangerRating'];
     packageName = json['packageName'];
-    isLive = json['isLive'];
-    thumbnailUrl = json['thumbnailUrl'];
-    packageId = json['packageId'];
-    typeOfTour = json['typeOfTour'];
-    ageSuitability = json['ageSuitability'];
-    foodServed = json['foodServed'];
-    startTime = json['startTime'];
     endTime = json['endTime'];
-    location =
-        json['location'] != null ? Location.fromJson(json['location']) : null;
-    startPrice = json['startPrice'];
-    termsAndConditions = json['termsAndConditions'];
-    cuttOffTime = json['cuttOffTime'];
-    createdOn = json["created_on"];
+    startDate = json['startDate'];
+    if (json['inclusions'] != null) {
+      inclusions = <Inclusions>[];
+      json['inclusions'].forEach((v) {
+        inclusions!.add(new Inclusions.fromJson(v));
+      });
+    }
+    status = json['status'];
+    extraInfo = json['extraInfo'];
+    thumbnailUrl = json['thumbnailUrl'];
+    availablePackages = json['availablePackages'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['startDate'] = startDate;
-    data['noOfPersonsInPackage'] = noOfPersonsInPackage;
-    data['listerId'] = listerId;
-    data['extraInfo'] = extraInfo;
-    data['created_on'] = createdOn;
-    data['endPrice'] = endPrice;
-    data['otherImage'] = otherImage;
-    data['endDate'] = endDate;
-    data['dangerRating'] = dangerRating;
-    data['packageName'] = packageName;
-    data['isLive'] = isLive;
-    data['thumbnailUrl'] = thumbnailUrl;
-    data['packageId'] = packageId;
-    data['typeOfTour'] = typeOfTour;
-    data['ageSuitability'] = ageSuitability;
-    data['foodServed'] = foodServed;
-    data['startTime'] = startTime;
-    data['endTime'] = endTime;
-    if (location != null) {
-      data['location'] = location!.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['startPrice'] = this.startPrice;
+    data['otherImage'] = this.otherImage;
+    data['endDate'] = this.endDate;
+    data['typeOfTour'] = this.typeOfTour;
+    data['cuttOffTime'] = this.cuttOffTime;
+    data['ageSuitability'] = this.ageSuitability;
+    data['packageId'] = this.packageId;
+    data['description'] = this.description;
+    data['endPrice'] = this.endPrice;
+    data['termsAndConditions'] = this.termsAndConditions;
+    data['isLive'] = this.isLive;
+    data['noOfPersonsInPackage'] = this.noOfPersonsInPackage;
+    data['created_on'] = this.createdOn;
+    data['startTime'] = this.startTime;
+    if (this.location != null) {
+      data['location'] = this.location!.toJson();
     }
-    data['startPrice'] = startPrice;
-    data['termsAndConditions'] = termsAndConditions;
-    data['cuttOffTime'] = cuttOffTime;
+    data['listerId'] = this.listerId;
+    data['dangerRating'] = this.dangerRating;
+    data['packageName'] = this.packageName;
+    data['endTime'] = this.endTime;
+    data['startDate'] = this.startDate;
+    if (this.inclusions != null) {
+      data['inclusions'] = this.inclusions!.map((v) => v.toJson()).toList();
+    }
+    data['status'] = this.status;
+    data['extraInfo'] = this.extraInfo;
+    data['thumbnailUrl'] = this.thumbnailUrl;
     return data;
   }
 }
@@ -221,19 +240,41 @@ class Location {
   double? latitude;
   double? longitude;
 
-  Location({this.latitude, this.longitude, this.address});
+  Location({this.address, this.latitude, this.longitude});
 
   Location.fromJson(Map<String, dynamic> json) {
+    address = json['address'];
     latitude = json['latitude'];
     longitude = json['longitude'];
-    address = json["address"];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
-    data["address"] = address;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['address'] = this.address;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    return data;
+  }
+}
+
+class Inclusions {
+  String? iconImage;
+  String? iconName;
+  int? inclusionCount;
+
+  Inclusions({this.iconImage, this.iconName, this.inclusionCount});
+
+  Inclusions.fromJson(Map<String, dynamic> json) {
+    iconImage = json['iconImage'];
+    iconName = json['iconName'];
+    inclusionCount = json['inclusionCount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['iconImage'] = this.iconImage;
+    data['iconName'] = this.iconName;
+    data['inclusionCount'] = this.inclusionCount;
     return data;
   }
 }
