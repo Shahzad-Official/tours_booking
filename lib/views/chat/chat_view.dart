@@ -36,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
               elevation: 0,
               backgroundColor: AppColors.primarycolor.withOpacity(0.4),
               centerTitle: true,
-              title: AppText(
+              title: const AppText(
                 text: "John Doe",
                 fontWeight: FontWeight.w700,
               ),

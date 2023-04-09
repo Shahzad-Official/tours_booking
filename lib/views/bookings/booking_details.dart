@@ -24,15 +24,15 @@ class BookingDetails extends StatelessWidget {
         child: AppBar(
           elevation: 0.0,
           backgroundColor: AppColors.backgroundcolor,
-          title: AppText(
+          title: const AppText(
             text: "Booking Details",
             fontWeight: FontWeight.w600,
             fontSize: 22,
             textcolor: Colors.black,
           ),
-          actions: [
+          actions: const [
             Padding(
-              padding: const EdgeInsets.only(right: 12, top: 3),
+              padding: EdgeInsets.only(right: 12, top: 3),
               child: AppCircularCachedImage(
                 picUrl: DummyData.profilePic,
               ),
@@ -52,7 +52,7 @@ class BookingDetails extends StatelessWidget {
                 SizedBox(
                   height: 60,
                   width: MediaQuery.of(context).size.width * 0.22,
-                  child: AppCachedImage(
+                  child: const AppCachedImage(
                     picUrl: DummyData.profilePic,
                   ),
                 ),
@@ -61,7 +61,7 @@ class BookingDetails extends StatelessWidget {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     AppText(
                       text: "eventName",
                       textcolor: Colors.black,
@@ -70,7 +70,7 @@ class BookingDetails extends StatelessWidget {
                     ),
                     AppText(
                       text: "Jl. Lorem Ipsum Dolor Sit Amet Bandung No. 123",
-                      textcolor: const Color(0xff161618),
+                      textcolor: Color(0xff161618),
                       fontSize: 8,
                     )
                   ],
@@ -90,13 +90,13 @@ class BookingDetails extends StatelessWidget {
                       border: Border.all(color: const Color(0xff3FAFFF))),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+                    children: const [
                       AppText(
                         text: "Fri, 7 jan 2022",
-                        textcolor: const Color(0xff3FAFFF),
+                        textcolor: Color(0xff3FAFFF),
                         fontSize: 10,
                       ),
-                      const Icon(
+                      Icon(
                         Icons.arrow_drop_down_outlined,
                         color: Color(0xff3FAFFF),
                       )
@@ -110,13 +110,13 @@ class BookingDetails extends StatelessWidget {
                       border: Border.all(color: const Color(0xff3FAFFF))),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+                    children: const [
                       AppText(
                         text: "15.00 UTC",
-                        textcolor: const Color(0xff3FAFFF),
+                        textcolor: Color(0xff3FAFFF),
                         fontSize: 10,
                       ),
-                      const Icon(
+                      Icon(
                         Icons.arrow_drop_down_outlined,
                         color: Color(0xff3FAFFF),
                       )
@@ -129,7 +129,7 @@ class BookingDetails extends StatelessWidget {
               height: 50,
             ),
             Row(
-              children: [
+              children: const [
                 AppText(
                   text: "Payment Summary",
                   fontWeight: FontWeight.w600,
@@ -145,13 +145,13 @@ class BookingDetails extends StatelessWidget {
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     AppText(text: "Subtotal"),
-                    const SizedBox(
+                    SizedBox(
                       height: 5,
                     ),
                     AppText(text: "Discount Total"),
-                    const SizedBox(
+                    SizedBox(
                       height: 5,
                     ),
                     AppText(
@@ -165,21 +165,21 @@ class BookingDetails extends StatelessWidget {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     AppText(
-                      text: "\$" + DummyData.eventsData[0]['startPrice'],
+                      text: "\$",
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 5,
                     ),
                     AppText(text: "-\$100"),
-                    const SizedBox(
+                    SizedBox(
                       height: 5,
                     ),
                     AppText(
                       text: " \$250",
                       fontWeight: FontWeight.w600,
-                      textcolor: const Color(0xffFFBC4F),
+                      textcolor: Color(0xffFFBC4F),
                     )
                   ],
                 ),
@@ -192,7 +192,7 @@ class BookingDetails extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: AppText(
+                      title: const AppText(
                         text: "Give Review",
                         textcolor: Colors.black,
                         fontWeight: FontWeight.w500,
@@ -242,7 +242,7 @@ class BookingDetails extends StatelessWidget {
                               backgroundColor: MaterialStateProperty.all(
                                   AppColors.primarycolor),
                             ),
-                            child: AppText(text: "Submit"),
+                            child: const AppText(text: "Submit"),
                             onPressed: () {
                               Navigator.push(
                                   context,

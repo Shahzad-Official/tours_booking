@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/controllers/registration_controllers/signup_controller.dart';
-import 'package:tours_booking/services/registration/signup_service.dart';
 import 'package:tours_booking/widgets/app_button.dart';
 import 'package:tours_booking/widgets/app_input_field.dart';
 import 'package:tours_booking/widgets/app_text.dart';
@@ -14,8 +13,7 @@ import '../../constants/svg_icons.dart';
 import 'login.dart';
 
 class SignUp extends StatelessWidget {
-  SignUp({Key? key}) : super(key: key);
-  final SignupService _signUpService = SignupService();
+  const SignUp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +22,11 @@ class SignUp extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: AppText(
+        title: const AppText(
           text: "Create Account",
           fontSize: 18,
           fontWeight: FontWeight.w600,
-          textcolor: const Color(0xff302A4E),
+          textcolor: Color(0xff302A4E),
         ),
       ),
       body: SingleChildScrollView(
@@ -215,7 +213,7 @@ class SignUp extends StatelessWidget {
                               ..onTap = () => Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Login(),
+                                      builder: (context) => const Login(),
                                     ),
                                   ),
                             text: " Login",

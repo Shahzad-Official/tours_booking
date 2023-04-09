@@ -34,7 +34,7 @@ class Login extends StatelessWidget {
                       height: 70,
                       child: Image.asset("assets/logo.png"),
                     ),
-                    AppText(
+                    const AppText(
                       text: "LOGO HERE",
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -82,7 +82,7 @@ class Login extends StatelessWidget {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
+                      children: const [
                         AppText(text: "Forget Password"),
                       ],
                     ),
@@ -110,7 +110,7 @@ class Login extends StatelessWidget {
                         const SizedBox(
                           width: 5,
                         ),
-                        AppText(
+                        const AppText(
                           text: "Or continue with",
                           textcolor: Colors.grey,
                         ),
@@ -172,7 +172,7 @@ class Login extends StatelessWidget {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SignUp(),
+                                    builder: (context) => const SignUp(),
                                   ),
                                 );
                               },

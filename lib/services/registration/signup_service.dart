@@ -9,7 +9,6 @@ import '../../models/user_profile/profile_model.dart';
 import '../../utils/app_snackbar.dart';
 import '../../views/main_page/main_page.dart';
 import '../../views/registeration/login.dart';
-import '../../views/registeration/sign_up.dart';
 import 'login_service.dart';
 
 class SignupService {
@@ -71,12 +70,12 @@ class SignupService {
             _userData.userProfile.role == "lister") {
           AppSnackbar.snackBar(title: "Error", message: "User Already Exists.");
           _googleSignIn.signOut();
-          Get.offAll(() => Login());
+          Get.offAll(() => const Login());
         } else if (_userData.userProfile.uid == uid &&
             _userData.userProfile.role == "user") {
           AppSnackbar.snackBar(title: "Error", message: "User Account Exists.");
           _googleSignIn.signOut();
-          Get.offAll(() => Login());
+          Get.offAll(() => const Login());
         }
       }
     });

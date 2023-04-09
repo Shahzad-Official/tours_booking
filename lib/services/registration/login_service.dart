@@ -26,7 +26,7 @@ class LoginService {
         AppSnackbar.snackBar(
             title: "Message", message: "User not available! SignUp first");
         _googleSignIn.signOut();
-        Get.offAll(() => SignUp());
+        Get.offAll(() => const SignUp());
       } else {
         await _userData.getUserData(uId);
 
@@ -34,12 +34,12 @@ class LoginService {
           AppSnackbar.snackBar(
               title: "Message", message: "User not available! SignUp first");
           _googleSignIn.signOut();
-          Get.offAll(() => SignUp());
+          Get.offAll(() => const SignUp());
         } else if (_userData.userProfile.uid == uId &&
             _userData.userProfile.role == "lister") {
           AppSnackbar.snackBar(title: "Error", message: "User Already Exists.");
           _googleSignIn.signOut();
-          Get.offAll(() => Login());
+          Get.offAll(() => const Login());
           return true;
         } else if (_userData.userProfile.uid == uId &&
             _userData.userProfile.role == "user") {

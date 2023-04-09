@@ -216,7 +216,7 @@ class _EditProfileState extends State<EditProfile> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MainPage(
+                          builder: (context) => const MainPage(
                             currentIndex: 0,
                           ),
                         ),

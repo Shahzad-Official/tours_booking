@@ -17,7 +17,7 @@ class FilterSheet extends StatelessWidget {
             height: 20,
           ),
           Row(
-            children: [
+            children: const [
               AppText(
                 text: "Sort by",
                 fontSize: 16,
@@ -38,7 +38,7 @@ class FilterSheet extends StatelessWidget {
                   border: Border.all(color: Colors.grey.withOpacity(0.6)),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Center(
+                child: const Center(
                   child: AppText(
                     text: "Best Match",
                     fontSize: 12,
@@ -53,7 +53,7 @@ class FilterSheet extends StatelessWidget {
                   border: Border.all(color: Colors.grey.withOpacity(0.6)),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Center(
+                child: const Center(
                   child: AppText(
                     text: "Nearest",
                     fontSize: 12,
@@ -68,7 +68,7 @@ class FilterSheet extends StatelessWidget {
                   border: Border.all(color: Colors.grey.withOpacity(0.6)),
                   borderRadius: BorderRadius.circular(3),
                 ),
-                child: Center(
+                child: const Center(
                   child: AppText(
                     text: "Low Budget",
                     fontSize: 12,
@@ -82,7 +82,7 @@ class FilterSheet extends StatelessWidget {
             height: 15,
           ),
           Row(
-            children: [
+            children: const [
               AppText(
                 text: "Category",
                 fontSize: 16,
@@ -103,7 +103,7 @@ class FilterSheet extends StatelessWidget {
                   border: Border.all(color: Colors.grey.withOpacity(0.6)),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Center(
+                child: const Center(
                   child: AppText(
                     text: "Indoor",
                     fontSize: 12,
@@ -118,7 +118,7 @@ class FilterSheet extends StatelessWidget {
                   border: Border.all(color: Colors.grey.withOpacity(0.6)),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Center(
+                child: const Center(
                   child: AppText(
                     text: "Outdoor",
                     fontSize: 12,
@@ -133,7 +133,7 @@ class FilterSheet extends StatelessWidget {
                   border: Border.all(color: Colors.grey.withOpacity(0.6)),
                   borderRadius: BorderRadius.circular(3),
                 ),
-                child: Center(
+                child: const Center(
                   child: AppText(
                     text: "Mix",
                     fontSize: 12,
@@ -143,11 +143,11 @@ class FilterSheet extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Row(
-            children: [
+            children: const [
               AppText(
                 text: "Distance",
                 fontSize: 16,
@@ -160,7 +160,7 @@ class FilterSheet extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: const [
               AppText(
                 text: "8km",
                 fontSize: 10,
@@ -171,9 +171,9 @@ class FilterSheet extends StatelessWidget {
               ),
             ],
           ),
-          DistanceSlider(),
+          const DistanceSlider(),
           Row(
-            children: [
+            children: const [
               AppText(
                 text: "Budget",
                 fontSize: 16,
@@ -186,7 +186,7 @@ class FilterSheet extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: const [
               AppText(
                 text: "\$80",
                 fontSize: 10,
@@ -197,12 +197,12 @@ class FilterSheet extends StatelessWidget {
               ),
             ],
           ),
-          DistanceSlider(),
+          const DistanceSlider(),
           const SizedBox(
             height: 15,
           ),
           Row(
-            children: [
+            children: const [
               AppText(
                 text: "Rating",
                 fontSize: 16,
@@ -223,7 +223,7 @@ class FilterSheet extends StatelessWidget {
                   border: Border.all(color: Colors.grey.withOpacity(0.6)),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Center(
+                child: const Center(
                   child: AppText(
                     text: "Indoor",
                     fontSize: 12,
@@ -238,7 +238,7 @@ class FilterSheet extends StatelessWidget {
                   border: Border.all(color: Colors.grey.withOpacity(0.6)),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Center(
+                child: const Center(
                   child: AppText(
                     text: "Outdoor",
                     fontSize: 12,
@@ -253,7 +253,7 @@ class FilterSheet extends StatelessWidget {
                   border: Border.all(color: Colors.grey.withOpacity(0.6)),
                   borderRadius: BorderRadius.circular(3),
                 ),
-                child: Center(
+                child: const Center(
                   child: AppText(
                     text: "Mix",
                     fontSize: 12,
@@ -263,7 +263,7 @@ class FilterSheet extends StatelessWidget {
               ),
             ],
           ),
-          Expanded(
+          const Expanded(
             child: SizedBox(),
           ),
           AppButton(btnText: "APPLY", ontap: () {}),

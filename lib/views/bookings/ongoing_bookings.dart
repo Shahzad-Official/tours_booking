@@ -27,7 +27,7 @@ class OngoingBookings extends StatelessWidget {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: const [
                   AppText(
                     text: "Ongoing \nBookings",
                     fontSize: 20,
@@ -43,7 +43,7 @@ class OngoingBookings extends StatelessWidget {
           ),
         ),
       ),
-      body: BookingWidget(),
+      body: const BookingWidget(),
     );
   }
 }

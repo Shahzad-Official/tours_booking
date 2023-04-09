@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/controllers/main_page_controller/main_pages_controllers/all_packages_controller.dart';
-import 'package:tours_booking/models/packages/packages_model.dart';
 import 'package:tours_booking/services/package_services/get_all_packages.dart';
 import 'package:tours_booking/utils/date_utils.dart/calculate_days.dart';
 import 'package:tours_booking/utils/date_utils.dart/format_date.dart';
@@ -64,8 +63,8 @@ class _AllPackagesState extends State<AllPackages> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const AppText(
+                    children: const [
+                      AppText(
                         text: "All Packages",
                         fontSize: 20,
                         fontWeight: FontWeight.w600,

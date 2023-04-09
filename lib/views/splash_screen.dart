@@ -28,7 +28,7 @@ class SplashScreen extends StatelessWidget {
               height: 100,
               child: Image.asset("assets/logo.png"),
             ),
-            AppText(
+            const AppText(
               text: "LOGO HERE",
               fontSize: 22,
               fontWeight: FontWeight.w600,

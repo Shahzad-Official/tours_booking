@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:tours_booking/constants/dummy_data.dart';
-import 'package:tours_booking/constants/svg_icons.dart';
 import 'package:tours_booking/controllers/main_page_controller/main_pages_controllers/home_controller.dart';
-import 'package:tours_booking/models/packages/packages_model.dart';
 import 'package:tours_booking/services/package_services/get_all_packages.dart';
 
 import '../../../constants/app_colors.dart';

@@ -5,12 +5,12 @@ import 'package:tours_booking/widgets/app_text.dart';
 import '../constants/app_colors.dart';
 
 class AppButton extends StatelessWidget {
-  String btnText;
-  void Function() ontap;
-  bool isLoading;
+  final String btnText;
+  final void Function() ontap;
+  final bool isLoading;
   final double? width;
   final EdgeInsetsGeometry? margin;
-  AppButton({
+  const AppButton({
     Key? key,
     required this.btnText,
     this.margin,
@@ -62,12 +62,12 @@ class AppButton extends StatelessWidget {
 }
 
 class RoundButton extends StatelessWidget {
-  double? width;
-  String text;
-  double? fontSize;
-  Color? textColor, buttonColor;
-  void Function()? onTap;
-  RoundButton({
+  final double? width;
+  final String text;
+  final double? fontSize;
+  final Color? textColor, buttonColor;
+  final void Function()? onTap;
+  const RoundButton({
     Key? key,
     this.width,
     required this.text,

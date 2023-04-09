@@ -5,12 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/constants/svg_icons.dart';
 import 'package:tours_booking/controllers/credit_card_controller/credit_card_controller.dart';
-import 'package:tours_booking/views/bookings/ongoing_bookings.dart';
 import 'package:tours_booking/views/main_page/main_page.dart';
 import 'package:tours_booking/widgets/app_text.dart';
 
 import '../../constants/app_colors.dart';
-import '../../widgets/app_input_field.dart';
 
 class CreditCard extends StatefulWidget {
   const CreditCard({super.key});
@@ -38,7 +36,7 @@ class _CreditCardState extends State<CreditCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppText(
+              const AppText(
                 text: "Credit Card Information",
                 textcolor: Colors.black,
                 fontWeight: FontWeight.w600,
@@ -47,7 +45,7 @@ class _CreditCardState extends State<CreditCard> {
               const SizedBox(
                 height: 30,
               ),
-              AppText(
+              const AppText(
                 text: "Card Information",
                 textcolor: Colors.black,
                 fontWeight: FontWeight.w400,
@@ -95,7 +93,7 @@ class _CreditCardState extends State<CreditCard> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppText(
+                      const AppText(
                         text: "Expiry Date",
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
@@ -136,7 +134,7 @@ class _CreditCardState extends State<CreditCard> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppText(
+                      const AppText(
                         text: "Security Code",
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
@@ -179,7 +177,7 @@ class _CreditCardState extends State<CreditCard> {
               const SizedBox(
                 height: 20,
               ),
-              AppText(
+              const AppText(
                 text: "Name on Card",
                 textcolor: Colors.black,
                 fontWeight: FontWeight.w400,
@@ -231,7 +229,7 @@ class _CreditCardState extends State<CreditCard> {
                       },
                     ),
                   ),
-                  AppText(
+                  const AppText(
                     text: "Save information for future use",
                     textcolor: Colors.black,
                     fontWeight: FontWeight.w500,
@@ -246,12 +244,12 @@ class _CreditCardState extends State<CreditCard> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: AppText(
+                      title: const AppText(
                         text: "Success!",
                         textcolor: Colors.black,
                         fontWeight: FontWeight.w500,
                       ),
-                      content: AppText(
+                      content: const AppText(
                         text: "Booking confirmed; Invoice sent via mail.",
                       ),
                       actions: [
@@ -260,12 +258,12 @@ class _CreditCardState extends State<CreditCard> {
                             backgroundColor: MaterialStateProperty.all(
                                 AppColors.primarycolor),
                           ),
-                          child: AppText(text: "OK"),
+                          child: const AppText(text: "OK"),
                           onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => MainPage(
+                                  builder: (context) => const MainPage(
                                     currentIndex: 2,
                                   ),
                                 ));
@@ -281,7 +279,7 @@ class _CreditCardState extends State<CreditCard> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(2),
                       color: AppColors.primarycolor),
-                  child: Center(
+                  child: const Center(
                     child: AppText(
                       text: "Pay",
                       textcolor: Colors.white,
@@ -302,7 +300,7 @@ class _CreditCardState extends State<CreditCard> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(2),
                       color: const Color(0xff111111)),
-                  child: Center(
+                  child: const Center(
                     child: AppText(
                       text: "Cancel",
                       textcolor: Colors.white,

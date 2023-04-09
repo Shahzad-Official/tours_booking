@@ -22,13 +22,13 @@ class Checkout extends StatelessWidget {
           child: AppBar(
             elevation: 0.0,
             backgroundColor: AppColors.backgroundcolor,
-            title: AppText(
+            title: const AppText(
               text: "Checkout",
               fontWeight: FontWeight.w600,
               fontSize: 23,
               textcolor: Colors.black,
             ),
-            actions: [
+            actions: const [
               AppCircularCachedImage(
                 picUrl: DummyData.profilePic,
               ),
@@ -59,7 +59,7 @@ class Checkout extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppText(
+                    const AppText(
                       text: "Pantai Dreamland",
                       textcolor: Colors.black,
                       fontWeight: FontWeight.w600,
@@ -67,9 +67,9 @@ class Checkout extends StatelessWidget {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.40,
-                      child: AppText(
+                      child: const AppText(
                         text: "Jl. Lorem Ipsum Dolor Sit Amet Bandung No. 123",
-                        textcolor: const Color(0xff161618),
+                        textcolor: Color(0xff161618),
                         fontSize: 8,
                       ),
                     )
@@ -93,13 +93,13 @@ class Checkout extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+                    children: const [
                       AppText(
                         text: "Fri, 7 jan 2022",
-                        textcolor: const Color(0xff3FAFFF),
+                        textcolor: Color(0xff3FAFFF),
                         fontSize: 10,
                       ),
-                      const Icon(
+                      Icon(
                         Icons.arrow_drop_down_outlined,
                         color: Color(0xff3FAFFF),
                       )
@@ -116,13 +116,13 @@ class Checkout extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+                    children: const [
                       AppText(
                         text: "15.00 UTC",
-                        textcolor: const Color(0xff3FAFFF),
+                        textcolor: Color(0xff3FAFFF),
                         fontSize: 10,
                       ),
-                      const Icon(
+                      Icon(
                         Icons.arrow_drop_down_outlined,
                         color: Color(0xff3FAFFF),
                       )
@@ -135,7 +135,7 @@ class Checkout extends StatelessWidget {
               height: 50,
             ),
             Row(
-              children: [
+              children: const [
                 AppText(
                   text: "Payment Summary",
                   fontWeight: FontWeight.w600,
@@ -151,13 +151,13 @@ class Checkout extends StatelessWidget {
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     AppText(text: "Subtotal"),
-                    const SizedBox(
+                    SizedBox(
                       height: 5,
                     ),
                     AppText(text: "Discount Total"),
-                    const SizedBox(
+                    SizedBox(
                       height: 5,
                     ),
                     AppText(
@@ -171,19 +171,19 @@ class Checkout extends StatelessWidget {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     AppText(text: " \$350"),
-                    const SizedBox(
+                    SizedBox(
                       height: 5,
                     ),
                     AppText(text: "-\$100"),
-                    const SizedBox(
+                    SizedBox(
                       height: 5,
                     ),
                     AppText(
                       text: " \$250",
                       fontWeight: FontWeight.w600,
-                      textcolor: const Color(0xffFFBC4F),
+                      textcolor: Color(0xffFFBC4F),
                     )
                   ],
                 ),

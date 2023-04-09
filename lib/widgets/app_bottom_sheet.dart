@@ -6,9 +6,9 @@ import '../constants/svg_icons.dart';
 import 'app_text.dart';
 
 class AppBottomSheet extends StatelessWidget {
-  int currentIndex;
-  void Function(int index)? onIndexChanged;
-  AppBottomSheet({
+  final int currentIndex;
+  final void Function(int index)? onIndexChanged;
+  const AppBottomSheet({
     Key? key,
     this.currentIndex = 0,
     this.onIndexChanged,

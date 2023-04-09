@@ -23,7 +23,7 @@ class GetStarted extends StatelessWidget {
                 height: 100,
                 child: Image.asset("assets/logo.png"),
               ),
-              AppText(
+              const AppText(
                 text: "LOGO HERE",
                 fontSize: 22,
                 fontWeight: FontWeight.w600,
@@ -31,7 +31,7 @@ class GetStarted extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              AppText(
+              const AppText(
                 text: "Sign In to the application\nto enjoy!",
                 textAlign: TextAlign.center,
                 fontSize: 14,
@@ -46,7 +46,7 @@ class GetStarted extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Login(),
+                      builder: (context) => const Login(),
                     ),
                   );
                 },
@@ -60,7 +60,7 @@ class GetStarted extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SignUp(),
+                      builder: (context) => const SignUp(),
                     ),
                   );
                 },
@@ -78,7 +78,7 @@ class GetStarted extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Center(
+                  child: const Center(
                     child: AppText(
                       text: "SIGN UP",
                       textcolor: AppColors.primarycolor,

@@ -5,19 +5,19 @@ import '../constants/app_colors.dart';
 import 'app_text.dart';
 
 class AppInputField extends StatelessWidget {
-  String hintText;
-  bool obscureText;
-  TextEditingController? controller;
-  TextInputType? keyboardtype;
-  Widget? suffixIcon, prefixIcon;
-  void Function()? onTap;
-  EdgeInsetsGeometry contentPadding;
-  bool? enabled;
-  double? width, height;
-  int? maxLines;
-  TextInputAction textInputAction;
-  int? maxLength;
-  AppInputField({
+  final String hintText;
+  final bool obscureText;
+  final TextEditingController? controller;
+  final TextInputType? keyboardtype;
+  final Widget? suffixIcon, prefixIcon;
+  final void Function()? onTap;
+  final EdgeInsetsGeometry contentPadding;
+  final bool? enabled;
+  final double? width, height;
+  final int? maxLines;
+  final TextInputAction textInputAction;
+  final int? maxLength;
+  const AppInputField({
     Key? key,
     required this.hintText,
     this.controller,
@@ -80,10 +80,10 @@ class AppInputField extends StatelessWidget {
 }
 
 class DropdownContainer extends StatelessWidget {
-  Object? currentValue;
-  List<String> items;
-  void Function(Object? value)? onValueChange;
-  DropdownContainer({
+  final Object? currentValue;
+  final List<String> items;
+  final void Function(Object? value)? onValueChange;
+  const DropdownContainer({
     Key? key,
     required this.currentValue,
     required this.items,
