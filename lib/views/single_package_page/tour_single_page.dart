@@ -111,7 +111,7 @@ class PackageSinglePage extends StatelessWidget {
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  offset: Offset(1, 2),
+                                  offset: const Offset(1, 2),
                                   color: Colors.grey.withOpacity(0.4),
                                 ),
                               ],
@@ -120,59 +120,25 @@ class PackageSinglePage extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Container(
+                                children: List.generate(
+                                  packageData.otherImage!.length,
+                                  (index) => AppCachedImage(
+                                    picUrl: packageData.otherImage![index]
+                                        .toString(),
                                     height: 70,
                                     width: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: const DecorationImage(
-                                        image: AssetImage("assets/image1.png"),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                                    child: packageData.otherImage!.length > 4
+                                        ? Center(
+                                            child: AppText(
+                                              text:
+                                                  "+ ${packageData.otherImage!.length - 4}",
+                                              fontSize: 18,
+                                              textcolor: Colors.white,
+                                            ),
+                                          )
+                                        : null,
                                   ),
-                                  Container(
-                                    height: 70,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: const DecorationImage(
-                                          image:
-                                              AssetImage("assets/image1.png"),
-                                          fit: BoxFit.cover),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 70,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: const DecorationImage(
-                                          image:
-                                              AssetImage("assets/image1.png"),
-                                          fit: BoxFit.cover),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 70,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: const DecorationImage(
-                                          image:
-                                              AssetImage("assets/image1.png"),
-                                          fit: BoxFit.cover),
-                                    ),
-                                    child: Center(
-                                      child: AppText(
-                                        text: "+5",
-                                        fontSize: 18,
-                                        textcolor: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                           ),
@@ -290,7 +256,7 @@ class PackageSinglePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        AppText(
+                        const AppText(
                           text: "Age Suitability ",
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -318,7 +284,7 @@ class PackageSinglePage extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            AppText(
+                            const AppText(
                               text: "Category",
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -333,22 +299,6 @@ class PackageSinglePage extends StatelessWidget {
                         ),
                         const SizedBox(
                           width: 30,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AppText(
-                              text: "Tags",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              textcolor: Colors.grey,
-                            ),
-                            AppText(
-                              text: "Skiing",
-                              fontSize: 12,
-                              textcolor: Colors.black,
-                            ),
-                          ],
                         ),
                       ],
                     ),

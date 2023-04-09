@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';

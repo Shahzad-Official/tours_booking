@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
 class AppCircularCachedImage extends StatelessWidget {
-  String picUrl;
-  double? picRadius;
-  AppCircularCachedImage({
+  final String picUrl;
+  final double? picRadius;
+  const AppCircularCachedImage({
     Key? key,
     required this.picUrl,
     this.picRadius = 35,
@@ -32,12 +32,17 @@ class AppCircularCachedImage extends StatelessWidget {
 }
 
 class AppCachedImage extends StatelessWidget {
-  String picUrl;
-  double borderRadius;
-  AppCachedImage({
+  final String picUrl;
+  final double borderRadius;
+  final Widget? child;
+  final double? height, width;
+  const AppCachedImage({
     Key? key,
     required this.picUrl,
     this.borderRadius = 15,
+    this.child,
+    this.height,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -46,6 +51,8 @@ class AppCachedImage extends StatelessWidget {
       imageUrl: picUrl,
       imageBuilder: (context, imageProvider) {
         return Container(
+          height: height,
+          width: width,
           decoration: BoxDecoration(
             color: AppColors.primarycolor,
             borderRadius: BorderRadius.circular(borderRadius),
@@ -54,6 +61,7 @@ class AppCachedImage extends StatelessWidget {
               image: imageProvider,
             ),
           ),
+          child: child,
         );
       },
       progressIndicatorBuilder: (context, url, progress) {

@@ -225,8 +225,9 @@ class BookingDetails extends StatelessWidget {
                                     const Color.fromARGB(255, 224, 239, 252),
                                 filled: true,
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: BorderSide.none),
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide.none,
+                                ),
                               ),
                             ),
                           ],
