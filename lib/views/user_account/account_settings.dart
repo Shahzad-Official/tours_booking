@@ -8,7 +8,7 @@ import 'package:tours_booking/models/user_profile/profile_model.dart';
 import 'package:tours_booking/services/get_user_data.dart';
 import 'package:tours_booking/views/mybookinpage/mybooking_page.dart';
 import 'package:tours_booking/views/user_account/profile.dart';
-import 'package:tours_booking/views/user_account/terms_&_conditions.dart';
+import 'package:tours_booking/views/user_account/terms_and_conditions.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
 
 import '../../widgets/app_text.dart';

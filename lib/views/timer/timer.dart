@@ -42,7 +42,7 @@ class Timer extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            Container(
+            SizedBox(
               height: 60,
               width: double.infinity,
               child: Row(
@@ -67,10 +67,10 @@ class Timer extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+              children: const [
                 AppText(
                   text: "Bookings Remaining: 12",
-                  textcolor: const Color(0xff8E88A9),
+                  textcolor: Color(0xff8E88A9),
                 ),
               ],
             ),
@@ -187,17 +187,17 @@ class Timer extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppText(
+                const AppText(
                   text: "Travel & Tours inc",
-                  textcolor: const Color(0xff302A4E),
+                  textcolor: Color(0xff302A4E),
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                 ),
                 Column(
                   children: [
-                    AppText(
+                    const AppText(
                       text: "4.0",
-                      textcolor: Color(0xff302A4EA1),
+                      textcolor: Color(0x2F2A4EA1),
                       fontWeight: FontWeight.w700,
                       fontSize: 20,
                     ),
@@ -218,10 +218,10 @@ class Timer extends StatelessWidget {
                 ),
               ],
             ),
-            AppText(
+            const AppText(
               text:
                   "Dreamland beach there are white coral rocks that surround the beach, this creates a beautiful view of its own.",
-              textcolor: const Color(0xffB6B6B6),
+              textcolor: Color(0xffB6B6B6),
               fontSize: 12,
             ),
             const SizedBox(

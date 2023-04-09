@@ -47,6 +47,7 @@ class EditProfileController extends GetxController {
 
   File? image;
   getimage(ImageSource source) async {
+    // ignore: invalid_use_of_visible_for_testing_member
     var result = await ImagePicker.platform.getImage(source: source);
     if (result == null) return;
 

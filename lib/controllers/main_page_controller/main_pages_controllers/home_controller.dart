@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui' as ui;
 
 import '../../../models/packages/packages_model.dart';
-import '../../../services/package_services/get_all_packages.dart';
 
 class HomeController extends GetxController {
   bool isTapped = false;

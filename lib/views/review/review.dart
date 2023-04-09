@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/views/checkout/checkout.dart';
-import 'package:tours_booking/views/registeration/login.dart';
 import 'package:tours_booking/widgets/app_button.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
 
@@ -47,13 +45,13 @@ class _ReviewPageState extends State<ReviewPage> {
           child: AppBar(
             elevation: 0.0,
             backgroundColor: AppColors.backgroundcolor,
-            title: AppText(
+            title: const AppText(
               text: "Reviews",
               fontWeight: FontWeight.w600,
               fontSize: 23,
               textcolor: Colors.black,
             ),
-            actions: [
+            actions: const [
               AppCircularCachedImage(
                 picUrl: DummyData.profilePic,
                 picRadius: 25,
@@ -106,7 +104,7 @@ class _ReviewPageState extends State<ReviewPage> {
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: [
+                                          children: const [
                                             AppText(
                                               text: "Patrick Adeleke",
                                               fontWeight: FontWeight.w600,
@@ -114,8 +112,7 @@ class _ReviewPageState extends State<ReviewPage> {
                                             AppText(
                                               text: "10:00 AM, 20 Oct 2022",
                                               fontSize: 11,
-                                              textcolor:
-                                                  const Color(0xff999999),
+                                              textcolor: Color(0xff999999),
                                             )
                                           ],
                                         ),
@@ -137,7 +134,7 @@ class _ReviewPageState extends State<ReviewPage> {
                                         showDialog(
                                           context: context,
                                           builder: (context) => AlertDialog(
-                                            title: AppText(
+                                            title: const AppText(
                                               text: "Give Review",
                                               textcolor: Colors.black,
                                               fontWeight: FontWeight.w500,
@@ -166,10 +163,10 @@ class _ReviewPageState extends State<ReviewPage> {
                                                             Icons.star,
                                                             color: Colors.amber,
                                                           ),
-                                                      onRatingUpdate: (rating) {
-                                                        print(rating);
-                                                      }),
-                                                  AppText(text: "Feedback"),
+                                                      onRatingUpdate:
+                                                          (rating) {}),
+                                                  const AppText(
+                                                      text: "Feedback"),
                                                   TextFormField(
                                                     maxLines: 3,
                                                     decoration: InputDecoration(
@@ -205,8 +202,8 @@ class _ReviewPageState extends State<ReviewPage> {
                                                             .all(AppColors
                                                                 .primarycolor),
                                                   ),
-                                                  child:
-                                                      AppText(text: "Submit"),
+                                                  child: const AppText(
+                                                      text: "Submit"),
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
@@ -219,10 +216,10 @@ class _ReviewPageState extends State<ReviewPage> {
                                     ),
                                   ],
                                 ),
-                                AppText(
+                                const AppText(
                                   text:
                                       "Very good the hotel is comfortable and also very affordable. the holiday atmosphere is also very supportive and hotel on the betaland.",
-                                  textcolor: const Color(0xff999999),
+                                  textcolor: Color(0xff999999),
                                 ),
                                 AppPadding.heightSpace20,
                                 Row(
@@ -300,7 +297,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: AppText(
+                    title: const AppText(
                       text: "Terms and Condition!",
                       textcolor: Colors.black,
                       fontWeight: FontWeight.w500,
@@ -309,8 +306,8 @@ class _ReviewPageState extends State<ReviewPage> {
                       height: 30,
                     ),
                     actions: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: AppText(
                           text: "I have agreed to the terms and conditions",
                           textcolor: Colors.black,
