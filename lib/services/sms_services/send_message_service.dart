@@ -11,7 +11,8 @@ class SendMessageService {
         "message": message,
         "senderId": senderId,
         "receiverId": receiverId,
-        "id": ""
+        "id": "",
+        "sendTime": DateTime.now().toUtc(),
       },
     ).then(
       (value) async {

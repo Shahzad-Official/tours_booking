@@ -43,8 +43,7 @@ class OngoingBookings extends StatelessWidget {
           ),
         ),
       ),
-      body: BookingWidget(bookingsController: bookingsController),
+      body: BookingWidget(),
     );
   }
 }
-

@@ -30,7 +30,7 @@ class MyBookingPage extends StatelessWidget {
             ),
           ),
         ),
-        title: AppText(
+        title: const AppText(
           text: "My Bookings",
           fontWeight: FontWeight.w600,
           fontSize: 23,
@@ -39,10 +39,8 @@ class MyBookingPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
-            BookingWidget(
-              bookingsController: bookingsController,
-            ),
+          children: const [
+            BookingWidget(),
           ],
         ),
       ),

@@ -1,17 +1,19 @@
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:tours_booking/services/sms_services/send_message_service.dart';
 
 class ChatController extends GetxController {
-  List<String> allMessages = [
-    "hello",
-    "how are you",
-    "i'm fine ",
-    "me also fine",
-    "what are you doing?",
-    "Coding",
-  ];
-  sendMessage(String msg) {
-    allMessages.add(msg);
+  final SendMessageService _sendMessage = SendMessageService();
+  bool isLoading = false;
+  sendMessage(String msg, String receiverId) async {
+    isLoading = true;
+    update();
+    await _sendMessage.sendMessageService(
+      message: msg,
+      senderId: FirebaseAuth.instance.currentUser!.uid,
+      receiverId: receiverId,
+    );
+    isLoading = false;
     update();
   }
 }

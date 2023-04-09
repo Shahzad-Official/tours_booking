@@ -1,22 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tours_booking/models/packages/packages_model.dart';
+import 'package:tours_booking/services/booking_services.dart';
 
 import '../../constants/app_padding.dart';
 import '../../constants/svg_icons.dart';
-import '../../controllers/bookings_controllers/ongoing_bookings_controller.dart';
 import '../../views/bookings/booking_details.dart';
 import '../app_button.dart';
 import '../app_input_field.dart';
 import '../containers/single_tour_container.dart';
 import '../rating_bar/tour_rating_bar.dart';
 
-class BookingWidget extends StatelessWidget {
+class BookingWidget extends StatefulWidget {
   const BookingWidget({
     super.key,
-    required this.bookingsController,
   });
 
-  final OngoingBookingsController bookingsController;
+  @override
+  State<BookingWidget> createState() => _BookingWidgetState();
+}
+
+class _BookingWidgetState extends State<BookingWidget> {
+  PackagesModel bookedPackageData = PackagesModel();
+  final BookingServices _bookingServices = BookingServices();
+  bool isLoading = false;
+  getData() async {
+    setState(() {
+      isLoading = true;
+    });
+    await _bookingServices.getAllBookings();
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +60,11 @@ class BookingWidget extends StatelessWidget {
             ),
             Column(
               children:
-                  List.generate(bookingsController.eventList.length, (index) {
+                  List.generate(_bookingServices.allBookings.length, (index) {
                 return Column(
                   children: [
                     AppPadding.heightSpace30,
                     SingleTourContainer(
-                      eventName: bookingsController.eventList[index].name!,
-                      location: bookingsController.eventList[index].location!,
-                      picUrl: bookingsController.eventList[index].coverImage!,
                       ratingBar: TourRatingBar(
                         initialRating: index == 2 ? 3 : null,
                       ),
@@ -56,12 +75,7 @@ class BookingWidget extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => BookingDetails(
-                                  eventName:
-                                      bookingsController.eventList[index].name!,
-                                  picUrl: bookingsController
-                                      .eventList[index].coverImage!,
-                                ),
+                                builder: (context) => BookingDetails(),
                               ),
                             );
                           },

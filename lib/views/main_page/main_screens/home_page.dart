@@ -23,9 +23,26 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final HomeController _controller = Get.put(HomeController());
-  final GetAllPackages _allPackages = GetAllPackages();
+  final GetAllPackages _getAllPackages = GetAllPackages();
+
+  bool isLoading = false;
+  getAllPackages() async {
+    setState(() {
+      isLoading = true;
+    });
+    await _getAllPackages.getAllPackages();
+
+    _controller.searchPackage(
+      packagesList: _getAllPackages.allPackages,
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void initState() {
+    getAllPackages();
     _controller.setCustomIcon();
     _controller.getMyCurrentLocation();
     super.initState();
@@ -46,177 +63,164 @@ class _HomePageState extends State<HomePage> {
                 child: CircularProgressIndicator(),
               );
             } else {
-              return FutureBuilder<List<PackagesModel>>(
-                future: _allPackages.getAllPackages(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    return Stack(
-                      alignment: Alignment.bottomCenter,
+              if (isLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Column(
                       children: [
-                        Column(
-                          children: [
-                            AppBar(
-                              elevation: 0.0,
-                              backgroundColor: AppColors.backgroundcolor,
-                              title: Padding(
-                                padding: const EdgeInsets.only(top: 15),
-                                child: SizedBox(
-                                  height: 60,
-                                  width: double.maxFinite,
-                                  child: TextFormField(
-                                    onChanged: (value) {
-                                      _.searchPackage(
-                                        value,
-                                        snapshot.data!,
-                                      );
-                                    },
-                                    decoration: InputDecoration(
-                                      prefixIcon: const Icon(
-                                        Icons.search,
-                                      ),
-                                      hintText: ' Place',
-                                      fillColor: const Color(0xffEAE8F4),
-                                      filled: true,
-                                      contentPadding:
-                                          const EdgeInsets.only(left: 5),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(33),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                    ),
+                        AppBar(
+                          elevation: 0.0,
+                          backgroundColor: AppColors.backgroundcolor,
+                          title: Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: SizedBox(
+                              height: 60,
+                              width: double.maxFinite,
+                              child: TextFormField(
+                                onChanged: (value) {},
+                                decoration: InputDecoration(
+                                  prefixIcon: const Icon(
+                                    Icons.search,
+                                  ),
+                                  hintText: ' Place',
+                                  fillColor: const Color(0xffEAE8F4),
+                                  filled: true,
+                                  contentPadding:
+                                      const EdgeInsets.only(left: 5),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(33),
+                                    borderSide: BorderSide.none,
                                   ),
                                 ),
                               ),
-                              leading: InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Icon(
-                                  Icons.arrow_back_ios_new_rounded,
-                                  color: Color(0xff302A4E),
-                                  size: 25,
-                                ),
-                              ),
                             ),
-                            Expanded(
-                              child: GoogleMap(
-                                markers: List.generate(
-                                  snapshot.data!.length,
-                                  (index) {
-                                    return Marker(
-                                      onTap: () {
-                                        _.checkIsTapped();
-                                        showModalBottomSheet(
-                                          backgroundColor: Colors.transparent,
-                                          context: context,
-                                          builder: (context) {
-                                            return Container(
-                                              height: 200,
-                                              color: Colors.transparent,
-                                              child: PackagesList(
-                                                rating: 0,
-                                                eventImage: snapshot
-                                                    .data![index].thumbnailUrl
-                                                    .toString(),
-                                                eventName: snapshot
-                                                    .data![index].packageName
-                                                    .toString(),
-                                                eventDate:
-                                                    "${FormatDate.formatedDate(
-                                                  formatPattern: "dd MMM",
-                                                  date: snapshot
-                                                      .data![index].startDate
-                                                      .toString(),
-                                                )}-${FormatDate.formatedDate(
-                                                  formatPattern: "dd MMM",
-                                                  date: snapshot
-                                                      .data![index].endDate
-                                                      .toString(),
-                                                )}",
-                                                eventLocation: snapshot
-                                                    .data![index]
-                                                    .location!
-                                                    .address
-                                                    .toString(),
-                                                eventDuration: CalculateDays
-                                                    .daysBetweenDates(
-                                                  startDate: snapshot
-                                                      .data![index].startDate
-                                                      .toString(),
-                                                  endDate: snapshot
-                                                      .data![index].endDate
-                                                      .toString(),
-                                                ).inDays.toString(),
-                                                eventDurationColor: CalculateDays
+                          ),
+                          leading: InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              color: Color(0xff302A4E),
+                              size: 25,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GoogleMap(
+                            markers: List.generate(
+                              _.allPackages.length,
+                              (index) {
+                                return Marker(
+                                  onTap: () {
+                                    _.checkIsTapped();
+                                    showModalBottomSheet(
+                                      backgroundColor: Colors.transparent,
+                                      context: context,
+                                      builder: (context) {
+                                        return Container(
+                                          height: 200,
+                                          color: Colors.transparent,
+                                          child: PackagesList(
+                                            rating: 0,
+                                            eventImage: _
+                                                .allPackages[index].thumbnailUrl
+                                                .toString(),
+                                            eventName: _
+                                                .allPackages[index].packageName
+                                                .toString(),
+                                            eventDate:
+                                                "${FormatDate.formatedDate(
+                                              formatPattern: "dd MMM",
+                                              date: _
+                                                  .allPackages[index].startDate
+                                                  .toString(),
+                                            )}-${FormatDate.formatedDate(
+                                              formatPattern: "dd MMM",
+                                              date: _.allPackages[index].endDate
+                                                  .toString(),
+                                            )}",
+                                            eventLocation: _.allPackages[index]
+                                                .location!.address
+                                                .toString(),
+                                            eventDuration:
+                                                CalculateDays.daysBetweenDates(
+                                              startDate: _
+                                                  .allPackages[index].startDate
+                                                  .toString(),
+                                              endDate: _
+                                                  .allPackages[index].endDate
+                                                  .toString(),
+                                            ).inDays.toString(),
+                                            eventDurationColor: CalculateDays
+                                                        .daysBetweenDates(
+                                                      startDate: _
+                                                          .allPackages[index]
+                                                          .startDate
+                                                          .toString(),
+                                                      endDate: _
+                                                          .allPackages[index]
+                                                          .endDate
+                                                          .toString(),
+                                                    ).inDays >=
+                                                    3
+                                                ? Colors.red
+                                                : CalculateDays
                                                             .daysBetweenDates(
-                                                          startDate: snapshot
-                                                              .data![index]
+                                                          startDate: _
+                                                              .allPackages[
+                                                                  index]
                                                               .startDate
                                                               .toString(),
-                                                          endDate: snapshot
-                                                              .data![index]
+                                                          endDate: _
+                                                              .allPackages[
+                                                                  index]
                                                               .endDate
                                                               .toString(),
-                                                        ).inDays >=
-                                                        3
-                                                    ? Colors.red
-                                                    : CalculateDays
-                                                                .daysBetweenDates(
-                                                              startDate: snapshot
-                                                                  .data![index]
-                                                                  .startDate
-                                                                  .toString(),
-                                                              endDate: snapshot
-                                                                  .data![index]
-                                                                  .endDate
-                                                                  .toString(),
-                                                            ).inDays ==
-                                                            2
-                                                        ? Colors.yellow
-                                                        : Colors.green,
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          PackageSinglePage(
-                                                        packageData: snapshot
-                                                            .data![index],
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          },
+                                                        ).inDays ==
+                                                        2
+                                                    ? Colors.yellow
+                                                    : Colors.green,
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PackageSinglePage(
+                                                    packageData:
+                                                        _.allPackages[index],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         );
                                       },
-                                      icon: BitmapDescriptor.fromBytes(
-                                          _.markerIcon!),
-                                      markerId: MarkerId("$index"),
-                                      position: LatLng(
-                                        snapshot
-                                            .data![index].location!.latitude!,
-                                        snapshot
-                                            .data![index].location!.longitude!,
-                                      ),
                                     );
                                   },
-                                ).toSet(),
-                                initialCameraPosition: _.initialPosition(),
-                              ),
-                            ),
-                          ],
+                                  icon:
+                                      BitmapDescriptor.fromBytes(_.markerIcon!),
+                                  markerId: MarkerId("$index"),
+                                  position: LatLng(
+                                    _.allPackages[index].location!.latitude!,
+                                    _.allPackages[index].location!.longitude!,
+                                  ),
+                                );
+                              },
+                            ).toSet(),
+                            initialCameraPosition: _.initialPosition(),
+                          ),
                         ),
                       ],
-                    );
-                  }
-                },
-              );
+                    ),
+                  ],
+                );
+              }
             }
           },
         ),

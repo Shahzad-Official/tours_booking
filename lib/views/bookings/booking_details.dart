@@ -9,13 +9,10 @@ import 'package:tours_booking/widgets/app_text.dart';
 import '../../constants/app_colors.dart';
 
 class BookingDetails extends StatelessWidget {
-  String picUrl, eventName;
   BookingDetails({
     super.key,
-    required this.picUrl,
-    required this.eventName,
   });
-  TextEditingController reviewController = TextEditingController();
+  final TextEditingController reviewController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +53,7 @@ class BookingDetails extends StatelessWidget {
                   height: 60,
                   width: MediaQuery.of(context).size.width * 0.22,
                   child: AppCachedImage(
-                    picUrl: picUrl,
+                    picUrl: DummyData.profilePic,
                   ),
                 ),
                 const SizedBox(
@@ -66,7 +63,7 @@ class BookingDetails extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText(
-                      text: eventName,
+                      text: "eventName",
                       textcolor: Colors.black,
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
@@ -218,10 +215,8 @@ class BookingDetails extends StatelessWidget {
                                       Icons.star,
                                       color: Colors.amber,
                                     ),
-                                onRatingUpdate: (rating) {
-                                  print(rating);
-                                }),
-                            AppText(text: "Feedback"),
+                                onRatingUpdate: (rating) {}),
+                            const AppText(text: "Feedback"),
                             TextFormField(
                               controller: reviewController,
                               maxLines: 3,

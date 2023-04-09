@@ -9,11 +9,11 @@ import '../app_cache_image.dart';
 import '../app_text.dart';
 
 class SingleTourContainer extends StatelessWidget {
-  String? picUrl;
-  String startDate, endDate, eventName, location;
+  final String? picUrl;
+  final String startDate, endDate, eventName, location;
 
-  Widget ratingBar, bottomButton;
-  SingleTourContainer({
+  final Widget ratingBar, bottomButton;
+  const SingleTourContainer({
     Key? key,
     this.picUrl,
     this.endDate = "2nd",
@@ -37,7 +37,7 @@ class SingleTourContainer extends StatelessWidget {
             color: AppColors.primarycolor.withOpacity(0.2),
             blurRadius: 15,
             spreadRadius: 1.5,
-            offset: Offset(5, 0),
+            offset: const Offset(5, 0),
           ),
         ],
       ),

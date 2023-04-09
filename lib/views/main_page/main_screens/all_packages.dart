@@ -16,9 +16,36 @@ import 'package:tours_booking/widgets/app_text.dart';
 import '../../../constants/svg_icons.dart';
 import '../../../widgets/filter_sheet.dart';
 
-class AllPackages extends StatelessWidget {
-  AllPackages({super.key});
+class AllPackages extends StatefulWidget {
+  const AllPackages({super.key});
+
+  @override
+  State<AllPackages> createState() => _AllPackagesState();
+}
+
+class _AllPackagesState extends State<AllPackages> {
   final GetAllPackages _getAllPackages = GetAllPackages();
+  final AllPackagesController _controller = Get.put(AllPackagesController());
+  bool isLoading = false;
+  getAllPackages() async {
+    setState(() {
+      isLoading = true;
+    });
+    await _getAllPackages.getAllPackages();
+
+    _controller.searchPackage(
+      packagesList: _getAllPackages.allPackages,
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getAllPackages();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,237 +81,169 @@ class AllPackages extends StatelessWidget {
             ),
           ),
           body: GetBuilder<AllPackagesController>(
-              init: AllPackagesController(),
-              builder: (_) {
+            init: AllPackagesController(),
+            builder: (_) {
+              if (isLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
                 return SingleChildScrollView(
                   child: Padding(
                     padding: AppPadding.defaultPadding,
-                    child: FutureBuilder<List<PackagesModel>>(
-                        future: _getAllPackages.getAllPackages(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.70,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            offset: const Offset(1, 2),
-                                            color: Colors.grey.withOpacity(0.4),
-                                            blurRadius: 5,
-                                          ),
-                                        ],
-                                      ),
-                                      child: TextFormField(
-                                        onChanged: (value) {
-                                          _.searchPackage(
-                                            value,
-                                            snapshot.data!,
-                                          );
-                                        },
-                                        decoration: InputDecoration(
-                                          prefixIcon: const Icon(
-                                            Icons.search,
-                                            color: Colors.grey,
-                                          ),
-                                          hintText: 'Search for tours',
-                                          fillColor: Colors.white,
-                                          filled: true,
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 18),
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            borderSide: BorderSide.none,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () => showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        shape: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(10),
-                                                topLeft: Radius.circular(10))),
-                                        context: context,
-                                        builder: (context) {
-                                          return const FractionallySizedBox(
-                                            heightFactor: 0.75,
-                                            child: FilterSheet(),
-                                          );
-                                        },
-                                      ),
-                                      child: Container(
-                                        height: 50,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.16,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              offset: const Offset(1, 2),
-                                              color:
-                                                  Colors.grey.withOpacity(0.4),
-                                              blurRadius: 5,
-                                            ),
-                                          ],
-                                        ),
-                                        child: Center(
-                                          child: SvgPicture.string(
-                                            SvgIcons.filter,
-                                            height: 25,
-                                            width: 25,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(height: 30),
-                                Column(
-                                  children: List<Widget>.generate(
-                                    _.isSearching
-                                        ? _.newPackagesList.length
-                                        : snapshot.data!.length,
-                                    (index) {
-                                      return PackagesList(
-                                        rating: 0,
-                                        eventImage: _.isSearching
-                                            ? _.newPackagesList[index]
-                                                .thumbnailUrl
-                                                .toString()
-                                            : snapshot.data![index].thumbnailUrl
-                                                .toString(),
-                                        eventName: _.isSearching
-                                            ? _.newPackagesList[index]
-                                                .packageName
-                                                .toString()
-                                            : snapshot.data![index].packageName
-                                                .toString(),
-                                        eventDate: "${FormatDate.formatedDate(
-                                          formatPattern: "dd MMM",
-                                          date: _.isSearching
-                                              ? _.newPackagesList[index]
-                                                  .startDate
-                                                  .toString()
-                                              : snapshot.data![index].startDate
-                                                  .toString(),
-                                        )}-${FormatDate.formatedDate(
-                                          formatPattern: "dd MMM",
-                                          date: _.isSearching
-                                              ? _.newPackagesList[index].endDate
-                                                  .toString()
-                                              : snapshot.data![index].endDate
-                                                  .toString(),
-                                        )}",
-                                        eventLocation: _.isSearching
-                                            ? _.newPackagesList[index].location!
-                                                .address
-                                                .toString()
-                                            : snapshot
-                                                .data![index].location!.address
-                                                .toString(),
-                                        eventDuration:
-                                            CalculateDays.daysBetweenDates(
-                                          startDate: _.isSearching
-                                              ? _.newPackagesList[index]
-                                                  .startDate
-                                                  .toString()
-                                              : snapshot.data![index].startDate
-                                                  .toString(),
-                                          endDate: _.isSearching
-                                              ? _.newPackagesList[index].endDate
-                                                  .toString()
-                                              : snapshot.data![index].endDate
-                                                  .toString(),
-                                        ).inDays.toString(),
-                                        eventDurationColor: CalculateDays
-                                                    .daysBetweenDates(
-                                                  startDate: _.isSearching
-                                                      ? _.newPackagesList[index]
-                                                          .startDate
-                                                          .toString()
-                                                      : snapshot.data![index]
-                                                          .startDate
-                                                          .toString(),
-                                                  endDate: _.isSearching
-                                                      ? _.newPackagesList[index]
-                                                          .endDate
-                                                          .toString()
-                                                      : snapshot
-                                                          .data![index].endDate
-                                                          .toString(),
-                                                ).inDays >=
-                                                3
-                                            ? Colors.red
-                                            : CalculateDays.daysBetweenDates(
-                                                      startDate: _.isSearching
-                                                          ? _
-                                                              .newPackagesList[
-                                                                  index]
-                                                              .startDate
-                                                              .toString()
-                                                          : snapshot
-                                                              .data![index]
-                                                              .startDate
-                                                              .toString(),
-                                                      endDate: _.isSearching
-                                                          ? _
-                                                              .newPackagesList[
-                                                                  index]
-                                                              .endDate
-                                                              .toString()
-                                                          : snapshot
-                                                              .data![index]
-                                                              .endDate
-                                                              .toString(),
-                                                    ).inDays ==
-                                                    2
-                                                ? Colors.yellow
-                                                : Colors.green,
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PackageSinglePage(
-                                                packageData:
-                                                    snapshot.data![index],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.70,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: const Offset(1, 2),
+                                    color: Colors.grey.withOpacity(0.4),
+                                    blurRadius: 5,
+                                  ),
+                                ],
+                              ),
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  _.searchPackage(
+                                    packagesList: _getAllPackages.allPackages,
+                                    query: value,
+                                  );
+                                },
+                                decoration: InputDecoration(
+                                  prefixIcon: const Icon(
+                                    Icons.search,
+                                    color: Colors.grey,
+                                  ),
+                                  hintText: 'Search for tours',
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(vertical: 18),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    borderSide: BorderSide.none,
                                   ),
                                 ),
-                              ],
-                            );
-                          } else if (_.allPackages.isEmpty) {
-                            return const Center(
-                              child: AppText(text: "NO Package Available"),
-                            );
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        }),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () => showModalBottomSheet(
+                                isScrollControlled: true,
+                                shape: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(10),
+                                        topLeft: Radius.circular(10))),
+                                context: context,
+                                builder: (context) {
+                                  return const FractionallySizedBox(
+                                    heightFactor: 0.75,
+                                    child: FilterSheet(),
+                                  );
+                                },
+                              ),
+                              child: Container(
+                                height: 50,
+                                width: MediaQuery.of(context).size.width * 0.16,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: const Offset(1, 2),
+                                      color: Colors.grey.withOpacity(0.4),
+                                      blurRadius: 5,
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: SvgPicture.string(
+                                    SvgIcons.filter,
+                                    height: 25,
+                                    width: 25,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 30),
+                        Column(
+                          children: List<Widget>.generate(
+                            _.allPackages.length,
+                            (index) {
+                              return PackagesList(
+                                rating: 0,
+                                eventImage: _.allPackages[index].thumbnailUrl
+                                    .toString(),
+                                eventName:
+                                    _.allPackages[index].packageName.toString(),
+                                eventDate: "${FormatDate.formatedDate(
+                                  formatPattern: "dd MMM",
+                                  date:
+                                      _.allPackages[index].startDate.toString(),
+                                )}-${FormatDate.formatedDate(
+                                  formatPattern: "dd MMM",
+                                  date: _.allPackages[index].endDate.toString(),
+                                )}",
+                                eventLocation: _
+                                    .allPackages[index].location!.address
+                                    .toString(),
+                                eventDuration: CalculateDays.daysBetweenDates(
+                                  startDate:
+                                      _.allPackages[index].startDate.toString(),
+                                  endDate:
+                                      _.allPackages[index].endDate.toString(),
+                                ).inDays.toString(),
+                                eventDurationColor:
+                                    CalculateDays.daysBetweenDates(
+                                              startDate: _
+                                                  .allPackages[index].startDate
+                                                  .toString(),
+                                              endDate: _
+                                                  .allPackages[index].endDate
+                                                  .toString(),
+                                            ).inDays >=
+                                            3
+                                        ? Colors.red
+                                        : CalculateDays.daysBetweenDates(
+                                                  startDate: _
+                                                      .allPackages[index]
+                                                      .startDate
+                                                      .toString(),
+                                                  endDate: _.allPackages[index]
+                                                      .endDate
+                                                      .toString(),
+                                                ).inDays ==
+                                                2
+                                            ? Colors.yellow
+                                            : Colors.green,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PackageSinglePage(
+                                        packageData: _.allPackages[index],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
-              }),
+              }
+            },
+          ),
         ),
       ),
     );

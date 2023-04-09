@@ -1,9 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tours_booking/models/booking_model.dart';
 import 'package:tours_booking/utils/app_snackbar.dart';
 
 class BookingServices {
   int notificationCount = 0;
+  List<BookingModel> allBookings = [];
+  getAllBookings() async {
+    try {
+      await FirebaseFirestore.instance.collection("booking").get().then(
+        (value) {
+          for (var i in value.docs) {
+            allBookings.add(
+              BookingModel.fromJson(
+                i.data(),
+              ),
+            );
+          }
+        },
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+      AppSnackbar.snackBar(title: "Error", message: "Server Error");
+    }
+  }
+
   getNotificationCount() async {
     try {
       await FirebaseFirestore.instance
@@ -24,14 +46,15 @@ class BookingServices {
     required Timestamp createdOn,
     required String totalPrice,
     required String tourId,
-    required String userId,
+    required String bookedSlots,
   }) async {
     BookingModel bookingModel = BookingModel(
       createdOn: createdOn,
-      slotsBooked: "2",
+      slotsBooked: bookedSlots,
       totalPrice: totalPrice,
       tourId: tourId,
-      userId: userId,
+      userId: FirebaseAuth.instance.currentUser!.uid,
+      message: "Booked a tour",
     );
 
     try {
@@ -57,8 +80,9 @@ class BookingServices {
           await FirebaseFirestore.instance.collection("notifications").add(
             {
               "tour_id": tourId,
-              "user_id": userId,
+              "user_id": FirebaseAuth.instance.currentUser!.uid,
               "status": "unseen",
+              "message": "Booked a tour",
               "id": "",
             },
           ).then(

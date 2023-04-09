@@ -47,7 +47,7 @@ class _MainPageState extends State<MainPage> {
         if (isLogedIn) {
           return AccountSettings();
         } else {
-          return Login();
+          return const Login();
         }
       },
     );
@@ -60,7 +60,7 @@ class _MainPageState extends State<MainPage> {
         if (isLogedIn) {
           return OngoingBookings();
         } else {
-          return Login();
+          return const Login();
         }
       },
     );
@@ -70,7 +70,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final List<Widget> mainScreens = [
       const HomePage(),
-      AllPackages(),
+      const AllPackages(),
       bookingWidget(),
       profileWidget(),
     ];

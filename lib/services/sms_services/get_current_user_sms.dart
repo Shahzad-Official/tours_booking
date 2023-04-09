@@ -8,6 +8,7 @@ class GetCurrentUserSms {
     var list = FirebaseFirestore.instance
         .collection('messages')
         .where("senderId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .orderBy("sendTime")
         .snapshots()
         .map(
           (snapShot) => snapShot.docs
