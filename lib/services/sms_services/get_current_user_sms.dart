@@ -4,10 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../models/messages_model.dart';
 
 class GetCurrentUserSms {
-  Stream<List<MessagesModel>> getAllMessages() {
+  Stream<List<MessagesModel>> getAllMessages(
+    String receiverId,
+  ) {
     var list = FirebaseFirestore.instance
         .collection('messages')
         .where("senderId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .where("receiverId", isEqualTo: receiverId)
         .orderBy("sendTime")
         .snapshots()
         .map(

@@ -67,10 +67,10 @@ class Timer extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: const [
+              children: [
                 AppText(
-                  text: "Bookings Remaining: 12",
-                  textcolor: Color(0xff8E88A9),
+                  text: "Bookings Remaining: ${packageData.availablePackages}",
+                  textcolor: const Color(0xff8E88A9),
                 ),
               ],
             ),
@@ -218,10 +218,9 @@ class Timer extends StatelessWidget {
                 ),
               ],
             ),
-            const AppText(
-              text:
-                  "Dreamland beach there are white coral rocks that surround the beach, this creates a beautiful view of its own.",
-              textcolor: Color(0xffB6B6B6),
+            AppText(
+              text: packageData.description.toString(),
+              textcolor: const Color(0xffB6B6B6),
               fontSize: 12,
             ),
             const SizedBox(
@@ -238,7 +237,9 @@ class Timer extends StatelessWidget {
                   );
                 } else if (preferences.getBool("isLogedIn")!) {
                   Get.to(
-                    () => const ReviewPage(),
+                    () => ReviewPage(
+                      packageData: packageData,
+                    ),
                   );
                 }
               },

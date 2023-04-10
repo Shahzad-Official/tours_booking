@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:tours_booking/controllers/bookings_controllers/ongoing_bookings_controller.dart';
 import 'package:tours_booking/models/packages/packages_model.dart';
 import 'package:tours_booking/services/booking_services.dart';
+import 'package:tours_booking/services/package_services/get_all_packages.dart';
+import 'package:tours_booking/utils/date_utils.dart/format_date.dart';
+import 'package:tours_booking/widgets/app_text.dart';
 
 import '../../constants/app_padding.dart';
 import '../../constants/svg_icons.dart';
@@ -21,14 +26,19 @@ class BookingWidget extends StatefulWidget {
 }
 
 class _BookingWidgetState extends State<BookingWidget> {
-  PackagesModel bookedPackageData = PackagesModel();
   final BookingServices _bookingServices = BookingServices();
+  final OngoingBookingsController _bookingsController =
+      Get.put(OngoingBookingsController());
+  GetAllPackages getpackageData = GetAllPackages();
   bool isLoading = false;
   getData() async {
     setState(() {
       isLoading = true;
     });
     await _bookingServices.getAllBookings();
+    _bookingsController.searchBooking(
+      allBooking: _bookingServices.allBookings,
+    );
     setState(() {
       isLoading = false;
     });
@@ -45,51 +55,102 @@ class _BookingWidgetState extends State<BookingWidget> {
     return SingleChildScrollView(
       child: Padding(
         padding: AppPadding.defaultPadding,
-        child: Column(
-          children: [
-            AppPadding.heightSpace30,
-            AppInputField(
-              hintText: "search for tours",
-              contentPadding: const EdgeInsets.only(top: 20),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18.0),
-                child: SvgPicture.string(
-                  SvgIcons.search,
-                ),
-              ),
-            ),
-            Column(
-              children:
-                  List.generate(_bookingServices.allBookings.length, (index) {
-                return Column(
-                  children: [
-                    AppPadding.heightSpace30,
-                    SingleTourContainer(
-                      ratingBar: TourRatingBar(
-                        initialRating: index == 2 ? 3 : null,
-                      ),
-                      bottomButton: Align(
-                        alignment: Alignment.bottomRight,
-                        child: RoundButton(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BookingDetails(),
-                              ),
-                            );
-                          },
-                          text: "view",
-                        ),
-                      ),
-                      startDate: "12 Mar",
-                      endDate: "2 May",
+        child: GetBuilder<OngoingBookingsController>(
+          init: OngoingBookingsController(),
+          builder: (_) {
+            return Column(
+              children: [
+                AppPadding.heightSpace30,
+                AppInputField(
+                  onChanged: (query) {
+                    _.searchBooking(
+                      allBooking: _bookingServices.allBookings,
+                      query: query,
+                    );
+                  },
+                  hintText: "search for tours",
+                  contentPadding: const EdgeInsets.only(top: 20),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 18.0),
+                    child: SvgPicture.string(
+                      SvgIcons.search,
                     ),
-                  ],
-                );
-              }),
-            ),
-          ],
+                  ),
+                ),
+                isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : _bookingServices.allBookings.isEmpty
+                        ? const Center(
+                            child: AppText(text: "NO booking yet!"),
+                          )
+                        : Column(
+                            children: List.generate(
+                              _.allBookings.length,
+                              (index) {
+                                return Column(
+                                  children: [
+                                    AppPadding.heightSpace30,
+                                    FutureBuilder<PackagesModel>(
+                                      future: getpackageData.getPackageData(
+                                        _.allBookings[index].tourId,
+                                      ),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return SingleTourContainer(
+                                            picUrl: snapshot.data!.thumbnailUrl,
+                                            ratingBar: TourRatingBar(
+                                              initialRating:
+                                                  index == 2 ? 3 : null,
+                                            ),
+                                            bottomButton: Align(
+                                              alignment: Alignment.bottomRight,
+                                              child: RoundButton(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          BookingDetails(
+                                                        packageData:
+                                                            snapshot.data!,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                text: "view",
+                                              ),
+                                            ),
+                                            location: snapshot
+                                                .data!.location!.address
+                                                .toString(),
+                                            startDate: FormatDate.formatedDate(
+                                              formatPattern: "dd MMM",
+                                              date: snapshot.data!.startDate
+                                                  .toString(),
+                                            ),
+                                            endDate: FormatDate.formatedDate(
+                                              formatPattern: "dd MMM",
+                                              date: snapshot.data!.endDate
+                                                  .toString(),
+                                            ),
+                                          );
+                                        } else {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+              ],
+            );
+          },
         ),
       ),
     );

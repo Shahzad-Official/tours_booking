@@ -23,7 +23,7 @@ class ProfileModel {
     this.createdOn,
   });
 
-  ProfileModel.fromJson(Map<String, dynamic> json) {
+  ProfileModel.fromJson(Map json) {
     profile = json['profile'];
     dob = json['dob'];
     userName = json['userName'];

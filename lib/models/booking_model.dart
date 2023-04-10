@@ -8,6 +8,7 @@ class BookingModel {
   String? userId;
   String? bookingId;
   String? message;
+  String? eventName;
 
   BookingModel({
     this.createdOn,
@@ -17,6 +18,7 @@ class BookingModel {
     this.userId,
     this.bookingId,
     this.message,
+    this.eventName,
   });
 
   BookingModel.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class BookingModel {
     userId = json['user_id'];
     bookingId = json["booking_id"];
     message = json["message"];
+    eventName = json["eventName"];
   }
 
   Map<String, dynamic> toJson() {

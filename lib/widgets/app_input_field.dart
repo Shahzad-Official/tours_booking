@@ -17,6 +17,7 @@ class AppInputField extends StatelessWidget {
   final int? maxLines;
   final TextInputAction textInputAction;
   final int? maxLength;
+  final void Function(String query)? onChanged;
   const AppInputField({
     Key? key,
     required this.hintText,
@@ -33,6 +34,7 @@ class AppInputField extends StatelessWidget {
     this.maxLines = 1,
     this.textInputAction = TextInputAction.next,
     this.maxLength,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -54,6 +56,7 @@ class AppInputField extends StatelessWidget {
           ],
         ),
         child: TextFormField(
+          onChanged: onChanged,
           maxLength: maxLength,
           maxLines: maxLines,
           textInputAction: textInputAction,

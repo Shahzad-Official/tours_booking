@@ -1,15 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:tours_booking/constants/app_padding.dart';
-import 'package:tours_booking/constants/dummy_data.dart';
+import 'package:tours_booking/models/packages/packages_model.dart';
+import 'package:tours_booking/utils/date_utils.dart/format_date.dart';
 import 'package:tours_booking/views/checkout/credit_card.dart';
 import 'package:tours_booking/widgets/app_button.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
 import 'package:tours_booking/widgets/app_text.dart';
 
 import '../../constants/app_colors.dart';
+import '../../models/user_profile/profile_model.dart';
 
-class Checkout extends StatelessWidget {
-  const Checkout({super.key});
+class Checkout extends StatefulWidget {
+  final PackagesModel packageData;
+  const Checkout({
+    super.key,
+    required this.packageData,
+  });
+
+  @override
+  State<Checkout> createState() => _CheckoutState();
+}
+
+class _CheckoutState extends State<Checkout> {
+  ProfileModel userData = ProfileModel();
+  getUserData() {
+    Box box = Hive.box("DataBox");
+    userData = ProfileModel.fromJson(box.get("userData"));
+  }
+
+  @override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +46,18 @@ class Checkout extends StatelessWidget {
           child: AppBar(
             elevation: 0.0,
             backgroundColor: AppColors.backgroundcolor,
+            leading: const BackButton(
+              color: Colors.black,
+            ),
             title: const AppText(
               text: "Checkout",
               fontWeight: FontWeight.w600,
               fontSize: 23,
               textcolor: Colors.black,
             ),
-            actions: const [
+            actions: [
               AppCircularCachedImage(
-                picUrl: DummyData.profilePic,
+                picUrl: userData.profile!,
               ),
             ],
           ),
@@ -50,7 +77,7 @@ class Checkout extends StatelessWidget {
                   width: 150,
                   child: AppCachedImage(
                     borderRadius: 10,
-                    picUrl: DummyData.eventsData[2]["coverImage"],
+                    picUrl: widget.packageData.thumbnailUrl.toString(),
                   ),
                 ),
                 const SizedBox(
@@ -59,17 +86,17 @@ class Checkout extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const AppText(
-                      text: "Pantai Dreamland",
+                    AppText(
+                      text: widget.packageData.packageName!,
                       textcolor: Colors.black,
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.40,
-                      child: const AppText(
-                        text: "Jl. Lorem Ipsum Dolor Sit Amet Bandung No. 123",
-                        textcolor: Color(0xff161618),
+                      child: AppText(
+                        text: widget.packageData.location!.address!,
+                        textcolor: const Color(0xff161618),
                         fontSize: 8,
                       ),
                     )
@@ -93,13 +120,16 @@ class Checkout extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
+                    children: [
                       AppText(
-                        text: "Fri, 7 jan 2022",
-                        textcolor: Color(0xff3FAFFF),
+                        text: FormatDate.formatedDate(
+                          formatPattern: "E dd MMM yyyy",
+                          date: widget.packageData.endDate!,
+                        ),
+                        textcolor: const Color(0xff3FAFFF),
                         fontSize: 10,
                       ),
-                      Icon(
+                      const Icon(
                         Icons.arrow_drop_down_outlined,
                         color: Color(0xff3FAFFF),
                       )
@@ -116,13 +146,13 @@ class Checkout extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
+                    children: [
                       AppText(
-                        text: "15.00 UTC",
-                        textcolor: Color(0xff3FAFFF),
+                        text: widget.packageData.endTime!,
+                        textcolor: const Color(0xff3FAFFF),
                         fontSize: 10,
                       ),
-                      Icon(
+                      const Icon(
                         Icons.arrow_drop_down_outlined,
                         color: Color(0xff3FAFFF),
                       )
@@ -171,19 +201,21 @@ class Checkout extends StatelessWidget {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    AppText(text: " \$350"),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    AppText(text: "-\$100"),
-                    SizedBox(
+                  children: [
+                    AppText(text: " \$${widget.packageData.startPrice!}"),
+                    const SizedBox(
                       height: 5,
                     ),
                     AppText(
-                      text: " \$250",
+                        text:
+                            "-\$${(int.parse(widget.packageData.startPrice!) - (int.parse(widget.packageData.endPrice!)))}"),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    AppText(
+                      text: " \$${widget.packageData.endPrice!}",
                       fontWeight: FontWeight.w600,
-                      textcolor: Color(0xffFFBC4F),
+                      textcolor: const Color(0xffFFBC4F),
                     )
                   ],
                 ),
@@ -195,7 +227,11 @@ class Checkout extends StatelessWidget {
               ontap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreditCard()),
+                  MaterialPageRoute(
+                    builder: (context) => CreditCard(
+                      packageData: widget.packageData,
+                    ),
+                  ),
                 );
               },
             ),

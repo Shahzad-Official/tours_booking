@@ -70,6 +70,8 @@ dependencies:
   
   #Local_database
   shared_preferences: ^2.0.17
+  hive: any
+  hive_flutter: any
 
   #Location
   google_maps_flutter: ^2.2.3

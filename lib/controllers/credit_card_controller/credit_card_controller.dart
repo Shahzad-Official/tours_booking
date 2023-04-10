@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:tours_booking/services/booking_services.dart';
 
 class CreditCardController extends GetxController {
   String? date;
-
+  BookingServices bookingServices = BookingServices();
   currentDate() {
     var date = DateTime.now();
     var formatedDate = DateFormat("MM/yyyy").format(date);
@@ -23,6 +24,26 @@ class CreditCardController extends GetxController {
       date = DateFormat("MM/yyyy").format(selectedDate);
     }
 
+    update();
+  }
+
+  bool isLoading = false;
+
+  makeBooking({
+    required String totalPrice,
+    required String tourId,
+    required String bookedSlots,
+    required String eventName,
+  }) async {
+    isLoading = true;
+    update();
+    await bookingServices.makeBooking(
+      totalPrice: totalPrice,
+      tourId: tourId,
+      bookedSlots: bookedSlots,
+      eventName: eventName,
+    );
+    isLoading = false;
     update();
   }
 }

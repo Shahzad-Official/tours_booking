@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tours_booking/constants/app_padding.dart';
-import 'package:tours_booking/constants/dummy_data.dart';
+import 'package:tours_booking/models/packages/packages_model.dart';
+import 'package:tours_booking/models/user_profile/profile_model.dart';
+import 'package:tours_booking/services/get_user_data.dart';
+import 'package:tours_booking/services/reviews_services.dart';
+import 'package:tours_booking/utils/date_utils.dart/format_date.dart';
 import 'package:tours_booking/views/checkout/checkout.dart';
 import 'package:tours_booking/widgets/app_button.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
@@ -11,7 +16,11 @@ import '../../constants/app_colors.dart';
 import '../../widgets/app_text.dart';
 
 class ReviewPage extends StatefulWidget {
-  const ReviewPage({super.key});
+  final PackagesModel packageData;
+  const ReviewPage({
+    super.key,
+    required this.packageData,
+  });
 
   @override
   State<ReviewPage> createState() => _ReviewPageState();
@@ -19,10 +28,24 @@ class ReviewPage extends StatefulWidget {
 
 class _ReviewPageState extends State<ReviewPage> {
   bool? isLogedIn;
-
+  Box box = Hive.box("DataBox");
+  ProfileModel userData = ProfileModel();
+  ReviewsServices reviewsServices = ReviewsServices();
+  GetUserData getUserData = GetUserData();
+  bool isLoading = false;
   checkLogin() async {
+    userData = ProfileModel.fromJson(box.get("userData"));
     SharedPreferences preferences = await SharedPreferences.getInstance();
     isLogedIn = preferences.getBool("isLogedIn");
+    setState(() {
+      isLoading = true;
+    });
+    await reviewsServices.getAllReviews(
+      widget.packageData.packageId!,
+    );
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -43,6 +66,9 @@ class _ReviewPageState extends State<ReviewPage> {
             right: 10,
           ),
           child: AppBar(
+            leading: const BackButton(
+              color: Colors.black,
+            ),
             elevation: 0.0,
             backgroundColor: AppColors.backgroundcolor,
             title: const AppText(
@@ -51,9 +77,9 @@ class _ReviewPageState extends State<ReviewPage> {
               fontSize: 23,
               textcolor: Colors.black,
             ),
-            actions: const [
+            actions: [
               AppCircularCachedImage(
-                picUrl: DummyData.profilePic,
+                picUrl: userData.profile!,
                 picRadius: 25,
               ),
             ],
@@ -63,7 +89,6 @@ class _ReviewPageState extends State<ReviewPage> {
       body: Container(
         padding: AppPadding.defaultPadding,
         child: Stack(
-          alignment: Alignment.bottomCenter,
           children: [
             SingleChildScrollView(
               child: Column(
@@ -71,266 +96,229 @@ class _ReviewPageState extends State<ReviewPage> {
                   const SizedBox(
                     height: 30,
                   ),
-                  Column(
-                    children: List.generate(3, (index) {
-                      return Column(
-                        children: [
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            height: 250,
-                            width: double.infinity,
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
+                  isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Align(
+                          alignment: Alignment.topCenter,
+                          child: Column(
+                            children: List.generate(
+                                reviewsServices.allReviews.length, (index) {
+                              return Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: Column(
                                       children: [
-                                        Container(
-                                          height: 60,
-                                          width: 60,
-                                          decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600"))),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: const [
-                                            AppText(
-                                              text: "Patrick Adeleke",
-                                              fontWeight: FontWeight.w600,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            FutureBuilder<ProfileModel>(
+                                                future: getUserData.getUserData(
+                                                    reviewsServices
+                                                        .allReviews[index]
+                                                        .userId!),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.hasData) {
+                                                    return Row(
+                                                      children: [
+                                                        AppCircularCachedImage(
+                                                          picRadius: 25,
+                                                          picUrl: snapshot
+                                                              .data!.profile!,
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            AppText(
+                                                              text: snapshot
+                                                                  .data!
+                                                                  .userName
+                                                                  .toString(),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                            AppText(
+                                                              text: FormatDate
+                                                                  .formatedDate(
+                                                                formatPattern:
+                                                                    "hh:mm a , dd MMM yyyy",
+                                                                date: reviewsServices
+                                                                    .allReviews[
+                                                                        index]
+                                                                    .createdOn!,
+                                                              ),
+                                                              fontSize: 11,
+                                                              textcolor:
+                                                                  const Color(
+                                                                      0xff999999),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    );
+                                                  } else {
+                                                    return const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    );
+                                                  }
+                                                }),
+                                            RatingBar.builder(
+                                              initialRating: reviewsServices
+                                                  .allReviews[index].rating!,
+                                              glowRadius: 1,
+                                              itemSize: 18,
+                                              direction: Axis.horizontal,
+                                              allowHalfRating: true,
+                                              ignoreGestures: true,
+                                              itemCount: 5,
+                                              itemBuilder: (context, _) =>
+                                                  const Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
+                                              ),
+                                              onRatingUpdate: (value) {},
                                             ),
-                                            AppText(
-                                              text: "10:00 AM, 20 Oct 2022",
-                                              fontSize: 11,
-                                              textcolor: Color(0xff999999),
-                                            )
                                           ],
                                         ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: AppText(
+                                            text: reviewsServices
+                                                .allReviews[index].feedBack
+                                                .toString(),
+                                            textcolor: const Color(0xff999999),
+                                          ),
+                                        ),
+                                        AppPadding.heightSpace20,
+                                        // Row(
+                                        //   mainAxisAlignment:
+                                        //       MainAxisAlignment.spaceEvenly,
+                                        //   children: [
+                                        //     Container(
+                                        //       height: 70,
+                                        //       decoration: BoxDecoration(
+                                        //           borderRadius:
+                                        //               BorderRadius.circular(22)),
+                                        //       child: Image(
+                                        //           height: 70,
+                                        //           width: MediaQuery.of(context)
+                                        //                   .size
+                                        //                   .width *
+                                        //               0.26,
+                                        //           image: const NetworkImage(
+                                        //               "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWwlMjByb29tfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=60")),
+                                        //     ),
+                                        //     Container(
+                                        //       height: 70,
+                                        //       decoration: BoxDecoration(
+                                        //           borderRadius:
+                                        //               BorderRadius.circular(22)),
+                                        //       child: Image(
+                                        //           height: 50,
+                                        //           width: MediaQuery.of(context)
+                                        //                   .size
+                                        //                   .width *
+                                        //               0.26,
+                                        //           image: const NetworkImage(
+                                        //               "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWwlMjByb29tfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=60")),
+                                        //     ),
+                                        //     Container(
+                                        //       height: 70,
+                                        //       decoration: BoxDecoration(
+                                        //           borderRadius:
+                                        //               BorderRadius.circular(22)),
+                                        //       child: Image(
+                                        //           height: 50,
+                                        //           width: MediaQuery.of(context)
+                                        //                   .size
+                                        //                   .width *
+                                        //               0.26,
+                                        //           image: const NetworkImage(
+                                        //               "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWwlMjByb29tfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=60")),
+                                        //     )
+                                        //   ],
+                                        // )
                                       ],
                                     ),
-                                    RatingBar.builder(
-                                      initialRating: 3,
-                                      glowRadius: 1,
-                                      itemSize: 18,
-                                      minRating: 1,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      itemBuilder: (context, _) => const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                      onRatingUpdate: (rating) {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            title: const AppText(
-                                              text: "Give Review",
-                                              textcolor: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                            content: SizedBox(
-                                              height: 165,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  RatingBar.builder(
-                                                      initialRating: 0,
-                                                      glowRadius: 1,
-                                                      itemSize: 27,
-                                                      minRating: 1,
-                                                      direction:
-                                                          Axis.horizontal,
-                                                      allowHalfRating: true,
-                                                      itemPadding:
-                                                          const EdgeInsets.all(
-                                                              8),
-                                                      itemCount: 5,
-                                                      itemBuilder: (context,
-                                                              _) =>
-                                                          const Icon(
-                                                            Icons.star,
-                                                            color: Colors.amber,
-                                                          ),
-                                                      onRatingUpdate:
-                                                          (rating) {}),
-                                                  const AppText(
-                                                      text: "Feedback"),
-                                                  TextFormField(
-                                                    maxLines: 3,
-                                                    decoration: InputDecoration(
-                                                      fillColor:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              224,
-                                                              239,
-                                                              252),
-                                                      filled: true,
-                                                      border:
-                                                          OutlineInputBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                              borderSide:
-                                                                  BorderSide
-                                                                      .none),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            actions: [
-                                              SizedBox(
-                                                width: double.infinity,
-                                                height: 45,
-                                                child: ElevatedButton(
-                                                  style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all(AppColors
-                                                                .primarycolor),
-                                                  ),
-                                                  child: const AppText(
-                                                      text: "Submit"),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
+                                  ),
+                                  SizedBox(
+                                    height: 1,
+                                    width: double.infinity,
+                                    child: Container(
+                                      color: const Color(0xffE0E0E0),
                                     ),
-                                  ],
-                                ),
-                                const AppText(
-                                  text:
-                                      "Very good the hotel is comfortable and also very affordable. the holiday atmosphere is also very supportive and hotel on the betaland.",
-                                  textcolor: Color(0xff999999),
-                                ),
-                                AppPadding.heightSpace20,
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Container(
-                                      height: 70,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(22)),
-                                      child: Image(
-                                          height: 70,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.26,
-                                          image: const NetworkImage(
-                                              "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWwlMjByb29tfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=60")),
-                                    ),
-                                    Container(
-                                      height: 70,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(22)),
-                                      child: Image(
-                                          height: 50,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.26,
-                                          image: const NetworkImage(
-                                              "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWwlMjByb29tfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=60")),
-                                    ),
-                                    Container(
-                                      height: 70,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(22)),
-                                      child: Image(
-                                          height: 50,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.26,
-                                          image: const NetworkImage(
-                                              "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWwlMjByb29tfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=400&q=60")),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
+                                  ),
+                                ],
+                              );
+                            }),
                           ),
-                          SizedBox(
-                            height: 1,
-                            width: double.infinity,
-                            child: Container(
-                              color: const Color(0xffE0E0E0),
-                            ),
-                          ),
-                        ],
-                      );
-                    }),
-                  ),
+                        ),
                   AppPadding.heightSpace30,
                   AppPadding.heightSpace30,
                 ],
               ),
             ),
-            AppButton(
-              margin: const EdgeInsets.only(bottom: 10),
-              width: double.infinity,
-              btnText: "Book Now",
-              ontap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const AppText(
-                      text: "Terms and Condition!",
-                      textcolor: Colors.black,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    content: Container(
-                      height: 30,
-                    ),
-                    actions: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: AppText(
-                          text: "I have agreed to the terms and conditions",
-                          textcolor: Colors.black,
-                          fontWeight: FontWeight.w500,
-                        ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: AppButton(
+                margin: const EdgeInsets.only(bottom: 10),
+                width: double.infinity,
+                btnText: "Book Now",
+                ontap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const AppText(
+                        text: "Terms and Condition!",
+                        textcolor: Colors.black,
+                        fontWeight: FontWeight.w500,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: AppButton(
+                      content: Container(
+                        height: 30,
+                      ),
+                      actions: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: AppText(
+                            text: "I have agreed to the terms and conditions",
+                            textcolor: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: AppButton(
                             btnText: "Agree",
                             ontap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const Checkout(),
+                                  builder: (context) => Checkout(
+                                    packageData: widget.packageData,
+                                  ),
                                 ),
                               );
-                            }),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),

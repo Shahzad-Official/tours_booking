@@ -1,23 +1,21 @@
 import 'package:get/get.dart';
 
-import '../../constants/dummy_data.dart';
-import '../../models/event_model.dart';
+import '../../models/booking_model.dart';
 
 class OngoingBookingsController extends GetxController {
-  List<EventModel> eventList = [];
-  getData() async {
-    eventList.clear();
-    for (var i in DummyData.eventsData) {
-      eventList.add(
-        EventModel.fromJson(i),
-      );
-    }
-    return eventList;
-  }
+  List<BookingModel> allBookings = [];
 
-  @override
-  void onInit() {
-    super.onInit();
-    getData();
+  searchBooking({
+    String query = "",
+    required List<BookingModel> allBooking,
+  }) {
+    allBookings = allBooking
+        .where(
+          (element) => element.eventName!.toLowerCase().contains(
+                query.trim().toLowerCase(),
+              ),
+        )
+        .toList();
+    update();
   }
 }

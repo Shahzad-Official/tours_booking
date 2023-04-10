@@ -97,11 +97,14 @@ class SingleTourContainer extends StatelessWidget {
                       const SizedBox(
                         width: 5,
                       ),
-                      AppText(
-                        text: location,
-                        fontWeight: FontWeight.w600,
-                        textcolor: AppColors.headTextColor,
-                        fontSize: 12,
+                      Expanded(
+                        child: AppText(
+                          overflow: TextOverflow.ellipsis,
+                          text: location,
+                          fontWeight: FontWeight.w600,
+                          textcolor: AppColors.headTextColor,
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ),

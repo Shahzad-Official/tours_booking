@@ -16,7 +16,7 @@ class MainPage extends StatefulWidget {
   final int currentIndex;
   const MainPage({
     Key? key,
-    this.currentIndex = 3,
+    this.currentIndex = 1,
   }) : super(key: key);
 
   @override
@@ -58,7 +58,7 @@ class _MainPageState extends State<MainPage> {
       future: checkLogin(),
       builder: (context, snapshot) {
         if (isLogedIn) {
-          return OngoingBookings();
+          return const OngoingBookings();
         } else {
           return const Login();
         }

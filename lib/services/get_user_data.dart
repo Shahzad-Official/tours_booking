@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tours_booking/utils/app_snackbar.dart';
 import '../models/user_profile/profile_model.dart';
 
 class GetUserData {
   ProfileModel userProfile = ProfileModel();
+  Box box = Hive.box("DataBox");
   Future<ProfileModel> getUserData(String uid) async {
     try {
       await FirebaseFirestore.instance
@@ -15,6 +17,21 @@ class GetUserData {
           userProfile = ProfileModel();
         } else {
           userProfile = ProfileModel.fromJson(value.data()!);
+          if (box.isEmpty) {
+            Map map = {
+              "dob": userProfile.dob,
+              "email": userProfile.email,
+              "phone": userProfile.phoneNo,
+              "profile": userProfile.profile,
+              "uid": userProfile.uid,
+              "userName": userProfile.userName,
+            };
+
+            box.put(
+              "userData",
+              map,
+            );
+          }
         }
       });
     } catch (e) {

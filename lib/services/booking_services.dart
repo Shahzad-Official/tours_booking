@@ -43,28 +43,29 @@ class BookingServices {
   }
 
   makeBooking({
-    required Timestamp createdOn,
     required String totalPrice,
     required String tourId,
     required String bookedSlots,
+    required String eventName,
   }) async {
-    BookingModel bookingModel = BookingModel(
-      createdOn: createdOn,
-      slotsBooked: bookedSlots,
-      totalPrice: totalPrice,
-      tourId: tourId,
-      userId: FirebaseAuth.instance.currentUser!.uid,
-      message: "Booked a tour",
-    );
-
     try {
-      await FirebaseFirestore.instance
-          .collection("bookings")
-          .add(bookingModel.toJson())
-          .then(
+      await FirebaseFirestore.instance.collection("booking").add(
+        {
+          "slots_booked": bookedSlots,
+          "user_id": FirebaseAuth.instance.currentUser!.uid,
+          "tour_id": tourId,
+          "booking_id": "",
+          "created_on": Timestamp.fromDate(
+            DateTime.now(),
+          ),
+          "message": "Booked a tour",
+          "total_price": totalPrice,
+          "eventName": eventName,
+        },
+      ).then(
         (value) async {
           await FirebaseFirestore.instance
-              .collection("bookings")
+              .collection("booking")
               .doc(value.id)
               .set(
             {

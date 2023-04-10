@@ -2,7 +2,9 @@ import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tours_booking/services/get_user_data.dart';
 import 'package:tours_booking/services/sms_services/get_current_user_sms.dart';
+import 'package:tours_booking/widgets/app_cache_image.dart';
 
 import '../../constants/app_colors.dart';
 import '../../controllers/chat_controller.dart';
@@ -23,6 +25,23 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final GetCurrentUserSms _currentUserSms = GetCurrentUserSms();
+  final GetUserData _userData = GetUserData();
+  bool isLoading = false;
+  getUserData() async {
+    setState(() {
+      isLoading = true;
+    });
+    await _userData.getUserData(widget.receiverId);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +55,21 @@ class _ChatScreenState extends State<ChatScreen> {
               elevation: 0,
               backgroundColor: AppColors.primarycolor.withOpacity(0.4),
               centerTitle: true,
-              title: const AppText(
-                text: "John Doe",
-                fontWeight: FontWeight.w700,
-              ),
-              leading: const Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: CircleAvatar(
-                  backgroundColor: AppColors.primarycolor,
-                  backgroundImage: AssetImage("assets/account.png"),
-                ),
-              ),
+              title: isLoading
+                  ? const CircularProgressIndicator()
+                  : AppText(
+                      text: _userData.userProfile.userName!,
+                      fontWeight: FontWeight.w700,
+                    ),
+              leading: isLoading
+                  ? const CircularProgressIndicator()
+                  : Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: AppCircularCachedImage(
+                        picRadius: 20,
+                        picUrl: _userData.userProfile.profile!,
+                      ),
+                    ),
             ),
             body: Stack(
               children: [
@@ -54,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: const EdgeInsets.only(top: 8.0, bottom: 65),
                   child: SingleChildScrollView(
                     child: StreamBuilder<List<MessagesModel>>(
-                      stream: _currentUserSms.getAllMessages(),
+                      stream: _currentUserSms.getAllMessages(widget.receiverId),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Column(
@@ -71,7 +94,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                             ),
                           );
-                        } else if (snapshot.data!.isEmpty) {
+                        } else if (snapshot.data == null) {
                           return const Center(
                             child: AppText(
                               text: "NO data available!",
