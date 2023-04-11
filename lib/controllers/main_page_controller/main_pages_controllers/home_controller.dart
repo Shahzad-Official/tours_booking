@@ -61,9 +61,9 @@ class HomeController extends GetxController {
     }
   }
 
-  CameraPosition initialPosition() {
+  CameraPosition initialPosition({required double lat, required double long}) {
     return CameraPosition(
-      target: LatLng(latitude!, longitude!),
+      target: LatLng(lat, long),
       zoom: 14.4746,
     );
   }

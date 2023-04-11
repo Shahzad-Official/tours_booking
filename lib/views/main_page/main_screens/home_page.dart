@@ -8,6 +8,7 @@ import '../../../constants/app_colors.dart';
 import '../../../utils/date_utils.dart/calculate_days.dart';
 import '../../../utils/date_utils.dart/format_date.dart';
 import '../../../widgets/all_package_list.dart';
+import '../../../widgets/app_text.dart';
 import '../../single_package_page/tour_single_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,7 +18,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final HomeController _controller = Get.put(HomeController());
   final GetAllPackages _getAllPackages = GetAllPackages();
 
@@ -152,7 +153,19 @@ class _HomePageState extends State<HomePage> {
                                               endDate: _
                                                   .allPackages[index].endDate
                                                   .toString(),
-                                            ).inDays.toString(),
+                                            ).isNegative
+                                                    ? "E"
+                                                    : CalculateDays
+                                                        .daysBetweenDates(
+                                                        startDate: _
+                                                            .allPackages[index]
+                                                            .startDate
+                                                            .toString(),
+                                                        endDate: _
+                                                            .allPackages[index]
+                                                            .endDate
+                                                            .toString(),
+                                                      ).inDays.toString(),
                                             eventDurationColor: CalculateDays
                                                         .daysBetweenDates(
                                                       startDate: _
@@ -181,19 +194,54 @@ class _HomePageState extends State<HomePage> {
                                                         ).inDays ==
                                                         2
                                                     ? Colors.yellow
-                                                    : Colors.green,
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PackageSinglePage(
-                                                    packageData:
-                                                        _.allPackages[index],
-                                                  ),
-                                                ),
-                                              );
-                                            },
+                                                    : CalculateDays
+                                                            .daysBetweenDates(
+                                                        startDate: _
+                                                            .allPackages[index]
+                                                            .startDate
+                                                            .toString(),
+                                                        endDate: _
+                                                            .allPackages[index]
+                                                            .endDate
+                                                            .toString(),
+                                                      ).isNegative
+                                                        ? Colors.purple
+                                                        : Colors.green,
+                                            onTap:
+                                                CalculateDays.daysBetweenDates(
+                                              startDate: _
+                                                  .allPackages[index].startDate
+                                                  .toString(),
+                                              endDate: _
+                                                  .allPackages[index].endDate
+                                                  .toString(),
+                                            ).isNegative
+                                                    ? () {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return const AlertDialog(
+                                                              title: AppText(
+                                                                text:
+                                                                    "Package Expired!",
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                      }
+                                                    : () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                PackageSinglePage(
+                                                              packageData:
+                                                                  _.allPackages[
+                                                                      index],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
                                           ),
                                         );
                                       },
@@ -209,7 +257,10 @@ class _HomePageState extends State<HomePage> {
                                 );
                               },
                             ).toSet(),
-                            initialCameraPosition: _.initialPosition(),
+                            initialCameraPosition: _.initialPosition(
+                              lat: _.allPackages[0].location!.latitude!,
+                              long: _.allPackages[0].location!.longitude!,
+                            ),
                           ),
                         ),
                       ],
