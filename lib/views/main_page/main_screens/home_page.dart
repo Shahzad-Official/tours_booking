@@ -258,8 +258,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               },
                             ).toSet(),
                             initialCameraPosition: _.initialPosition(
-                              lat: _.allPackages[0].location!.latitude!,
-                              long: _.allPackages[0].location!.longitude!,
+                              lat: _.allPackages[0].location!.latitude ??
+                                  _.latitude!,
+                              long: _.allPackages[0].location!.longitude ??
+                                  _.longitude!,
                             ),
                           ),
                         ),
