@@ -10,6 +10,7 @@ class GetAllPackages {
     try {
       await FirebaseFirestore.instance
           .collection("packages")
+          .where("isLive", isEqualTo: true)
           .orderBy("created_on")
           .get()
           .then((value) {

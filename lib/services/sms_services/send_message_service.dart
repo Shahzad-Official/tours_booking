@@ -5,8 +5,13 @@ class SendMessageService {
     required String message,
     required String senderId,
     required String receiverId,
+    required String bookingId,
   }) async {
-    await FirebaseFirestore.instance.collection("messages").add(
+    await FirebaseFirestore.instance
+        .collection("booking")
+        .doc(bookingId)
+        .collection("messages")
+        .add(
       {
         "message": message,
         "senderId": senderId,
@@ -17,6 +22,8 @@ class SendMessageService {
     ).then(
       (value) async {
         await FirebaseFirestore.instance
+            .collection("booking")
+            .doc(bookingId)
             .collection("messages")
             .doc(value.id)
             .update(

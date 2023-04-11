@@ -7,6 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/constants/svg_icons.dart';
 import 'package:tours_booking/controllers/feedback_controller.dart';
+import 'package:tours_booking/models/booking_model.dart';
 import 'package:tours_booking/models/packages/packages_model.dart';
 import 'package:tours_booking/models/user_profile/profile_model.dart';
 import 'package:tours_booking/views/chat/chat_view.dart';
@@ -18,7 +19,12 @@ import '../../utils/date_utils.dart/format_date.dart';
 
 class BookingDetails extends StatefulWidget {
   final PackagesModel packageData;
-  const BookingDetails({super.key, required this.packageData});
+  final BookingModel bookingData;
+  const BookingDetails({
+    super.key,
+    required this.packageData,
+    required this.bookingData,
+  });
 
   @override
   State<BookingDetails> createState() => _BookingDetailsState();
@@ -46,6 +52,9 @@ class _BookingDetailsState extends State<BookingDetails> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(65),
         child: AppBar(
+          leading: const BackButton(
+            color: Colors.black,
+          ),
           elevation: 0.0,
           backgroundColor: AppColors.backgroundcolor,
           title: const AppText(
@@ -330,6 +339,7 @@ class _BookingDetailsState extends State<BookingDetails> {
           onPressed: () {
             Get.to(
               () => ChatScreen(
+                bookingId: widget.bookingData.bookingId!,
                 receiverId: widget.packageData.listerId!,
               ),
             );

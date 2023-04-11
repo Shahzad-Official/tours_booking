@@ -99,6 +99,8 @@ class _BookingWidgetState extends State<BookingWidget> {
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           return SingleTourContainer(
+                                            eventName:
+                                                _.allBookings[index].eventName!,
                                             picUrl: snapshot.data!.thumbnailUrl,
                                             ratingBar: TourRatingBar(
                                               initialRating:
@@ -113,6 +115,8 @@ class _BookingWidgetState extends State<BookingWidget> {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           BookingDetails(
+                                                        bookingData: _
+                                                            .allBookings[index],
                                                         packageData:
                                                             snapshot.data!,
                                                       ),

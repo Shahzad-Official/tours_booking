@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/controllers/main_page_controller/main_pages_controllers/all_packages_controller.dart';
@@ -24,7 +27,9 @@ class AllPackages extends StatefulWidget {
   State<AllPackages> createState() => _AllPackagesState();
 }
 
-class _AllPackagesState extends State<AllPackages> {
+class _AllPackagesState extends State<AllPackages>
+    with TickerProviderStateMixin {
+  late AnimationController _animationController;
   final GetAllPackages _getAllPackages = GetAllPackages();
   final AllPackagesController _controller = Get.put(AllPackagesController());
   bool isLoading = false;
@@ -51,6 +56,7 @@ class _AllPackagesState extends State<AllPackages> {
   @override
   void initState() {
     getAllPackages();
+    _animationController = AnimationController(vsync: this);
     super.initState();
   }
 
@@ -93,6 +99,10 @@ class _AllPackagesState extends State<AllPackages> {
               if (isLoading) {
                 return const Center(
                   child: CircularProgressIndicator(),
+                );
+              } else if (_controller.allPackages.isEmpty) {
+                return const Center(
+                  child: AppText(text: "NO package Available!"),
                 );
               } else {
                 return SingleChildScrollView(
@@ -206,7 +216,15 @@ class _AllPackagesState extends State<AllPackages> {
                                       _.allPackages[index].startDate.toString(),
                                   endDate:
                                       _.allPackages[index].endDate.toString(),
-                                ).inDays.toString(),
+                                ).isNegative
+                                    ? "E"
+                                    : CalculateDays.daysBetweenDates(
+                                        startDate: _
+                                            .allPackages[index].startDate
+                                            .toString(),
+                                        endDate: _.allPackages[index].endDate
+                                            .toString(),
+                                      ).inDays.toString(),
                                 eventDurationColor:
                                     CalculateDays.daysBetweenDates(
                                               startDate: _
@@ -229,17 +247,62 @@ class _AllPackagesState extends State<AllPackages> {
                                                 ).inDays ==
                                                 2
                                             ? Colors.yellow
-                                            : Colors.green,
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => PackageSinglePage(
-                                        packageData: _.allPackages[index],
-                                      ),
-                                    ),
-                                  );
-                                },
+                                            : CalculateDays.daysBetweenDates(
+                                                startDate: _.allPackages[index]
+                                                    .startDate
+                                                    .toString(),
+                                                endDate: _
+                                                    .allPackages[index].endDate
+                                                    .toString(),
+                                              ).isNegative
+                                                ? Colors.purple
+                                                : Colors.green,
+                                onTap: CalculateDays.daysBetweenDates(
+                                  startDate:
+                                      _.allPackages[index].startDate.toString(),
+                                  endDate:
+                                      _.allPackages[index].endDate.toString(),
+                                ).isNegative
+                                    ? () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const AppText(
+                                                text: "Package Expired!",
+                                              ),
+                                              content: Lottie.asset(
+                                                'assets/animations/expire.json',
+                                                controller:
+                                                    _animationController,
+                                                onLoaded: (composition) {
+                                                  _animationController
+                                                    ..duration =
+                                                        composition.duration
+                                                    ..forward();
+                                                  Timer(
+                                                    composition.duration,
+                                                    () {
+                                                      Get.back();
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
+                                    : () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PackageSinglePage(
+                                              packageData: _.allPackages[index],
+                                            ),
+                                          ),
+                                        );
+                                      },
                               );
                             },
                           ),

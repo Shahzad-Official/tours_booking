@@ -2,6 +2,7 @@ import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tours_booking/services/get_user_data.dart';
 import 'package:tours_booking/services/sms_services/get_current_user_sms.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
@@ -13,10 +14,12 @@ import '../../widgets/app_text.dart';
 
 class ChatScreen extends StatefulWidget {
   final String receiverId;
+  final String bookingId;
 
   const ChatScreen({
     super.key,
     required this.receiverId,
+    required this.bookingId,
   });
 
   @override
@@ -77,13 +80,18 @@ class _ChatScreenState extends State<ChatScreen> {
                   padding: const EdgeInsets.only(top: 8.0, bottom: 65),
                   child: SingleChildScrollView(
                     child: StreamBuilder<List<MessagesModel>>(
-                      stream: _currentUserSms.getAllMessages(widget.receiverId),
+                      stream: _currentUserSms.getAllMessages(
+                        bookingId: widget.bookingId,
+                        receiverId: widget.receiverId,
+                      ),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Column(
                             children: List.generate(
                               snapshot.data!.length,
                               (index) => BubbleNormal(
+                                textStyle:
+                                    GoogleFonts.poppins(color: Colors.white),
                                 text: snapshot.data![index].message.toString(),
                                 isSender: snapshot.data![index].senderId ==
                                     FirebaseAuth.instance.currentUser!.uid,
@@ -113,7 +121,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 MessageBar(
                   onSend: (msg) async {
-                    await controller.sendMessage(msg, widget.receiverId);
+                    await controller.sendMessage(
+                        msg, widget.receiverId, widget.bookingId);
                   },
                 ),
               ],
