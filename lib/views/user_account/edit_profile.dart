@@ -99,8 +99,10 @@ class _EditProfileState extends State<EditProfile> {
                               } else {
                                 return AppCircularCachedImage(
                                   picRadius: 60,
-                                  picUrl: widget.userData.profile ??
-                                      DummyData.profilePic,
+                                  picUrl: widget.userData.profile == "" ||
+                                          widget.userData.profile == null
+                                      ? DummyData.profilePic
+                                      : widget.userData.profile!,
                                 );
                               }
                             },

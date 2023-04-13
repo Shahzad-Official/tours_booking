@@ -45,8 +45,10 @@ class AccountSettings extends StatelessWidget {
                     Row(
                       children: [
                         AppCircularCachedImage(
-                          picUrl:
-                              snapshot.data!.profile ?? DummyData.profilePic,
+                          picUrl: snapshot.data!.profile == "" ||
+                                  snapshot.data!.profile == null
+                              ? DummyData.profilePic
+                              : snapshot.data!.profile!,
                         ),
                         const SizedBox(
                           width: 20,

@@ -39,6 +39,7 @@ class HomeController extends GetxController {
       isGettingLocation = true;
       update();
       await Permission.location.request();
+      await Geolocator.requestPermission();
       await Geolocator.getCurrentPosition().then((value) {
         preferences.setDouble("latitude", value.latitude);
         preferences.setDouble("longitude", value.longitude);

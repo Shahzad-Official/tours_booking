@@ -85,7 +85,10 @@ class _AllPackagesState extends State<AllPackages>
                       ),
                       AppCircularCachedImage(
                         picRadius: 20,
-                        picUrl: userData.profile ?? DummyData.profilePic,
+                        picUrl:
+                            userData.profile == "" || userData.profile == null
+                                ? DummyData.profilePic
+                                : userData.profile!,
                       ),
                     ],
                   ),

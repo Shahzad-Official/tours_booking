@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/controllers/bookings_controllers/ongoing_bookings_controller.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
 
@@ -52,7 +53,9 @@ class _OngoingBookingsState extends State<OngoingBookings> {
                     fontWeight: FontWeight.w600,
                   ),
                   AppCircularCachedImage(
-                    picUrl: userData.profile!,
+                    picUrl: userData.profile == "" || userData.profile == null
+                        ? DummyData.profilePic
+                        : userData.profile!,
                     picRadius: 20,
                   ),
                 ],

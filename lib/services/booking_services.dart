@@ -9,7 +9,11 @@ class BookingServices {
   List<BookingModel> allBookings = [];
   getAllBookings() async {
     try {
-      await FirebaseFirestore.instance.collection("booking").get().then(
+      await FirebaseFirestore.instance
+          .collection("booking")
+          .where("user_id", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get()
+          .then(
         (value) {
           for (var i in value.docs) {
             allBookings.add(

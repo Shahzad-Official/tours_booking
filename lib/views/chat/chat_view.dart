@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/services/get_user_data.dart';
 import 'package:tours_booking/services/sms_services/get_current_user_sms.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
@@ -61,7 +62,7 @@ class _ChatScreenState extends State<ChatScreen> {
               title: isLoading
                   ? const CircularProgressIndicator()
                   : AppText(
-                      text: _userData.userProfile.userName!,
+                      text: _userData.userProfile.userName.toString(),
                       fontWeight: FontWeight.w700,
                     ),
               leading: isLoading
@@ -70,7 +71,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: AppCircularCachedImage(
                         picRadius: 20,
-                        picUrl: _userData.userProfile.profile!,
+                        picUrl: _userData.userProfile.profile ??
+                            DummyData.profilePic,
                       ),
                     ),
             ),

@@ -78,7 +78,9 @@ class UserProfile extends StatelessWidget {
                     width: 20,
                   ),
                   AppCircularCachedImage(
-                    picUrl: userData.profile.toString(),
+                    picUrl: userData.profile == "" || userData.profile == null
+                        ? DummyData.profilePic
+                        : userData.profile!,
                   ),
                 ],
               ),

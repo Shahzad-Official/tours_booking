@@ -62,5 +62,12 @@
 	<string>a7540fea3db172b67fa014c82c97194c</string>
 	<key>FacebookDisplayName</key>
 	<string>321GoLister</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location in the background.</string>    
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs access to location when in the background.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open and in the background.</string>
+
 </dict>
 </plist>
