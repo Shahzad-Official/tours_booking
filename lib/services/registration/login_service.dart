@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tours_booking/firebase_options.dart';
 
 import 'package:tours_booking/services/get_user_data.dart';
 
@@ -14,7 +15,9 @@ import '../../views/registeration/sign_up.dart';
 
 class LoginService {
   final GetUserData _userData = GetUserData();
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId: DefaultFirebaseOptions.currentPlatform.iosClientId,
+  );
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   doesContainId(uId) async {

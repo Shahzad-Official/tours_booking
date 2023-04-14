@@ -517,24 +517,30 @@ class PackageSinglePage extends StatelessWidget {
                                       crossAxisSpacing: 10,
                                     ),
                                     itemBuilder: (context, index) {
-                                      return Column(
-                                        children: [
-                                          AppCachedImage(
-                                            height: 50,
-                                            width: 50,
-                                            picUrl: packageData
-                                                .inclusions![index].iconImage
-                                                .toString(),
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          AppText(
-                                            text: packageData
-                                                .inclusions![index].iconName
-                                                .toString(),
-                                          ),
-                                        ],
+                                      return DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primarycolor
+                                              .withOpacity(0.3),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            AppCachedImage(
+                                              height: 50,
+                                              width: 50,
+                                              picUrl: packageData
+                                                  .inclusions![index].iconImage
+                                                  .toString(),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            AppText(
+                                              text: packageData
+                                                  .inclusions![index].iconName
+                                                  .toString(),
+                                            ),
+                                          ],
+                                        ),
                                       );
                                     },
                                   ),

@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "533343553586-enqtjup1u4l5e5mj3u5pl5e0jh7dsobh.apps.googleusercontent.com",
+          "client_id": "533343553586-5okqq30l8lc24la8ts6fgsmjvmmdu0up.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.tour_lister_app",
-            "certificate_hash": "a469dce48bfa4f18f6b0be9249d608a866971160"
+            "certificate_hash": "0847209eb0442527a7aeec08983548e415ca8021"
           }
         },
         {
@@ -40,10 +40,10 @@
               "client_type": 3
             },
             {
-              "client_id": "533343553586-o0v5e8e6n3bd00qteat5pl032vm3ktla.apps.googleusercontent.com",
+              "client_id": "533343553586-m006roj981kh89hu460vndjhsske2foo.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.tourListerApp"
+                "bundle_id": "com.example.toursBooking"
               }
             }
           ]
@@ -58,6 +58,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "533343553586-hlv1p8gi2d6mer6covpqjjet0venf404.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tours_booking",
+            "certificate_hash": "0847209eb0442527a7aeec08983548e415ca8021"
+          }
+        },
         {
           "client_id": "533343553586-8a5auu03ge7kddrisb5f1cm6tolvq3im.apps.googleusercontent.com",
           "client_type": 3
@@ -76,10 +84,10 @@
               "client_type": 3
             },
             {
-              "client_id": "533343553586-o0v5e8e6n3bd00qteat5pl032vm3ktla.apps.googleusercontent.com",
+              "client_id": "533343553586-m006roj981kh89hu460vndjhsske2foo.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.tourListerApp"
+                "bundle_id": "com.example.toursBooking"
               }
             }
           ]

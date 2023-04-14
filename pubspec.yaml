@@ -64,6 +64,7 @@ dependencies:
   firebase_auth: any
   cloud_firestore: any
   firebase_storage: any
+  cloud_functions: any
 
   #Social_Login
   flutter_facebook_auth: ^5.0.8

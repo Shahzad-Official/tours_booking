@@ -32,6 +32,7 @@ class AppBottomSheet extends StatelessWidget {
                 SvgPicture.string(
                   SvgIcons.home,
                   width: 30,
+                  // ignore: deprecated_member_use
                   color: currentIndex == 0
                       ? AppColors.primarycolor
                       : AppColors.headTextColor,
@@ -58,6 +59,7 @@ class AppBottomSheet extends StatelessWidget {
                 SvgPicture.string(
                   SvgIcons.plane,
                   width: 27,
+                  // ignore: deprecated_member_use
                   color: currentIndex == 1
                       ? AppColors.primarycolor
                       : AppColors.headTextColor,
@@ -84,6 +86,7 @@ class AppBottomSheet extends StatelessWidget {
                 SvgPicture.string(
                   SvgIcons.calender,
                   width: 25,
+                  // ignore: deprecated_member_use
                   color: currentIndex == 2
                       ? AppColors.primarycolor
                       : AppColors.headTextColor,
@@ -110,6 +113,7 @@ class AppBottomSheet extends StatelessWidget {
                 SvgPicture.string(
                   SvgIcons.profile,
                   width: 22,
+                  // ignore: deprecated_member_use
                   color: currentIndex == 3
                       ? AppColors.primarycolor
                       : AppColors.headTextColor,

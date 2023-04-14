@@ -92,6 +92,7 @@ class SingleTourContainer extends StatelessWidget {
                       SvgPicture.string(
                         SvgIcons.mapMarker,
                         width: 15,
+                        // ignore: deprecated_member_use
                         color: AppColors.headTextColor,
                       ),
                       const SizedBox(

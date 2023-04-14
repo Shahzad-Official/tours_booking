@@ -87,6 +87,7 @@ class SignUp extends StatelessWidget {
                                     ? SvgIcons.closeEye
                                     : SvgIcons.openEye,
                                 width: 30,
+                                // ignore: deprecated_member_use
                                 color: Colors.grey,
                               ),
                             ),
@@ -114,6 +115,7 @@ class SignUp extends StatelessWidget {
                                     ? SvgIcons.closeEye
                                     : SvgIcons.openEye,
                                 width: 30,
+                                // ignore: deprecated_member_use
                                 color: Colors.grey,
                               ),
                             ),

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tours_booking/firebase_options.dart';
 import 'package:tours_booking/services/get_user_data.dart';
 
 import '../../models/user_profile/profile_model.dart';
@@ -13,7 +14,9 @@ import 'login_service.dart';
 
 class SignupService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId: DefaultFirebaseOptions.currentPlatform.iosClientId,
+  );
   final GetUserData _userData = GetUserData();
   final LoginService _loginService = LoginService();
   List<ProfileModel> usersList = [];

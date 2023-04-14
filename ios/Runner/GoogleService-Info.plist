@@ -7,7 +7,7 @@
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.533343553586-m006roj981kh89hu460vndjhsske2foo</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>533343553586-enqtjup1u4l5e5mj3u5pl5e0jh7dsobh.apps.googleusercontent.com</string>
+	<string>533343553586-5okqq30l8lc24la8ts6fgsmjvmmdu0up.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCS12dEwUJ1r6hQGDraZIfmyzxSas7W3dI</string>
 	<key>GCM_SENDER_ID</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:533343553586:ios:24628ad3c7321aae09142b</string>
+	<string>1:533343553586:ios:b9fc1b0cf5cc702409142b</string>
 	<key>DATABASE_URL</key>
 	<string>https://go-17dd4-default-rtdb.firebaseio.com</string>
 </dict>

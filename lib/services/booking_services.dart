@@ -35,6 +35,10 @@ class BookingServices {
       await FirebaseFirestore.instance
           .collection("notifications")
           .where("status", isNotEqualTo: "seen")
+          .where(
+            "userId",
+            isEqualTo: FirebaseAuth.instance.currentUser?.uid,
+          )
           .get()
           .then(
         (value) {
@@ -62,7 +66,7 @@ class BookingServices {
           "created_on": Timestamp.fromDate(
             DateTime.now(),
           ),
-          "message": "Booked a tour",
+          "message": "Booked $eventName ",
           "total_price": totalPrice,
           "eventName": eventName,
         },
@@ -88,6 +92,7 @@ class BookingServices {
               "user_id": FirebaseAuth.instance.currentUser!.uid,
               "status": "unseen",
               "message": "Booked a tour",
+              "title": "Booking",
               "id": "",
             },
           ).then(

@@ -351,6 +351,7 @@ class _BookingDetailsState extends State<BookingDetails> {
                 SvgIcons.chat,
                 height: 30,
                 width: 30,
+                // ignore: deprecated_member_use
                 color: Colors.white,
               ),
               const SizedBox(
