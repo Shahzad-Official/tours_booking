@@ -12,6 +12,7 @@ import 'package:tours_booking/widgets/app_button.dart';
 import 'package:tours_booking/widgets/app_text.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../../constants/app_colors.dart';
+import '../../utils/date_utils.dart/calculate_days.dart';
 
 class Timer extends StatefulWidget {
   final PackagesModel packageData;
@@ -209,9 +210,16 @@ class _TimerState extends State<Timer> {
                           ),
                         ],
                       ),
-                      progressColor: _.time!.day == 1
+                      progressColor: CalculateDays.daysBetweenDates(
+                                endDate: widget.packageData.endDate.toString(),
+                              ) ==
+                              1
                           ? AppColors.day1Color
-                          : _.time!.day == 2
+                          : CalculateDays.daysBetweenDates(
+                                    endDate:
+                                        widget.packageData.endDate.toString(),
+                                  ) ==
+                                  1
                               ? AppColors.day2Color
                               : AppColors.day3Color,
                       backgroundColor: Colors.white,
@@ -277,7 +285,7 @@ class _TimerState extends State<Timer> {
                                   color: AppColors.primarycolor,
                                 ),
                               ),
-                              child: Center(
+                              child: const Center(
                                 child: AppText(
                                   text: "0 S",
                                   textcolor: Colors.blue,

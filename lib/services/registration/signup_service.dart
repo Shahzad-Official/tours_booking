@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hive/hive.dart';
 import 'package:tours_booking/firebase_options.dart';
 import 'package:tours_booking/services/get_user_data.dart';
 
@@ -20,7 +21,7 @@ class SignupService {
   final GetUserData _userData = GetUserData();
   final LoginService _loginService = LoginService();
   List<ProfileModel> usersList = [];
-
+  Box box = Hive.box("DataBox");
   verifyUser({
     required String uid,
     required String email,
@@ -46,6 +47,21 @@ class SignupService {
           "disabled": false,
           "commission": "5",
         });
+        if (box.isEmpty) {
+          Map map = {
+            "dob": "10-10-2000",
+            "email": email,
+            "phone": "+923000000000",
+            "profile": photoURL,
+            "uid": uid,
+            "userName": displayName,
+          };
+
+          box.put(
+            "userData",
+            map,
+          );
+        }
         AppSnackbar.snackBar(title: "Message", message: "Successfully LogedIn");
         Get.offAll(() => const MainPage());
       } else {
@@ -66,6 +82,21 @@ class SignupService {
             "disabled": false,
             "commission": "5",
           });
+          if (box.isEmpty) {
+            Map map = {
+              "dob": "10-10-2000",
+              "email": email,
+              "phone": "+923000000000",
+              "profile": photoURL,
+              "uid": uid,
+              "userName": displayName,
+            };
+
+            box.put(
+              "userData",
+              map,
+            );
+          }
           AppSnackbar.snackBar(
               title: "Message", message: "Successfully LogedIn");
           Get.offAll(() => const MainPage());

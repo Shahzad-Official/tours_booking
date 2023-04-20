@@ -266,9 +266,20 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                         lineWidth: 7,
                                         backgroundColor: AppColors.headTextColor
                                             .withOpacity(0.5),
-                                        progressColor: _.time!.day == 1
+                                        progressColor: CalculateDays
+                                                    .daysBetweenDates(
+                                                  endDate: widget
+                                                      .packageData.endDate
+                                                      .toString(),
+                                                ) ==
+                                                1
                                             ? AppColors.day1Color
-                                            : _.time!.day == 2
+                                            : CalculateDays.daysBetweenDates(
+                                                      endDate: widget
+                                                          .packageData.endDate
+                                                          .toString(),
+                                                    ) ==
+                                                    1
                                                 ? AppColors.day2Color
                                                 : AppColors.day3Color,
                                         center: Column(
