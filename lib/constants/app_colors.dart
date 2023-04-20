@@ -4,6 +4,9 @@ class AppColors {
   static const primarycolor = Color(0xFF3FAFFF);
   static const backgroundcolor = Color(0xffFFFFFF);
   static const headTextColor = Color(0xff8E89A9);
+  static const day2Color = Color(0xffDEA042);
+  static const day1Color = Color(0xffFF4A4A);
+  static const day3Color = Color(0xff12AD0F);
   Map<int, Color> color = const {
     50: Color.fromRGBO(63, 175, 255, .1),
     100: Color.fromRGBO(63, 175, 255, .2),

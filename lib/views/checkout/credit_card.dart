@@ -282,6 +282,7 @@ class _CreditCardState extends State<CreditCard> {
                         totalPrice: widget.packageData.endPrice!,
                         tourId: widget.packageData.packageId!,
                         eventName: widget.packageData.packageName!,
+                        listerId: widget.packageData.listerId!,
                       );
                       // ignore: use_build_context_synchronously
                     },

@@ -53,6 +53,7 @@ class BookingServices {
   makeBooking({
     required String totalPrice,
     required String tourId,
+    required String listerId,
     required String bookedSlots,
     required String eventName,
   }) async {
@@ -62,6 +63,7 @@ class BookingServices {
           "slots_booked": bookedSlots,
           "user_id": FirebaseAuth.instance.currentUser!.uid,
           "tour_id": tourId,
+          "lister_id": listerId,
           "booking_id": "",
           "created_on": Timestamp.fromDate(
             DateTime.now(),
@@ -89,6 +91,7 @@ class BookingServices {
           await FirebaseFirestore.instance.collection("notifications").add(
             {
               "tour_id": tourId,
+              "lister_id": listerId,
               "user_id": FirebaseAuth.instance.currentUser!.uid,
               "status": "unseen",
               "message": "Booked a tour",

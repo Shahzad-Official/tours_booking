@@ -1,21 +1,18 @@
 class CalculateDays {
-  static Duration daysBetweenDates({
-    required String startDate,
+  static int daysBetweenDates({
     required String endDate,
   }) {
-    DateTime newStartDate = DateTime.parse(endDate);
-    DateTime newEndDate = DateTime.now();
-
-    var diffrence = newStartDate.difference(newEndDate);
-
-    return diffrence;
+    DateTime newStartDate = DateTime.now();
+    DateTime newEndDate = DateTime.parse(endDate);
+    return DateTime.fromMillisecondsSinceEpoch(
+            newEndDate.difference(newStartDate).inMilliseconds)
+        .day;
   }
 
   static DateTime dateDiffrence({
-    required String startDate,
     required String endDate,
   }) {
-    DateTime newStartDate = DateTime.parse(startDate);
+    DateTime newStartDate = DateTime.now();
     DateTime newEndDate = DateTime.parse(endDate);
     return DateTime.fromMillisecondsSinceEpoch(
         newEndDate.difference(newStartDate).inMilliseconds);

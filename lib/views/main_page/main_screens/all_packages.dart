@@ -215,45 +215,30 @@ class _AllPackagesState extends State<AllPackages>
                                     .allPackages[index].location!.address
                                     .toString(),
                                 eventDuration: CalculateDays.daysBetweenDates(
-                                  startDate:
-                                      _.allPackages[index].startDate.toString(),
                                   endDate:
                                       _.allPackages[index].endDate.toString(),
                                 ).isNegative
                                     ? "E"
                                     : CalculateDays.daysBetweenDates(
-                                        startDate: _
-                                            .allPackages[index].startDate
-                                            .toString(),
                                         endDate: _.allPackages[index].endDate
                                             .toString(),
-                                      ).inDays.toString(),
+                                      ).toString(),
                                 eventDurationColor:
                                     CalculateDays.daysBetweenDates(
-                                              startDate: _
-                                                  .allPackages[index].startDate
-                                                  .toString(),
                                               endDate: _
                                                   .allPackages[index].endDate
                                                   .toString(),
-                                            ).inDays >=
+                                            ) >=
                                             3
                                         ? Colors.red
                                         : CalculateDays.daysBetweenDates(
-                                                  startDate: _
-                                                      .allPackages[index]
-                                                      .startDate
-                                                      .toString(),
                                                   endDate: _.allPackages[index]
                                                       .endDate
                                                       .toString(),
-                                                ).inDays ==
+                                                ) ==
                                                 2
                                             ? Colors.yellow
                                             : CalculateDays.daysBetweenDates(
-                                                startDate: _.allPackages[index]
-                                                    .startDate
-                                                    .toString(),
                                                 endDate: _
                                                     .allPackages[index].endDate
                                                     .toString(),
@@ -261,8 +246,6 @@ class _AllPackagesState extends State<AllPackages>
                                                 ? Colors.purple
                                                 : Colors.green,
                                 onTap: CalculateDays.daysBetweenDates(
-                                  startDate:
-                                      _.allPackages[index].startDate.toString(),
                                   endDate:
                                       _.allPackages[index].endDate.toString(),
                                 ).isNegative

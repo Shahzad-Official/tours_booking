@@ -44,6 +44,7 @@ class CreditCardController extends GetxController {
     context, {
     required String totalPrice,
     required String tourId,
+    required String listerId,
     required String bookedSlots,
     required String eventName,
   }) async {
@@ -82,6 +83,7 @@ class CreditCardController extends GetxController {
         tourId: tourId,
         bookedSlots: bookedSlots,
         eventName: eventName,
+        listerId: listerId,
       );
       isLoading = false;
       update();

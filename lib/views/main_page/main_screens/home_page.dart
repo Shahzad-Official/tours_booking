@@ -147,9 +147,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                 .toString(),
                                             eventDuration:
                                                 CalculateDays.daysBetweenDates(
-                                              startDate: _
-                                                  .allPackages[index].startDate
-                                                  .toString(),
                                               endDate: _
                                                   .allPackages[index].endDate
                                                   .toString(),
@@ -157,49 +154,32 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                     ? "E"
                                                     : CalculateDays
                                                         .daysBetweenDates(
-                                                        startDate: _
-                                                            .allPackages[index]
-                                                            .startDate
-                                                            .toString(),
                                                         endDate: _
                                                             .allPackages[index]
                                                             .endDate
                                                             .toString(),
-                                                      ).inDays.toString(),
+                                                      ).toString(),
                                             eventDurationColor: CalculateDays
                                                         .daysBetweenDates(
-                                                      startDate: _
-                                                          .allPackages[index]
-                                                          .startDate
-                                                          .toString(),
                                                       endDate: _
                                                           .allPackages[index]
                                                           .endDate
                                                           .toString(),
-                                                    ).inDays >=
+                                                    ) >=
                                                     3
                                                 ? Colors.red
                                                 : CalculateDays
                                                             .daysBetweenDates(
-                                                          startDate: _
-                                                              .allPackages[
-                                                                  index]
-                                                              .startDate
-                                                              .toString(),
                                                           endDate: _
                                                               .allPackages[
                                                                   index]
                                                               .endDate
                                                               .toString(),
-                                                        ).inDays ==
+                                                        ) ==
                                                         2
                                                     ? Colors.yellow
                                                     : CalculateDays
                                                             .daysBetweenDates(
-                                                        startDate: _
-                                                            .allPackages[index]
-                                                            .startDate
-                                                            .toString(),
                                                         endDate: _
                                                             .allPackages[index]
                                                             .endDate
@@ -209,9 +189,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                         : Colors.green,
                                             onTap:
                                                 CalculateDays.daysBetweenDates(
-                                              startDate: _
-                                                  .allPackages[index].startDate
-                                                  .toString(),
                                               endDate: _
                                                   .allPackages[index].endDate
                                                   .toString(),

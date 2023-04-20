@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:tours_booking/constants/app_colors.dart';
@@ -11,12 +13,26 @@ import 'package:tours_booking/views/timer/timer.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
 import 'package:tours_booking/widgets/app_text.dart';
 
-class PackageSinglePage extends StatelessWidget {
+import '../../controllers/timer_page_controller.dart';
+
+class PackageSinglePage extends StatefulWidget {
   final PackagesModel packageData;
   const PackageSinglePage({
     Key? key,
     required this.packageData,
   }) : super(key: key);
+
+  @override
+  State<PackageSinglePage> createState() => _PackageSinglePageState();
+}
+
+class _PackageSinglePageState extends State<PackageSinglePage> {
+  TimerController controller = Get.put(TimerController());
+  @override
+  void initState() {
+    controller.startTimer(timestamp: widget.packageData.endDate!);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +68,7 @@ class PackageSinglePage extends StatelessWidget {
                             ),
                           ),
                           child: AppCachedImage(
-                            picUrl: packageData.thumbnailUrl.toString(),
+                            picUrl: widget.packageData.thumbnailUrl.toString(),
                           ),
                         ),
                         Padding(
@@ -121,18 +137,21 @@ class PackageSinglePage extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: List.generate(
-                                    packageData.otherImage!.length,
+                                    widget.packageData.otherImage!.length,
                                     (index) => AppCachedImage(
-                                      picUrl: packageData.otherImage![index]
+                                      picUrl: widget
+                                          .packageData.otherImage![index]
                                           .toString(),
                                       height: 70,
                                       width: 70,
                                       borderRadius: 10,
-                                      child: packageData.otherImage!.length > 4
+                                      child: widget.packageData.otherImage!
+                                                  .length >
+                                              4
                                           ? Center(
                                               child: AppText(
                                                 text:
-                                                    "+ ${packageData.otherImage!.length - 4}",
+                                                    "+ ${widget.packageData.otherImage!.length - 4}",
                                                 fontSize: 18,
                                                 textcolor: Colors.white,
                                               ),
@@ -165,7 +184,7 @@ class PackageSinglePage extends StatelessWidget {
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
-                                      text: packageData.packageName,
+                                      text: widget.packageData.packageName,
                                       style: GoogleFonts.poppins(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500,
@@ -194,7 +213,8 @@ class PackageSinglePage extends StatelessWidget {
                             ],
                           ),
                           AppText(
-                            text: packageData.location!.address.toString(),
+                            text:
+                                widget.packageData.location!.address.toString(),
                             textcolor: Colors.grey,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -202,156 +222,188 @@ class PackageSinglePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Timer(
-                                packageData: packageData,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          height: 120,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                offset: const Offset(1, 2),
-                                color: Colors.grey.withOpacity(0.5),
-                                blurRadius: 5,
-                              ),
-                            ],
-                          ),
-                          child: CircularPercentIndicator(
-                            reverse: true,
-                            radius: 55,
-                            percent: 0.40,
-                            animationDuration: 1000,
-                            animateFromLastPercent: true,
-                            animation: true,
-                            circularStrokeCap: CircularStrokeCap.round,
-                            lineWidth: 7,
-                            backgroundColor:
-                                AppColors.headTextColor.withOpacity(0.5),
-                            progressColor: AppColors.primarycolor,
-                            center: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                AppText(
-                                  text: "\$${packageData.startPrice}",
-                                  fontWeight: FontWeight.w700,
-                                  textcolor: AppColors.primarycolor,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 15,
+                  GetBuilder<TimerController>(
+                      init: TimerController(),
+                      builder: (_) {
+                        return Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Timer(
+                                      packageData: widget.packageData,
+                                    ),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 2,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: AppColors.primarycolor,
-                                              width: 0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          color: AppColors.primarycolor
-                                              .withOpacity(0.1),
-                                        ),
-                                        child: Center(
-                                          child: AppText(
-                                            text:
-                                                "${CalculateDays.dateDiffrence(startDate: packageData.startDate!, endDate: packageData.endDate!).day}D",
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
-                                            textcolor: Colors.blue,
+                                );
+                              },
+                              child: _.time == null
+                                  ? const CircularProgressIndicator()
+                                  : Container(
+                                      height: 120,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            offset: const Offset(1, 2),
+                                            color: Colors.grey.withOpacity(0.5),
+                                            blurRadius: 5,
                                           ),
+                                        ],
+                                      ),
+                                      child: CircularPercentIndicator(
+                                        reverse: true,
+                                        radius: 55,
+                                        percent: 0.40,
+                                        animationDuration: 1000,
+                                        animateFromLastPercent: true,
+                                        animation: true,
+                                        circularStrokeCap:
+                                            CircularStrokeCap.round,
+                                        lineWidth: 7,
+                                        backgroundColor: AppColors.headTextColor
+                                            .withOpacity(0.5),
+                                        progressColor: _.time!.day == 1
+                                            ? AppColors.day1Color
+                                            : _.time!.day == 2
+                                                ? AppColors.day2Color
+                                                : AppColors.day3Color,
+                                        center: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            AppText(
+                                              text:
+                                                  "\$${widget.packageData.startPrice}",
+                                              fontWeight: FontWeight.w700,
+                                              textcolor: AppColors.primarycolor,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 15,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 2,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: AppColors
+                                                              .primarycolor,
+                                                          width: 0.5),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                      color: AppColors
+                                                          .primarycolor
+                                                          .withOpacity(0.1),
+                                                    ),
+                                                    child: Center(
+                                                      child: AppText(
+                                                        text:
+                                                            "${CalculateDays.dateDiffrence(endDate: widget.packageData.endDate!).day}D",
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        textcolor: Colors.blue,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 2,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: AppColors
+                                                              .primarycolor,
+                                                          width: 0.5),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                      color: AppColors
+                                                          .primarycolor
+                                                          .withOpacity(0.1),
+                                                    ),
+                                                    child: Center(
+                                                      child: AppText(
+                                                        text:
+                                                            "${CalculateDays.dateDiffrence(endDate: widget.packageData.endDate!).hour}H",
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        textcolor: Colors.blue,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 2,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: AppColors
+                                                              .primarycolor,
+                                                          width: 0.5),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                      color: AppColors
+                                                          .primarycolor
+                                                          .withOpacity(0.1),
+                                                    ),
+                                                    child: Center(
+                                                      child: AppText(
+                                                        text:
+                                                            "${CalculateDays.dateDiffrence(endDate: widget.packageData.endDate!).minute}M",
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        textcolor: Colors.blue,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 2,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: AppColors.primarycolor,
-                                              width: 0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          color: AppColors.primarycolor
-                                              .withOpacity(0.1),
-                                        ),
-                                        child: Center(
-                                          child: AppText(
-                                            text:
-                                                "${CalculateDays.dateDiffrence(startDate: packageData.startDate!, endDate: packageData.endDate!).hour}H",
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
-                                            textcolor: Colors.blue,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 2,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: AppColors.primarycolor,
-                                              width: 0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          color: AppColors.primarycolor
-                                              .withOpacity(0.1),
-                                        ),
-                                        child: Center(
-                                          child: AppText(
-                                            text:
-                                                "${CalculateDays.dateDiffrence(startDate: packageData.startDate!, endDate: packageData.endDate!).minute}M",
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w400,
-                                            textcolor: Colors.blue,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                    ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
+                        );
+                      }),
                 ],
               ),
-            ),
-            const SizedBox(
-              height: 30,
             ),
             Padding(
               padding: AppPadding.defaultPadding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 10,
+                  AppPadding.heightSpace15,
+                  AppText(
+                    text: widget.packageData.description.toString(),
+                    textcolor: Colors.grey,
+                    fontSize: 12,
+                    overflow: TextOverflow.ellipsis,
                   ),
+                  AppPadding.heightSpace20,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -365,8 +417,8 @@ class PackageSinglePage extends StatelessWidget {
                           AppText(
                             text: "${FormatDate.formatedDate(
                               formatPattern: "dd/MM/yyyy",
-                              date: packageData.startDate.toString(),
-                            )} | ${packageData.startTime}",
+                              date: widget.packageData.startDate.toString(),
+                            )} | ${widget.packageData.startTime}",
                             fontSize: 10,
                             textcolor: Colors.blueAccent,
                           ),
@@ -382,7 +434,7 @@ class PackageSinglePage extends StatelessWidget {
                           AppText(
                             text: "${FormatDate.formatedDate(
                               formatPattern: "dd/MM/yyyy",
-                              date: packageData.endDate.toString(),
+                              date: widget.packageData.endDate.toString(),
                             )} | 1+ hour",
                             fontSize: 10,
                             textcolor: Colors.blueAccent,
@@ -394,7 +446,7 @@ class PackageSinglePage extends StatelessWidget {
                           const Icon(Icons.star_border),
                           AppText(
                             text: DangerRatingData.danger(
-                              packageData.dangerRating.toString(),
+                              widget.packageData.dangerRating.toString(),
                             ),
                             fontSize: 10,
                             textcolor: Colors.grey,
@@ -407,29 +459,22 @@ class PackageSinglePage extends StatelessWidget {
                     height: 20,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const AppText(
-                        text: "Age Suitability ",
+                        text: "Age Suitability : ",
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         textcolor: Colors.grey,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: AppText(
-                          text: packageData.ageSuitability.toString(),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          textcolor: Colors.grey,
-                        ),
+                      AppText(
+                        text: widget.packageData.ageSuitability.toString(),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        textcolor: Colors.grey,
                       ),
                     ],
                   ),
-                  Myslider(
-                    value: int.parse(packageData.ageSuitability!),
-                  ),
-                  AppPadding.heightSpace20,
+                  AppPadding.heightSpace10,
                   Row(
                     children: [
                       const AppText(
@@ -439,24 +484,7 @@ class PackageSinglePage extends StatelessWidget {
                         textcolor: Colors.grey,
                       ),
                       AppText(
-                        text: packageData.typeOfTour.toString(),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textcolor: Colors.grey,
-                      ),
-                    ],
-                  ),
-                  AppPadding.heightSpace20,
-                  Row(
-                    children: [
-                      const AppText(
-                        text: "Number of Packages Left : ",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textcolor: Colors.grey,
-                      ),
-                      AppText(
-                        text: packageData.availablePackages.toString(),
+                        text: widget.packageData.typeOfTour.toString(),
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         textcolor: Colors.grey,
@@ -473,89 +501,137 @@ class PackageSinglePage extends StatelessWidget {
                         textcolor: Colors.grey,
                       ),
                       AppText(
-                        text: packageData.noOfPersonsInPackage.toString(),
+                        text:
+                            widget.packageData.noOfPersonsInPackage.toString(),
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         textcolor: Colors.grey,
                       ),
                     ],
                   ),
-                  AppPadding.heightSpace20,
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const AppText(
-                        text: "Inclusions : ",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textcolor: Colors.grey,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                icon: const Align(
-                                  alignment: Alignment.topRight,
-                                  child: CloseButton(),
-                                ),
-                                title: const AppText(text: "Inclusions"),
-                                content: Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                  ),
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.8,
-                                  child: GridView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: packageData.inclusions!.length,
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 4,
-                                      childAspectRatio: 0.7,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
+                      Row(
+                        children: [
+                          const AppText(
+                            text: "Inclusions : ",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            textcolor: Colors.grey,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    icon: const Align(
+                                      alignment: Alignment.topRight,
+                                      child: CloseButton(),
                                     ),
-                                    itemBuilder: (context, index) {
-                                      return DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primarycolor
-                                              .withOpacity(0.3),
+                                    title: const AppText(text: "Inclusions"),
+                                    content: Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                      ),
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      child: GridView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: widget
+                                            .packageData.inclusions!.length,
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 4,
+                                          childAspectRatio: 0.7,
+                                          mainAxisSpacing: 10,
+                                          crossAxisSpacing: 10,
                                         ),
-                                        child: Column(
-                                          children: [
-                                            AppCachedImage(
-                                              height: 50,
-                                              width: 50,
-                                              picUrl: packageData
-                                                  .inclusions![index].iconImage
-                                                  .toString(),
+                                        itemBuilder: (context, index) {
+                                          return Center(
+                                            child: Container(
+                                              color: AppColors.primarycolor
+                                                  .withOpacity(0.3),
+                                              height: 70,
+                                              width: 70,
+                                              child: Stack(
+                                                children: [
+                                                  Center(
+                                                    child: AppCachedImage(
+                                                      height: 50,
+                                                      width: 50,
+                                                      picUrl: widget
+                                                          .packageData
+                                                          .inclusions![index]
+                                                          .iconImage
+                                                          .toString(),
+                                                    ),
+                                                  ),
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.topRight,
+                                                    child: CircleAvatar(
+                                                      radius: 10,
+                                                      child: Center(
+                                                        child: AppText(
+                                                          text: widget
+                                                              .packageData
+                                                              .inclusions![
+                                                                  index]
+                                                              .inclusionCount
+                                                              .toString(),
+                                                          fontSize: 8,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            AppText(
-                                              text: packageData
-                                                  .inclusions![index].iconName
-                                                  .toString(),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                        child: const AppText(
-                          text: "See here",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          textcolor: Colors.blue,
-                          decoration: TextDecoration.underline,
-                        ),
+                            child: Image.asset(
+                              "assets/inclusions.png",
+                              height: 50,
+                              width: 50,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          const AppText(
+                            text: "5.0",
+                            textcolor: Color(0x2F2A4EA1),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20,
+                          ),
+                          RatingBar.builder(
+                            initialRating: 0,
+                            glowRadius: 1,
+                            itemSize: 18,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            ignoreGestures: true,
+                            itemCount: 5,
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating) {},
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -569,34 +645,34 @@ class PackageSinglePage extends StatelessWidget {
   }
 }
 
-class Myslider extends StatelessWidget {
-  final int value;
-  const Myslider({
-    Key? key,
-    required this.value,
-  }) : super(key: key);
+// class Myslider extends StatelessWidget {
+//   final int value;
+//   const Myslider({
+//     Key? key,
+//     required this.value,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            // mainAxisSize: MainAxisSize.max,
-            children: [
-          Expanded(
-              child: Slider(
-                  thumbColor: Colors.white,
-                  value: value.toDouble(),
-                  min: 1.0,
-                  max: 20.0,
-                  divisions: 15,
-                  activeColor: Colors.blueAccent,
-                  inactiveColor: Colors.black45,
-                  label: 'Age',
-                  onChanged: (double newValue) {},
-                  semanticFormatterCallback: (double newValue) {
-                    return '${newValue.round()} dollars';
-                  })),
-        ]));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//         child: Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//             // mainAxisSize: MainAxisSize.max,
+//             children: [
+//           Expanded(
+//               child: Slider(
+//                   thumbColor: Colors.white,
+//                   value: value.toDouble(),
+//                   min: 1.0,
+//                   max: 20.0,
+//                   divisions: 15,
+//                   activeColor: Colors.blueAccent,
+//                   inactiveColor: Colors.black45,
+//                   label: 'Age',
+//                   onChanged: (double newValue) {},
+//                   semanticFormatterCallback: (double newValue) {
+//                     return '${newValue.round()} dollars';
+//                   })),
+//         ]));
+//   }
+// }
