@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
+import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/controllers/main_page_controller/main_pages_controllers/all_packages_controller.dart';
@@ -230,21 +231,21 @@ class _AllPackagesState extends State<AllPackages>
                                                   .toString(),
                                             ) >=
                                             3
-                                        ? Colors.red
+                                        ? AppColors.day3Color
                                         : CalculateDays.daysBetweenDates(
                                                   endDate: _.allPackages[index]
                                                       .endDate
                                                       .toString(),
                                                 ) ==
                                                 2
-                                            ? Colors.yellow
+                                            ? AppColors.day2Color
                                             : CalculateDays.daysBetweenDates(
                                                 endDate: _
                                                     .allPackages[index].endDate
                                                     .toString(),
                                               ).isNegative
                                                 ? Colors.purple
-                                                : Colors.green,
+                                                : AppColors.day1Color,
                                 onTap: CalculateDays.daysBetweenDates(
                                   endDate:
                                       _.allPackages[index].endDate.toString(),

@@ -21,7 +21,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final HomeController _controller = Get.put(HomeController());
   final GetAllPackages _getAllPackages = GetAllPackages();
-
+  List<String> allTabs = [
+    "Temple",
+    "Adventure",
+    "People",
+    "Community",
+    "Event",
+  ];
+  late TabController _tabController;
   bool isLoading = false;
   getAllPackages() async {
     setState(() {
@@ -39,6 +46,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    _tabController = TabController(
+      length: allTabs.length,
+      vsync: this,
+    );
     getAllPackages();
     _controller.setCustomIcon();
     _controller.getMyCurrentLocation();
@@ -65,184 +76,211 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return Stack(
-                  alignment: Alignment.bottomCenter,
+                return Column(
                   children: [
-                    Column(
-                      children: [
-                        AppBar(
-                          elevation: 0.0,
-                          backgroundColor: AppColors.backgroundcolor,
-                          title: Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: SizedBox(
-                              height: 60,
-                              width: double.maxFinite,
-                              child: TextFormField(
-                                onChanged: (value) {},
-                                decoration: InputDecoration(
-                                  prefixIcon: const Icon(
-                                    Icons.search,
-                                  ),
-                                  hintText: ' Place',
-                                  fillColor: const Color(0xffEAE8F4),
-                                  filled: true,
-                                  contentPadding:
-                                      const EdgeInsets.only(left: 5),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(33),
-                                    borderSide: BorderSide.none,
-                                  ),
-                                ),
+                    AppBar(
+                      elevation: 0.0,
+                      backgroundColor: AppColors.backgroundcolor,
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: SizedBox(
+                          height: 60,
+                          width: double.maxFinite,
+                          child: TextFormField(
+                            onChanged: (value) {
+                              _.searchPackage(
+                                packagesList: _getAllPackages.allPackages,
+                                query: value,
+                              );
+                            },
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                Icons.search,
+                              ),
+                              hintText: ' Place',
+                              fillColor: const Color(0xffEAE8F4),
+                              filled: true,
+                              contentPadding: const EdgeInsets.only(left: 5),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(33),
+                                borderSide: BorderSide.none,
                               ),
                             ),
                           ),
-                          leading: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              color: Color(0xff302A4E),
-                              size: 25,
-                            ),
-                          ),
                         ),
-                        Expanded(
-                          child: GoogleMap(
-                            markers: List.generate(
-                              _.allPackages.length,
-                              (index) {
-                                return Marker(
-                                  onTap: () {
-                                    _.checkIsTapped();
-                                    showModalBottomSheet(
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (context) {
-                                        return Container(
-                                          height: 200,
-                                          color: Colors.transparent,
-                                          child: PackagesList(
-                                            rating: 0,
-                                            eventImage: _
-                                                .allPackages[index].thumbnailUrl
-                                                .toString(),
-                                            eventName: _
-                                                .allPackages[index].packageName
-                                                .toString(),
-                                            eventDate:
-                                                "${FormatDate.formatedDate(
-                                              formatPattern: "dd MMM",
-                                              date: _
-                                                  .allPackages[index].startDate
+                      ),
+                      leading: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          color: Color(0xff302A4E),
+                          size: 25,
+                        ),
+                      ),
+                    ),
+                    TabBar(
+                      labelColor: Colors.black,
+                      isScrollable: true,
+                      controller: _tabController,
+                      onTap: (value) {},
+                      tabs: List.generate(
+                        allTabs.length,
+                        (index) => Tab(
+                          text: allTabs[index],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: _.allPackages.isEmpty
+                          ? const Padding(
+                              padding: EdgeInsets.all(29.0),
+                              child: Center(
+                                child: AppText(
+                                  text:
+                                      "No package Available related to this query!",
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            )
+                          : GoogleMap(
+                              markers: List.generate(
+                                _.allPackages.length,
+                                (index) {
+                                  return Marker(
+                                    onTap: () {
+                                      _.checkIsTapped();
+                                      showModalBottomSheet(
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) {
+                                          return Container(
+                                            height: 200,
+                                            color: Colors.transparent,
+                                            child: PackagesList(
+                                              rating: 0,
+                                              eventImage: _.allPackages[index]
+                                                  .thumbnailUrl
                                                   .toString(),
-                                            )}-${FormatDate.formatedDate(
-                                              formatPattern: "dd MMM",
-                                              date: _.allPackages[index].endDate
+                                              eventName: _.allPackages[index]
+                                                  .packageName
                                                   .toString(),
-                                            )}",
-                                            eventLocation: _.allPackages[index]
-                                                .location!.address
-                                                .toString(),
-                                            eventDuration:
-                                                CalculateDays.daysBetweenDates(
-                                              endDate: _
-                                                  .allPackages[index].endDate
+                                              eventDate:
+                                                  "${FormatDate.formatedDate(
+                                                formatPattern: "dd MMM",
+                                                date: _.allPackages[index]
+                                                    .startDate
+                                                    .toString(),
+                                              )}-${FormatDate.formatedDate(
+                                                formatPattern: "dd MMM",
+                                                date: _
+                                                    .allPackages[index].endDate
+                                                    .toString(),
+                                              )}",
+                                              eventLocation: _
+                                                  .allPackages[index]
+                                                  .location!
+                                                  .address
                                                   .toString(),
-                                            ).isNegative
-                                                    ? "E"
-                                                    : CalculateDays
-                                                        .daysBetweenDates(
-                                                        endDate: _
-                                                            .allPackages[index]
-                                                            .endDate
-                                                            .toString(),
-                                                      ).toString(),
-                                            eventDurationColor: CalculateDays
-                                                        .daysBetweenDates(
+                                              eventDuration: CalculateDays
+                                                      .daysBetweenDates(
+                                                endDate: _
+                                                    .allPackages[index].endDate
+                                                    .toString(),
+                                              ).isNegative
+                                                  ? "E"
+                                                  : CalculateDays
+                                                      .daysBetweenDates(
                                                       endDate: _
                                                           .allPackages[index]
                                                           .endDate
                                                           .toString(),
-                                                    ) >=
-                                                    3
-                                                ? Colors.red
-                                                : CalculateDays
-                                                            .daysBetweenDates(
+                                                    ).toString(),
+                                              eventDurationColor: CalculateDays
+                                                          .daysBetweenDates(
+                                                        endDate: _
+                                                            .allPackages[index]
+                                                            .endDate
+                                                            .toString(),
+                                                      ) >=
+                                                      3
+                                                  ? Colors.red
+                                                  : CalculateDays
+                                                              .daysBetweenDates(
+                                                            endDate: _
+                                                                .allPackages[
+                                                                    index]
+                                                                .endDate
+                                                                .toString(),
+                                                          ) ==
+                                                          2
+                                                      ? Colors.yellow
+                                                      : CalculateDays
+                                                              .daysBetweenDates(
                                                           endDate: _
                                                               .allPackages[
                                                                   index]
                                                               .endDate
                                                               .toString(),
-                                                        ) ==
-                                                        2
-                                                    ? Colors.yellow
-                                                    : CalculateDays
-                                                            .daysBetweenDates(
-                                                        endDate: _
-                                                            .allPackages[index]
-                                                            .endDate
-                                                            .toString(),
-                                                      ).isNegative
-                                                        ? Colors.purple
-                                                        : Colors.green,
-                                            onTap:
-                                                CalculateDays.daysBetweenDates(
-                                              endDate: _
-                                                  .allPackages[index].endDate
-                                                  .toString(),
-                                            ).isNegative
-                                                    ? () {
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return const AlertDialog(
-                                                              title: AppText(
-                                                                text:
-                                                                    "Package Expired!",
-                                                              ),
-                                                            );
-                                                          },
-                                                        );
-                                                      }
-                                                    : () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                PackageSinglePage(
-                                                              packageData:
-                                                                  _.allPackages[
-                                                                      index],
+                                                        ).isNegative
+                                                          ? Colors.purple
+                                                          : Colors.green,
+                                              onTap: CalculateDays
+                                                      .daysBetweenDates(
+                                                endDate: _
+                                                    .allPackages[index].endDate
+                                                    .toString(),
+                                              ).isNegative
+                                                  ? () {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return const AlertDialog(
+                                                            title: AppText(
+                                                              text:
+                                                                  "Package Expired!",
                                                             ),
+                                                          );
+                                                        },
+                                                      );
+                                                    }
+                                                  : () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              PackageSinglePage(
+                                                            packageData:
+                                                                _.allPackages[
+                                                                    index],
                                                           ),
-                                                        );
-                                                      },
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  icon:
-                                      BitmapDescriptor.fromBytes(_.markerIcon!),
-                                  markerId: MarkerId("$index"),
-                                  position: LatLng(
-                                    _.allPackages[index].location!.latitude!,
-                                    _.allPackages[index].location!.longitude!,
-                                  ),
-                                );
-                              },
-                            ).toSet(),
-                            initialCameraPosition: _.initialPosition(
-                              lat: _.allPackages[0].location!.latitude ??
-                                  _.latitude!,
-                              long: _.allPackages[0].location!.longitude ??
-                                  _.longitude!,
+                                                        ),
+                                                      );
+                                                    },
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    icon: BitmapDescriptor.fromBytes(
+                                        _.markerIcon!),
+                                    markerId: MarkerId("$index"),
+                                    position: LatLng(
+                                      _.allPackages[index].location!.latitude!,
+                                      _.allPackages[index].location!.longitude!,
+                                    ),
+                                  );
+                                },
+                              ).toSet(),
+                              initialCameraPosition: _.initialPosition(
+                                lat: _.allPackages[0].location!.latitude ??
+                                    _.latitude!,
+                                long: _.allPackages[0].location!.longitude ??
+                                    _.longitude!,
+                              ),
                             ),
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 );

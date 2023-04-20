@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:tours_booking/constants/app_colors.dart';
 
 import '../constants/app_padding.dart';
 import 'app_button.dart';
 import 'app_text.dart';
 
-class FilterSheet extends StatelessWidget {
+class FilterSheet extends StatefulWidget {
   const FilterSheet({Key? key}) : super(key: key);
 
   @override
+  State<FilterSheet> createState() => _FilterSheetState();
+}
+
+class _FilterSheetState extends State<FilterSheet> {
+  List<String> types = [
+    "Individual",
+    "Couple",
+    "Family/Group",
+  ];
+  List<String> rating = [
+    "Easy going",
+    "Excitement guaranteed",
+    "Excitement Blast",
+  ];
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: AppPadding.defaultPadding,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(
             height: 20,
@@ -29,62 +46,9 @@ class FilterSheet extends StatelessWidget {
             height: 10,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width * .25,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.6)),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: const Center(
-                  child: AppText(
-                    text: "Best Match",
-                    fontSize: 12,
-                    textcolor: Colors.grey,
-                  ),
-                ),
-              ),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width * .25,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.6)),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: const Center(
-                  child: AppText(
-                    text: "Nearest",
-                    fontSize: 12,
-                    textcolor: Colors.grey,
-                  ),
-                ),
-              ),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width * .25,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.6)),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: const Center(
-                  child: AppText(
-                    text: "Low Budget",
-                    fontSize: 12,
-                    textcolor: Colors.grey,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Row(
             children: const [
               AppText(
-                text: "Category",
+                text: "Type",
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -95,53 +59,27 @@ class FilterSheet extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
+            children: List.generate(
+              types.length,
+              (index) => Container(
                 height: 30,
                 width: MediaQuery.of(context).size.width * .25,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.6)),
+                  border: Border.all(
+                    color: AppColors.primarycolor,
+                  ),
+                  color: AppColors.primarycolor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: const Center(
+                child: Center(
                   child: AppText(
-                    text: "Indoor",
+                    text: types[index],
                     fontSize: 12,
-                    textcolor: Colors.grey,
+                    textcolor: Colors.black,
                   ),
                 ),
               ),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width * .25,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.6)),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: const Center(
-                  child: AppText(
-                    text: "Outdoor",
-                    fontSize: 12,
-                    textcolor: Colors.grey,
-                  ),
-                ),
-              ),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width * .25,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.6)),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: const Center(
-                  child: AppText(
-                    text: "Mix",
-                    fontSize: 12,
-                    textcolor: Colors.grey,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
           const SizedBox(
             height: 15,
@@ -204,7 +142,7 @@ class FilterSheet extends StatelessWidget {
           Row(
             children: const [
               AppText(
-                text: "Rating",
+                text: "Danger Rating",
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -214,58 +152,65 @@ class FilterSheet extends StatelessWidget {
             height: 15,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width * .25,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.6)),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: const Center(
-                  child: AppText(
-                    text: "Indoor",
-                    fontSize: 12,
-                    textcolor: Colors.grey,
-                  ),
-                ),
-              ),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width * .25,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.6)),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: const Center(
-                  child: AppText(
-                    text: "Outdoor",
-                    fontSize: 12,
-                    textcolor: Colors.grey,
-                  ),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+              rating.length,
+              (index) => Center(
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.star_outline_rounded,
+                      size: 28,
+                    ),
+                    AppPadding.heightSpace5,
+                    AppText(
+                      text: rating[index],
+                      fontSize: 12,
+                      textcolor: Colors.grey,
+                    ),
+                  ],
                 ),
               ),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width * .25,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.6)),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: const Center(
-                  child: AppText(
-                    text: "Mix",
-                    fontSize: 12,
-                    textcolor: Colors.grey,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-          const Expanded(
-            child: SizedBox(),
+          AppPadding.heightSpace15,
+          const AppText(text: "Days to go :"),
+          Center(
+            child: Wrap(
+              spacing: 20,
+              children: List.generate(
+                3,
+                (index) => Container(
+                  height: 35,
+                  width: 35,
+                  decoration: BoxDecoration(
+                    color: index == 0
+                        ? AppColors.day1Color
+                        : index == 1
+                            ? AppColors.day2Color
+                            : AppColors.day3Color,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        offset: const Offset(1, 2),
+                        color: Colors.grey.withOpacity(0.5),
+                        blurRadius: 5,
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: AppText(
+                      textAlign: TextAlign.center,
+                      text: "${index + 1} days",
+                      fontSize: 8,
+                      textcolor: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
+          const Spacer(),
           AppButton(btnText: "APPLY", ontap: () {}),
           const SizedBox(
             height: 10,

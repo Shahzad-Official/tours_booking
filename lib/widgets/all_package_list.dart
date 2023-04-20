@@ -130,7 +130,7 @@ class PackagesList extends StatelessWidget {
                           width: 30,
                           decoration: BoxDecoration(
                             color: eventDurationColor,
-                            borderRadius: BorderRadius.circular(100),
+                            shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
                                 offset: const Offset(1, 2),
@@ -141,7 +141,8 @@ class PackagesList extends StatelessWidget {
                           ),
                           child: Center(
                             child: AppText(
-                              text: eventDuration,
+                              textAlign: TextAlign.center,
+                              text: "$eventDuration\ndays",
                               fontSize: 8,
                               textcolor: Colors.white,
                             ),

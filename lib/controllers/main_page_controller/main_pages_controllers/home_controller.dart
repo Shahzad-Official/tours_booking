@@ -74,10 +74,11 @@ class HomeController extends GetxController {
   searchPackage(
       {String query = '', required List<PackagesModel> packagesList}) {
     allPackages = packagesList.where((element) {
-      return element.packageName!
+      return element.location!.address!
           .toLowerCase()
           .contains(query.trim().toLowerCase());
     }).toList();
+
     update();
   }
 }

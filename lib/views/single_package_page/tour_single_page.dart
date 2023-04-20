@@ -407,51 +407,33 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const AppText(
-                            text: "Start Date & Time",
-                            fontSize: 12,
-                          ),
-                          AppText(
-                            text: "${FormatDate.formatedDate(
-                              formatPattern: "dd/MM/yyyy",
-                              date: widget.packageData.startDate.toString(),
-                            )} | ${widget.packageData.startTime}",
-                            fontSize: 10,
-                            textcolor: Colors.blueAccent,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const AppText(
-                            text: "Duration",
-                            fontSize: 12,
-                          ),
-                          AppText(
-                            text: "${FormatDate.formatedDate(
-                              formatPattern: "dd/MM/yyyy",
-                              date: widget.packageData.endDate.toString(),
-                            )} | 1+ hour",
-                            fontSize: 10,
-                            textcolor: Colors.blueAccent,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          const Icon(Icons.star_border),
-                          AppText(
-                            text: DangerRatingData.danger(
-                              widget.packageData.dangerRating.toString(),
+                      GetBuilder<TimerController>(
+                        init: TimerController(),
+                        initState: (_) {},
+                        builder: (_) {
+                          return RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Duration : ",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "${_.time!.hour} +hours/days",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.primarycolor,
+                                  ),
+                                ),
+                              ],
                             ),
-                            fontSize: 10,
-                            textcolor: Colors.grey,
-                          ),
-                        ],
+                          );
+                        },
                       ),
                     ],
                   ),
