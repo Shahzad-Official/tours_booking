@@ -246,7 +246,9 @@ class _TimerState extends State<Timer> {
                               )),
                               child: Center(
                                 child: AppText(
-                                  text: "${_.time!.day}D",
+                                  text: widget.packageData.cuttOffTime!
+                                      .split(":")
+                                      .first,
                                   textcolor: Colors.blue,
                                 ),
                               ),
@@ -260,21 +262,9 @@ class _TimerState extends State<Timer> {
                               )),
                               child: Center(
                                 child: AppText(
-                                  text: "${_.time!.hour}H",
-                                  textcolor: Colors.blue,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 30,
-                              width: MediaQuery.of(context).size.width * 0.16,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                color: AppColors.primarycolor,
-                              )),
-                              child: Center(
-                                child: AppText(
-                                  text: "${_.time!.minute}M",
+                                  text: widget.packageData.cuttOffTime!
+                                      .split(":")
+                                      .last,
                                   textcolor: Colors.blue,
                                 ),
                               ),
@@ -289,7 +279,7 @@ class _TimerState extends State<Timer> {
                               ),
                               child: Center(
                                 child: AppText(
-                                  text: "${_.time!.second}S",
+                                  text: "0 S",
                                   textcolor: Colors.blue,
                                 ),
                               ),

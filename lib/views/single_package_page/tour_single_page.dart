@@ -289,7 +289,7 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
-                                                        .spaceBetween,
+                                                        .spaceEvenly,
                                                 children: [
                                                   Container(
                                                     padding: const EdgeInsets
@@ -310,8 +310,10 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                                     ),
                                                     child: Center(
                                                       child: AppText(
-                                                        text:
-                                                            "${CalculateDays.dateDiffrence(endDate: widget.packageData.endDate!).day}D",
+                                                        text: widget.packageData
+                                                            .cuttOffTime!
+                                                            .split(":")
+                                                            .first,
                                                         fontSize: 10,
                                                         fontWeight:
                                                             FontWeight.w400,
@@ -338,36 +340,10 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                                     ),
                                                     child: Center(
                                                       child: AppText(
-                                                        text:
-                                                            "${CalculateDays.dateDiffrence(endDate: widget.packageData.endDate!).hour}H",
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        textcolor: Colors.blue,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 2,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: AppColors
-                                                              .primarycolor,
-                                                          width: 0.5),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      color: AppColors
-                                                          .primarycolor
-                                                          .withOpacity(0.1),
-                                                    ),
-                                                    child: Center(
-                                                      child: AppText(
-                                                        text:
-                                                            "${CalculateDays.dateDiffrence(endDate: widget.packageData.endDate!).minute}M",
+                                                        text: widget.packageData
+                                                            .cuttOffTime!
+                                                            .split(":")
+                                                            .last,
                                                         fontSize: 10,
                                                         fontWeight:
                                                             FontWeight.w400,
