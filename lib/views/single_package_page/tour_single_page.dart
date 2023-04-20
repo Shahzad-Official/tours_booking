@@ -423,7 +423,8 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: "${_.time!.hour} +hours/days",
+                                  text:
+                                      "${_.time == null ? null : _.time!.hour} +hours/days",
                                   style: GoogleFonts.poppins(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
