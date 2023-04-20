@@ -189,7 +189,7 @@ class _TimerState extends State<Timer> {
                       circularStrokeCap: CircularStrokeCap.round,
                       radius: 110.0,
                       lineWidth: 10.0,
-                      percent: 0.3,
+                      percent: 1,
                       animation: true,
                       animationDuration: 1000,
                       animateFromLastPercent: true,
@@ -273,21 +273,6 @@ class _TimerState extends State<Timer> {
                                   text: widget.packageData.cuttOffTime!
                                       .split(":")
                                       .last,
-                                  textcolor: Colors.blue,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 30,
-                              width: MediaQuery.of(context).size.width * 0.16,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.primarycolor,
-                                ),
-                              ),
-                              child: const Center(
-                                child: AppText(
-                                  text: "0 S",
                                   textcolor: Colors.blue,
                                 ),
                               ),

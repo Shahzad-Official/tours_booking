@@ -257,7 +257,7 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                       child: CircularPercentIndicator(
                                         reverse: true,
                                         radius: 55,
-                                        percent: 0.40,
+                                        percent: 1,
                                         animationDuration: 1000,
                                         animateFromLastPercent: true,
                                         animation: true,
@@ -309,12 +309,14 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                                     ),
                                                     decoration: BoxDecoration(
                                                       border: Border.all(
-                                                          color: AppColors
-                                                              .primarycolor,
-                                                          width: 0.5),
+                                                        color: AppColors
+                                                            .primarycolor,
+                                                        width: 0.5,
+                                                      ),
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              4),
+                                                        4,
+                                                      ),
                                                       color: AppColors
                                                           .primarycolor
                                                           .withOpacity(0.1),
