@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/controllers/timer_page_controller.dart';
@@ -98,30 +99,85 @@ class _TimerState extends State<Timer> {
                   ),
                   AppPadding.heightSpace20,
                   Center(
-                    child: AppText(
-                      text:
-                          "Bookings Remaining: ${widget.packageData.availablePackages}",
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      textcolor: Colors.black,
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Packages Remaining : ",
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                          TextSpan(
+                            text: "${widget.packageData.availablePackages}",
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primarycolor,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      AppText(
-                          text: "Start Date & Time: \n${FormatDate.formatedDate(
-                        formatPattern: "dd/MM/yyyy",
-                        date: widget.packageData.startDate.toString(),
-                      )} | ${widget.packageData.startTime}"),
-                      AppText(
-                          text: "End Date & Time:   \n${FormatDate.formatedDate(
-                        formatPattern: "dd/MM/yyyy",
-                        date: widget.packageData.endDate.toString(),
-                      )} | ${widget.packageData.endTime}"),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Start Date & Time\n",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "${FormatDate.formatedDate(
+                                formatPattern: "dd/MM/yyyy",
+                                date: widget.packageData.startDate.toString(),
+                              )} | ${widget.packageData.startTime}",
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primarycolor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "End Date & Time\n",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "${FormatDate.formatedDate(
+                                formatPattern: "dd/MM/yyyy",
+                                date: widget.packageData.endDate.toString(),
+                              )} | ${widget.packageData.endTime}",
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primarycolor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -130,7 +186,7 @@ class _TimerState extends State<Timer> {
                   Center(
                     child: CircularPercentIndicator(
                       circularStrokeCap: CircularStrokeCap.round,
-                      radius: 130.0,
+                      radius: 110.0,
                       lineWidth: 10.0,
                       percent: 0.3,
                       animation: true,
@@ -142,14 +198,14 @@ class _TimerState extends State<Timer> {
                         children: [
                           const AppText(
                             text: "Package Price",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
                           ),
                           AppText(
                             text: "\$${widget.packageData.startPrice}",
                             textcolor: AppColors.primarycolor,
                             fontWeight: FontWeight.w800,
-                            fontSize: 33,
+                            fontSize: 30,
                           ),
                         ],
                       ),

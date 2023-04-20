@@ -6,9 +6,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/models/packages/packages_model.dart';
-import 'package:tours_booking/utils/danger_rating_data.dart';
 import 'package:tours_booking/utils/date_utils.dart/calculate_days.dart';
-import 'package:tours_booking/utils/date_utils.dart/format_date.dart';
 import 'package:tours_booking/views/timer/timer.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
 import 'package:tours_booking/widgets/app_text.dart';
@@ -192,15 +190,15 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: " 8.9",
+                                      text: "4.5",
                                       style: GoogleFonts.poppins(
-                                        fontSize: 18,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.blueAccent,
                                       ),
                                     ),
                                     TextSpan(
-                                      text: "/10",
+                                      text: "/5",
                                       style: GoogleFonts.poppins(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,
@@ -415,7 +413,7 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: "Duration : ",
+                                  text: "Package Duration : ",
                                   style: GoogleFonts.poppins(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
@@ -444,165 +442,206 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                   Row(
                     children: [
                       const AppText(
-                        text: "Age Suitability : ",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textcolor: Colors.grey,
+                        text: "Inclusions : ",
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        textcolor: Colors.black,
                       ),
-                      AppText(
-                        text: widget.packageData.ageSuitability.toString(),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textcolor: Colors.grey,
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                icon: const Align(
+                                  alignment: Alignment.topRight,
+                                  child: CloseButton(),
+                                ),
+                                title: const AppText(text: "Inclusions"),
+                                content: Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: GridView.builder(
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        widget.packageData.inclusions!.length,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,
+                                      childAspectRatio: 0.7,
+                                      mainAxisSpacing: 10,
+                                      crossAxisSpacing: 10,
+                                    ),
+                                    itemBuilder: (context, index) {
+                                      return Center(
+                                        child: Container(
+                                          color: AppColors.primarycolor
+                                              .withOpacity(0.3),
+                                          height: 70,
+                                          width: 70,
+                                          child: Stack(
+                                            children: [
+                                              Center(
+                                                child: AppCachedImage(
+                                                  height: 50,
+                                                  width: 50,
+                                                  picUrl: widget
+                                                      .packageData
+                                                      .inclusions![index]
+                                                      .iconImage
+                                                      .toString(),
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: CircleAvatar(
+                                                  radius: 10,
+                                                  child: Center(
+                                                    child: AppText(
+                                                      text: widget
+                                                          .packageData
+                                                          .inclusions![index]
+                                                          .inclusionCount
+                                                          .toString(),
+                                                      fontSize: 8,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Image.asset(
+                          "assets/inclusions.png",
+                          height: 50,
+                          width: 50,
+                        ),
                       ),
                     ],
                   ),
-                  AppPadding.heightSpace10,
-                  Row(
-                    children: [
-                      const AppText(
-                        text: "Package Type : ",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textcolor: Colors.grey,
-                      ),
-                      AppText(
-                        text: widget.packageData.typeOfTour.toString(),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textcolor: Colors.grey,
-                      ),
-                    ],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Age Suitability : ",
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "${widget.packageData.ageSuitability}",
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primarycolor,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   AppPadding.heightSpace20,
-                  Row(
-                    children: [
-                      const AppText(
-                        text: "People per package : ",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textcolor: Colors.grey,
-                      ),
-                      AppText(
-                        text:
-                            widget.packageData.noOfPersonsInPackage.toString(),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        textcolor: Colors.grey,
-                      ),
-                    ],
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Category : ",
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "Adventure",
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primarycolor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  AppPadding.heightSpace20,
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Package Type : ",
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "${widget.packageData.typeOfTour}",
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primarycolor,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          const AppText(
-                            text: "Inclusions : ",
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            textcolor: Colors.grey,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    icon: const Align(
-                                      alignment: Alignment.topRight,
-                                      child: CloseButton(),
-                                    ),
-                                    title: const AppText(text: "Inclusions"),
-                                    content: Container(
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                      ),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.8,
-                                      child: GridView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: widget
-                                            .packageData.inclusions!.length,
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 4,
-                                          childAspectRatio: 0.7,
-                                          mainAxisSpacing: 10,
-                                          crossAxisSpacing: 10,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          return Center(
-                                            child: Container(
-                                              color: AppColors.primarycolor
-                                                  .withOpacity(0.3),
-                                              height: 70,
-                                              width: 70,
-                                              child: Stack(
-                                                children: [
-                                                  Center(
-                                                    child: AppCachedImage(
-                                                      height: 50,
-                                                      width: 50,
-                                                      picUrl: widget
-                                                          .packageData
-                                                          .inclusions![index]
-                                                          .iconImage
-                                                          .toString(),
-                                                    ),
-                                                  ),
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.topRight,
-                                                    child: CircleAvatar(
-                                                      radius: 10,
-                                                      child: Center(
-                                                        child: AppText(
-                                                          text: widget
-                                                              .packageData
-                                                              .inclusions![
-                                                                  index]
-                                                              .inclusionCount
-                                                              .toString(),
-                                                          fontSize: 8,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            child: Image.asset(
-                              "assets/inclusions.png",
-                              height: 50,
-                              width: 50,
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "People per package : ",
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                        ],
+                            TextSpan(
+                              text:
+                                  "${widget.packageData.noOfPersonsInPackage}",
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primarycolor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Column(
                         children: [
                           const AppText(
                             text: "5.0",
-                            textcolor: Color(0x2F2A4EA1),
+                            textcolor: Color.fromARGB(183, 15, 20, 25),
                             fontWeight: FontWeight.w700,
                             fontSize: 20,
                           ),
                           RatingBar.builder(
                             initialRating: 0,
                             glowRadius: 1,
-                            itemSize: 18,
+                            itemSize: 20,
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
