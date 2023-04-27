@@ -219,7 +219,7 @@ class _TimerState extends State<Timer> {
                                     endDate:
                                         widget.packageData.endDate.toString(),
                                   ) ==
-                                  1
+                                  2
                               ? AppColors.day2Color
                               : AppColors.day3Color,
                       backgroundColor: Colors.white,
@@ -243,7 +243,7 @@ class _TimerState extends State<Timer> {
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: Center(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
                               height: 30,
@@ -260,6 +260,9 @@ class _TimerState extends State<Timer> {
                                   textcolor: Colors.blue,
                                 ),
                               ),
+                            ),
+                            const SizedBox(
+                              width: 20,
                             ),
                             Container(
                               height: 30,

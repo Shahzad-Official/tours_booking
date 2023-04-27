@@ -279,7 +279,7 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                                           .packageData.endDate
                                                           .toString(),
                                                     ) ==
-                                                    1
+                                                    2
                                                 ? AppColors.day2Color
                                                 : AppColors.day3Color,
                                         center: Column(

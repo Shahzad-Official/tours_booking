@@ -2,20 +2,13 @@ class CalculateDays {
   static int daysBetweenDates({
     required String endDate,
   }) {
-    DateTime newStartDate = DateTime.now();
+    DateTime newStartDate = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
     DateTime newEndDate = DateTime.parse(endDate);
-    return DateTime.fromMillisecondsSinceEpoch(
-            newEndDate.difference(newStartDate).inMilliseconds)
-        .day;
-  }
 
-  static int dateDiffrence({
-    required String endDate,
-  }) {
-    DateTime newStartDate = DateTime.now();
-    DateTime newEndDate = DateTime.parse(endDate);
-    return DateTime.fromMillisecondsSinceEpoch(
-            newEndDate.difference(newStartDate).inMilliseconds)
-        .day;
+    return newEndDate.difference(newStartDate).inDays;
   }
 }
