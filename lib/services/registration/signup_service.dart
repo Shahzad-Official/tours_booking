@@ -102,12 +102,16 @@ class SignupService {
           Get.offAll(() => const MainPage());
         } else if (_userData.userProfile.uid == uid &&
             _userData.userProfile.role == "lister") {
-          AppSnackbar.snackBar(title: "Error", message: "User Already Exists.");
+          AppSnackbar.snackBar(
+              title: "Error",
+              message: "This account is already registered on Lister App.");
           _googleSignIn.signOut();
           Get.offAll(() => const Login());
         } else if (_userData.userProfile.uid == uid &&
             _userData.userProfile.role == "user") {
-          AppSnackbar.snackBar(title: "Error", message: "User Account Exists.");
+          AppSnackbar.snackBar(
+              title: "Error",
+              message: "Account is already registered\nSign in please!");
           _googleSignIn.signOut();
           Get.offAll(() => const Login());
         }

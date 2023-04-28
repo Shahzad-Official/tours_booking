@@ -40,7 +40,9 @@ class LoginService {
           Get.offAll(() => const SignUp());
         } else if (_userData.userProfile.uid == uId &&
             _userData.userProfile.role == "lister") {
-          AppSnackbar.snackBar(title: "Error", message: "User Already Exists.");
+          AppSnackbar.snackBar(
+              title: "Error",
+              message: "This account is already registered on Lister App.");
           _googleSignIn.signOut();
           Get.offAll(() => const Login());
           return true;
