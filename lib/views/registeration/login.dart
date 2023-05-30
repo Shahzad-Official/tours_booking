@@ -81,9 +81,9 @@ class Login extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: const [
+                      children: [
                         AppText(text: "Forget Password"),
                       ],
                     ),

@@ -164,8 +164,8 @@ class _CheckoutState extends State<Checkout> {
             const SizedBox(
               height: 50,
             ),
-            Row(
-              children: const [
+            const Row(
+              children: [
                 AppText(
                   text: "Payment Summary",
                   fontWeight: FontWeight.w600,
@@ -179,9 +179,9 @@ class _CheckoutState extends State<Checkout> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     AppText(text: "Subtotal"),
                     SizedBox(
                       height: 5,

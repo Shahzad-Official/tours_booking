@@ -37,9 +37,9 @@ class MyBookingPage extends StatelessWidget {
           textcolor: Colors.black,
         ),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
-          children: const [
+          children: [
             BookingWidget(),
           ],
         ),

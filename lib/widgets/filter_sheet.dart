@@ -33,8 +33,8 @@ class _FilterSheetState extends State<FilterSheet> {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            children: const [
+          const Row(
+            children: [
               AppText(
                 text: "Sort by",
                 fontSize: 16,
@@ -45,8 +45,8 @@ class _FilterSheetState extends State<FilterSheet> {
           const SizedBox(
             height: 10,
           ),
-          Row(
-            children: const [
+          const Row(
+            children: [
               AppText(
                 text: "Type",
                 fontSize: 16,
@@ -84,8 +84,8 @@ class _FilterSheetState extends State<FilterSheet> {
           const SizedBox(
             height: 15,
           ),
-          Row(
-            children: const [
+          const Row(
+            children: [
               AppText(
                 text: "Distance",
                 fontSize: 16,
@@ -96,9 +96,9 @@ class _FilterSheetState extends State<FilterSheet> {
           const SizedBox(
             height: 15,
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               AppText(
                 text: "8km",
                 fontSize: 10,
@@ -110,8 +110,8 @@ class _FilterSheetState extends State<FilterSheet> {
             ],
           ),
           const DistanceSlider(),
-          Row(
-            children: const [
+          const Row(
+            children: [
               AppText(
                 text: "Budget",
                 fontSize: 16,
@@ -122,9 +122,9 @@ class _FilterSheetState extends State<FilterSheet> {
           const SizedBox(
             height: 15,
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               AppText(
                 text: "\$80",
                 fontSize: 10,
@@ -139,8 +139,8 @@ class _FilterSheetState extends State<FilterSheet> {
           const SizedBox(
             height: 15,
           ),
-          Row(
-            children: const [
+          const Row(
+            children: [
               AppText(
                 text: "Danger Rating",
                 fontSize: 16,
