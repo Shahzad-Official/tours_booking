@@ -9,6 +9,7 @@ import 'package:tours_booking/widgets/app_cache_image.dart';
 import 'package:tours_booking/widgets/app_text.dart';
 
 import '../../constants/app_colors.dart';
+import '../../constants/dummy_data.dart';
 import '../../models/user_profile/profile_model.dart';
 
 class Checkout extends StatefulWidget {
@@ -57,7 +58,7 @@ class _CheckoutState extends State<Checkout> {
             ),
             actions: [
               AppCircularCachedImage(
-                picUrl: userData.profile!,
+                picUrl: userData.profile == "" || userData.profile == null ? DummyData.profilePic : userData.profile!,
               ),
             ],
           ),
@@ -206,9 +207,7 @@ class _CheckoutState extends State<Checkout> {
                     const SizedBox(
                       height: 5,
                     ),
-                    AppText(
-                        text:
-                            "-\$${(int.parse(widget.packageData.startPrice!) - (int.parse(widget.packageData.endPrice!)))}"),
+                    AppText(text: "-\$${(int.parse(widget.packageData.startPrice!) - (int.parse(widget.packageData.endPrice!)))}"),
                     const SizedBox(
                       height: 5,
                     ),

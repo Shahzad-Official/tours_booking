@@ -1,10 +1,9 @@
-import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:lottie/lottie.dart';
 import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/constants/dummy_data.dart';
@@ -28,9 +27,7 @@ class AllPackages extends StatefulWidget {
   State<AllPackages> createState() => _AllPackagesState();
 }
 
-class _AllPackagesState extends State<AllPackages>
-    with TickerProviderStateMixin {
-  late AnimationController _animationController;
+class _AllPackagesState extends State<AllPackages> with TickerProviderStateMixin {
   final GetAllPackages _getAllPackages = GetAllPackages();
   final AllPackagesController _controller = Get.put(AllPackagesController());
   bool isLoading = false;
@@ -39,7 +36,7 @@ class _AllPackagesState extends State<AllPackages>
     Box box = Hive.box("DataBox");
 
     userData = ProfileModel.fromJson(
-      box.get("userData"),
+      jsonDecode(jsonEncode(box.get("userData"))),
     );
     setState(() {
       isLoading = true;
@@ -57,7 +54,7 @@ class _AllPackagesState extends State<AllPackages>
   @override
   void initState() {
     getAllPackages();
-    _animationController = AnimationController(vsync: this);
+
     super.initState();
   }
 
@@ -86,10 +83,7 @@ class _AllPackagesState extends State<AllPackages>
                       ),
                       AppCircularCachedImage(
                         picRadius: 20,
-                        picUrl:
-                            userData.profile == "" || userData.profile == null
-                                ? DummyData.profilePic
-                                : userData.profile!,
+                        picUrl: userData.profile == "" || userData.profile == null ? DummyData.profilePic : userData.profile!,
                       ),
                     ],
                   ),
@@ -104,7 +98,7 @@ class _AllPackagesState extends State<AllPackages>
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              } else if (_controller.allPackages.isEmpty) {
+              } else if (_getAllPackages.allPackages.isEmpty) {
                 return const Center(
                   child: AppText(text: "NO package Available!"),
                 );
@@ -144,8 +138,7 @@ class _AllPackagesState extends State<AllPackages>
                                   hintText: 'Search for tours',
                                   fillColor: Colors.white,
                                   filled: true,
-                                  contentPadding:
-                                      const EdgeInsets.symmetric(vertical: 18),
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 18),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15),
                                     borderSide: BorderSide.none,
@@ -156,15 +149,18 @@ class _AllPackagesState extends State<AllPackages>
                             InkWell(
                               onTap: () => showModalBottomSheet(
                                 isScrollControlled: true,
-                                shape: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(10),
-                                        topLeft: Radius.circular(10))),
+                                shape: const OutlineInputBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))),
                                 context: context,
                                 builder: (context) {
-                                  return const FractionallySizedBox(
+                                  return FractionallySizedBox(
                                     heightFactor: 0.75,
-                                    child: FilterSheet(),
+                                    child: FilterSheet(
+                                      onTap: () {
+                                        _.applyFilter(
+                                          packagesList: _getAllPackages.allPackages,
+                                        );
+                                      },
+                                    ),
                                   );
                                 },
                               ),
@@ -194,106 +190,54 @@ class _AllPackagesState extends State<AllPackages>
                           ],
                         ),
                         const SizedBox(height: 30),
-                        Column(
-                          children: List<Widget>.generate(
-                            _.allPackages.length,
-                            (index) {
-                              return PackagesList(
-                                rating: 0,
-                                eventImage: _.allPackages[index].thumbnailUrl
-                                    .toString(),
-                                eventName:
-                                    _.allPackages[index].packageName.toString(),
-                                eventDate: "${FormatDate.formatedDate(
-                                  formatPattern: "dd MMM",
-                                  date:
-                                      _.allPackages[index].startDate.toString(),
-                                )}-${FormatDate.formatedDate(
-                                  formatPattern: "dd MMM",
-                                  date: _.allPackages[index].endDate.toString(),
-                                )}",
-                                eventLocation: _
-                                    .allPackages[index].location!.address
-                                    .toString(),
-                                eventDuration: CalculateDays.daysBetweenDates(
-                                  endDate:
-                                      _.allPackages[index].endDate.toString(),
-                                ).isNegative
-                                    ? "E"
-                                    : CalculateDays.daysBetweenDates(
-                                        endDate: _.allPackages[index].endDate
-                                            .toString(),
+                        _.allPackages.isEmpty
+                            ? const Center(
+                                child: AppText(text: "NO Package Available!"),
+                              )
+                            : Column(
+                                children: List<Widget>.generate(
+                                  _.allPackages.length,
+                                  (index) {
+                                    return PackagesList(
+                                      rating: 0,
+                                      eventImage: _.allPackages[index].thumbnailUrl.toString(),
+                                      eventName: _.allPackages[index].packageName.toString(),
+                                      eventDate: "${FormatDate.formatedDate(
+                                        formatPattern: "dd MMM",
+                                        date: _.allPackages[index].startDate.toString(),
+                                      )}-${FormatDate.formatedDate(
+                                        formatPattern: "dd MMM",
+                                        date: _.allPackages[index].endDate.toString(),
+                                      )}",
+                                      eventLocation: _.allPackages[index].location!.address.toString(),
+                                      eventDuration: CalculateDays.daysBetweenDates(
+                                        endDate: _.allPackages[index].endDate.toString(),
                                       ).toString(),
-                                eventDurationColor:
-                                    CalculateDays.daysBetweenDates(
-                                              endDate: _
-                                                  .allPackages[index].endDate
-                                                  .toString(),
-                                            ) >=
-                                            3
-                                        ? AppColors.day3Color
-                                        : CalculateDays.daysBetweenDates(
-                                                  endDate: _.allPackages[index]
-                                                      .endDate
-                                                      .toString(),
-                                                ) ==
-                                                2
-                                            ? AppColors.day2Color
-                                            : CalculateDays.daysBetweenDates(
-                                                endDate: _
-                                                    .allPackages[index].endDate
-                                                    .toString(),
-                                              ).isNegative
-                                                ? Colors.purple
-                                                : AppColors.day1Color,
-                                onTap: CalculateDays.daysBetweenDates(
-                                  endDate:
-                                      _.allPackages[index].endDate.toString(),
-                                ).isNegative
-                                    ? () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: const AppText(
-                                                text: "Package Expired!",
-                                              ),
-                                              content: Lottie.asset(
-                                                'assets/animations/expire.json',
-                                                controller:
-                                                    _animationController,
-                                                onLoaded: (composition) {
-                                                  _animationController
-                                                    ..duration =
-                                                        composition.duration
-                                                    ..forward();
-                                                  Timer(
-                                                    composition.duration,
-                                                    () {
-                                                      Get.back();
-                                                    },
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      }
-                                    : () {
+                                      eventDurationColor: CalculateDays.daysBetweenDates(
+                                                endDate: _.allPackages[index].endDate.toString(),
+                                              ) >=
+                                              3
+                                          ? AppColors.day3Color
+                                          : CalculateDays.daysBetweenDates(
+                                                    endDate: _.allPackages[index].endDate.toString(),
+                                                  ) ==
+                                                  2
+                                              ? AppColors.day2Color
+                                              : AppColors.day1Color,
+                                      onTap: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                PackageSinglePage(
+                                            builder: (context) => PackageSinglePage(
                                               packageData: _.allPackages[index],
                                             ),
                                           ),
                                         );
                                       },
-                              );
-                            },
-                          ),
-                        ),
+                                    );
+                                  },
+                                ),
+                              ),
                       ],
                     ),
                   ),

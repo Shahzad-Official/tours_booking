@@ -138,8 +138,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               padding: EdgeInsets.all(29.0),
                               child: Center(
                                 child: AppText(
-                                  text:
-                                      "No package Available related to this query!",
+                                  text: "No package Available !",
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18,
                                 ),
@@ -161,77 +160,40 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             color: Colors.transparent,
                                             child: PackagesList(
                                               rating: 0,
-                                              eventImage: _.allPackages[index]
-                                                  .thumbnailUrl
-                                                  .toString(),
-                                              eventName: _.allPackages[index]
-                                                  .packageName
-                                                  .toString(),
-                                              eventDate:
-                                                  "${FormatDate.formatedDate(
+                                              eventImage: _.allPackages[index].thumbnailUrl.toString(),
+                                              eventName: _.allPackages[index].packageName.toString(),
+                                              eventDate: "${FormatDate.formatedDate(
                                                 formatPattern: "dd MMM",
-                                                date: _.allPackages[index]
-                                                    .startDate
-                                                    .toString(),
+                                                date: _.allPackages[index].startDate.toString(),
                                               )}-${FormatDate.formatedDate(
                                                 formatPattern: "dd MMM",
-                                                date: _
-                                                    .allPackages[index].endDate
-                                                    .toString(),
+                                                date: _.allPackages[index].endDate.toString(),
                                               )}",
-                                              eventLocation: _
-                                                  .allPackages[index]
-                                                  .location!
-                                                  .address
-                                                  .toString(),
-                                              eventDuration: CalculateDays
-                                                      .daysBetweenDates(
-                                                endDate: _
-                                                    .allPackages[index].endDate
-                                                    .toString(),
+                                              eventLocation: _.allPackages[index].location!.address.toString(),
+                                              eventDuration: CalculateDays.daysBetweenDates(
+                                                endDate: _.allPackages[index].endDate.toString(),
                                               ).isNegative
                                                   ? "E"
-                                                  : CalculateDays
-                                                      .daysBetweenDates(
-                                                      endDate: _
-                                                          .allPackages[index]
-                                                          .endDate
-                                                          .toString(),
+                                                  : CalculateDays.daysBetweenDates(
+                                                      endDate: _.allPackages[index].endDate.toString(),
                                                     ).toString(),
-                                              eventDurationColor: CalculateDays
-                                                          .daysBetweenDates(
-                                                        endDate: _
-                                                            .allPackages[index]
-                                                            .endDate
-                                                            .toString(),
+                                              eventDurationColor: CalculateDays.daysBetweenDates(
+                                                        endDate: _.allPackages[index].endDate.toString(),
                                                       ) >=
                                                       3
                                                   ? Colors.red
-                                                  : CalculateDays
-                                                              .daysBetweenDates(
-                                                            endDate: _
-                                                                .allPackages[
-                                                                    index]
-                                                                .endDate
-                                                                .toString(),
+                                                  : CalculateDays.daysBetweenDates(
+                                                            endDate: _.allPackages[index].endDate.toString(),
                                                           ) ==
                                                           2
                                                       ? Colors.yellow
-                                                      : CalculateDays
-                                                              .daysBetweenDates(
-                                                          endDate: _
-                                                              .allPackages[
-                                                                  index]
-                                                              .endDate
-                                                              .toString(),
+                                                      : CalculateDays.daysBetweenDates(
+                                                          endDate: _.allPackages[index].endDate.toString(),
                                                         ).isNegative
                                                           ? Colors.purple
                                                           : Colors.green,
-                                              onTap: CalculateDays
-                                                      .daysBetweenDates(
-                                                endDate: _
-                                                    .allPackages[index].endDate
-                                                    .toString(),
+                                              onTap: CalculateDays.daysBetweenDates(
+                                                endDate: _.allPackages[index].endDate.toString(),
                                               ).isNegative
                                                   ? () {
                                                       showDialog(
@@ -239,8 +201,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                         builder: (context) {
                                                           return const AlertDialog(
                                                             title: AppText(
-                                                              text:
-                                                                  "Package Expired!",
+                                                              text: "Package Expired!",
                                                             ),
                                                           );
                                                         },
@@ -250,11 +211,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                       Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PackageSinglePage(
-                                                            packageData:
-                                                                _.allPackages[
-                                                                    index],
+                                                          builder: (context) => PackageSinglePage(
+                                                            packageData: _.allPackages[index],
                                                           ),
                                                         ),
                                                       );
@@ -264,8 +222,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         },
                                       );
                                     },
-                                    icon: BitmapDescriptor.fromBytes(
-                                        _.markerIcon!),
+                                    icon: BitmapDescriptor.fromBytes(_.markerIcon!),
                                     markerId: MarkerId("$index"),
                                     position: LatLng(
                                       _.allPackages[index].location!.latitude!,
@@ -274,12 +231,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   );
                                 },
                               ).toSet(),
-                              initialCameraPosition: _.initialPosition(
-                                lat: _.allPackages[0].location!.latitude ??
-                                    _.latitude!,
-                                long: _.allPackages[0].location!.longitude ??
-                                    _.longitude!,
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(-43.2410662, 171.6122821),
+                                zoom: 8,
                               ),
+
+                              //  _.initialPosition(
+                              //   lat: 43.2410662,
+                              //   long: 171.6122821,
+                              // ),
                             ),
                     ),
                   ],

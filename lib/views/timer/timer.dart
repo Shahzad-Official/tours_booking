@@ -212,16 +212,15 @@ class _TimerState extends State<Timer> {
                       ),
                       progressColor: CalculateDays.daysBetweenDates(
                                 endDate: widget.packageData.endDate.toString(),
-                              ) ==
-                              1
-                          ? AppColors.day1Color
+                              ) >=
+                              3
+                          ? AppColors.day3Color
                           : CalculateDays.daysBetweenDates(
-                                    endDate:
-                                        widget.packageData.endDate.toString(),
+                                    endDate: widget.packageData.endDate.toString(),
                                   ) ==
                                   2
                               ? AppColors.day2Color
-                              : AppColors.day3Color,
+                              : AppColors.day1Color,
                       backgroundColor: Colors.white,
                     ),
                   ),
@@ -230,7 +229,7 @@ class _TimerState extends State<Timer> {
                   ),
                   const Center(
                     child: AppText(
-                      text: "Booking Cutoff time",
+                      text: "Listing finishes in",
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
                     ),
@@ -254,9 +253,7 @@ class _TimerState extends State<Timer> {
                               )),
                               child: Center(
                                 child: AppText(
-                                  text: widget.packageData.cuttOffTime!
-                                      .split(":")
-                                      .first,
+                                  text: widget.packageData.cuttOffTime!.split(":").first,
                                   textcolor: Colors.blue,
                                 ),
                               ),
@@ -273,9 +270,7 @@ class _TimerState extends State<Timer> {
                               )),
                               child: Center(
                                 child: AppText(
-                                  text: widget.packageData.cuttOffTime!
-                                      .split(":")
-                                      .last,
+                                  text: widget.packageData.cuttOffTime!.split(":").last,
                                   textcolor: Colors.blue,
                                 ),
                               ),
@@ -294,8 +289,7 @@ class _TimerState extends State<Timer> {
                   AppButton(
                     btnText: "GO NOW",
                     ontap: () async {
-                      SharedPreferences preferences =
-                          await SharedPreferences.getInstance();
+                      SharedPreferences preferences = await SharedPreferences.getInstance();
                       if (preferences.getBool("isLogedIn") == null) {
                         Get.off(
                           () => const Login(),

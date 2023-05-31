@@ -17,6 +17,8 @@ void main() async {
   runApp(const MyApp());
 }
 
+Box box = Hive.box("DataBox");
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

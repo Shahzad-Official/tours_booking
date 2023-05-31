@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tours_booking/constants/app_padding.dart';
+import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/models/packages/packages_model.dart';
 import 'package:tours_booking/models/user_profile/profile_model.dart';
 import 'package:tours_booking/services/get_user_data.dart';
@@ -79,7 +80,7 @@ class _ReviewPageState extends State<ReviewPage> {
             ),
             actions: [
               AppCircularCachedImage(
-                picUrl: userData.profile!,
+                picUrl: userData.profile == "" || userData.profile == null ? DummyData.profilePic : userData.profile!,
                 picRadius: 25,
               ),
             ],
@@ -103,8 +104,7 @@ class _ReviewPageState extends State<ReviewPage> {
                       : Align(
                           alignment: Alignment.topCenter,
                           child: Column(
-                            children: List.generate(
-                                reviewsServices.allReviews.length, (index) {
+                            children: List.generate(reviewsServices.allReviews.length, (index) {
                               return Column(
                                 children: [
                                   const SizedBox(
@@ -115,54 +115,35 @@ class _ReviewPageState extends State<ReviewPage> {
                                     child: Column(
                                       children: [
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             FutureBuilder<ProfileModel>(
-                                                future: getUserData.getUserData(
-                                                    reviewsServices
-                                                        .allReviews[index]
-                                                        .userId!),
+                                                future: getUserData.getUserData(reviewsServices.allReviews[index].userId!),
                                                 builder: (context, snapshot) {
                                                   if (snapshot.hasData) {
                                                     return Row(
                                                       children: [
                                                         AppCircularCachedImage(
                                                           picRadius: 25,
-                                                          picUrl: snapshot
-                                                              .data!.profile!,
+                                                          picUrl: snapshot.data!.profile!,
                                                         ),
                                                         const SizedBox(
                                                           width: 10,
                                                         ),
                                                         Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             AppText(
-                                                              text: snapshot
-                                                                  .data!
-                                                                  .userName
-                                                                  .toString(),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
+                                                              text: snapshot.data!.userName.toString(),
+                                                              fontWeight: FontWeight.w600,
                                                             ),
                                                             AppText(
-                                                              text: FormatDate
-                                                                  .formatedDate(
-                                                                formatPattern:
-                                                                    "hh:mm a , dd MMM yyyy",
-                                                                date: reviewsServices
-                                                                    .allReviews[
-                                                                        index]
-                                                                    .createdOn!,
+                                                              text: FormatDate.formatedDate(
+                                                                formatPattern: "hh:mm a , dd MMM yyyy",
+                                                                date: reviewsServices.allReviews[index].createdOn!,
                                                               ),
                                                               fontSize: 11,
-                                                              textcolor:
-                                                                  const Color(
-                                                                      0xff999999),
+                                                              textcolor: const Color(0xff999999),
                                                             )
                                                           ],
                                                         ),
@@ -170,22 +151,19 @@ class _ReviewPageState extends State<ReviewPage> {
                                                     );
                                                   } else {
                                                     return const Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
+                                                      child: CircularProgressIndicator(),
                                                     );
                                                   }
                                                 }),
                                             RatingBar.builder(
-                                              initialRating: reviewsServices
-                                                  .allReviews[index].rating!,
+                                              initialRating: reviewsServices.allReviews[index].rating!,
                                               glowRadius: 1,
                                               itemSize: 18,
                                               direction: Axis.horizontal,
                                               allowHalfRating: true,
                                               ignoreGestures: true,
                                               itemCount: 5,
-                                              itemBuilder: (context, _) =>
-                                                  const Icon(
+                                              itemBuilder: (context, _) => const Icon(
                                                 Icons.star,
                                                 color: Colors.amber,
                                               ),
@@ -196,9 +174,7 @@ class _ReviewPageState extends State<ReviewPage> {
                                         Align(
                                           alignment: Alignment.centerLeft,
                                           child: AppText(
-                                            text: reviewsServices
-                                                .allReviews[index].feedBack
-                                                .toString(),
+                                            text: reviewsServices.allReviews[index].feedBack.toString(),
                                             textcolor: const Color(0xff999999),
                                           ),
                                         ),

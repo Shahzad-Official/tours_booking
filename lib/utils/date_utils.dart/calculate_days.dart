@@ -6,6 +6,7 @@ class CalculateDays {
       DateTime.now().year,
       DateTime.now().month,
       DateTime.now().day,
+      DateTime.now().hour,
     );
     DateTime newEndDate = DateTime.parse(endDate);
 

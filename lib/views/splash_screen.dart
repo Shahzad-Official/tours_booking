@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
+import 'package:tours_booking/main.dart';
 import 'package:tours_booking/views/main_page/main_page.dart';
+import 'package:tours_booking/views/registeration/login.dart';
 import 'package:tours_booking/widgets/app_text.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -12,12 +14,23 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(
       const Duration(seconds: 3),
-      () => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const MainPage(),
-        ),
-      ),
+      () {
+        if (box.get("loggedIn") == null || !box.get("loggedIn")) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Login(),
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MainPage(),
+            ),
+          );
+        }
+      },
     );
     return Scaffold(
       body: Center(

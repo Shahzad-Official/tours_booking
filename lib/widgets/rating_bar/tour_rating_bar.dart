@@ -18,55 +18,22 @@ class TourRatingBar extends StatelessWidget {
         AppPadding.heightSpace15,
         RatingBar(
           ignoreGestures: true,
-          itemSize: 15,
+          itemSize: 20,
           initialRating: initialRating ?? 2.1,
           allowHalfRating: true,
           itemCount: 4,
           ratingWidget: RatingWidget(
-            full: Container(
-              height: 10,
-              width: 10,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primarycolor,
-              ),
+            full: const Icon(
+              Icons.star_rate_rounded,
+              color: AppColors.primarycolor,
             ),
-            half: Container(
-              height: 10,
-              width: 10,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.primarycolor,
-                  width: 0.5,
-                ),
-              ),
-              child: Stack(
-                children: [
-                  Container(
-                    height: 10,
-                    width: 5,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        bottomLeft: Radius.circular(5),
-                      ),
-                      color: AppColors.primarycolor,
-                    ),
-                  ),
-                ],
-              ),
+            half: const Icon(
+              Icons.star_half_rounded,
+              color: AppColors.primarycolor,
             ),
-            empty: Container(
-              height: 10,
-              width: 10,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors.primarycolor,
-                  width: 0.5,
-                ),
-                shape: BoxShape.circle,
-              ),
+            empty: const Icon(
+              Icons.star_border_rounded,
+              color: AppColors.primarycolor,
             ),
           ),
           onRatingUpdate: (double value) {},
