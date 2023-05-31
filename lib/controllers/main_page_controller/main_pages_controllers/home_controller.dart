@@ -67,12 +67,14 @@ class HomeController extends GetxController {
   }
 
   List<PackagesModel> allPackages = [];
-
+  CalculateDays calculateDays = CalculateDays();
   searchPackage({String query = '', required List<PackagesModel> packagesList}) {
     allPackages = packagesList.where((element) {
       return (element.packageName!.toLowerCase().contains(query.trim().toLowerCase()) &&
-          CalculateDays.daysBetweenDates(
+          calculateDays.daysBetweenDates(
                 endDate: element.endDate!,
+                endTime: element.endTime!,
+                startTime: element.startTime!,
               ) >
               0);
     }).toList();

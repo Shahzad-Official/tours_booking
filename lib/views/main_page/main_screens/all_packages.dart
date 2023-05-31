@@ -27,7 +27,8 @@ class AllPackages extends StatefulWidget {
   State<AllPackages> createState() => _AllPackagesState();
 }
 
-class _AllPackagesState extends State<AllPackages> with TickerProviderStateMixin {
+class _AllPackagesState extends State<AllPackages> {
+  CalculateDays calculateDays = CalculateDays();
   final GetAllPackages _getAllPackages = GetAllPackages();
   final AllPackagesController _controller = Get.put(AllPackagesController());
   bool isLoading = false;
@@ -198,7 +199,13 @@ class _AllPackagesState extends State<AllPackages> with TickerProviderStateMixin
                                 children: List<Widget>.generate(
                                   _.allPackages.length,
                                   (index) {
+                                    calculateDays.daysBetweenDates(
+                                      endDate: _.allPackages[index].endDate.toString(),
+                                      endTime: _.allPackages[index].endTime.toString(),
+                                      startTime: _.allPackages[index].startTime.toString(),
+                                    );
                                     return PackagesList(
+                                      isHour: calculateDays.isHours,
                                       rating: 0,
                                       eventImage: _.allPackages[index].thumbnailUrl.toString(),
                                       eventName: _.allPackages[index].packageName.toString(),
@@ -210,18 +217,10 @@ class _AllPackagesState extends State<AllPackages> with TickerProviderStateMixin
                                         date: _.allPackages[index].endDate.toString(),
                                       )}",
                                       eventLocation: _.allPackages[index].location!.address.toString(),
-                                      eventDuration: CalculateDays.daysBetweenDates(
-                                        endDate: _.allPackages[index].endDate.toString(),
-                                      ).toString(),
-                                      eventDurationColor: CalculateDays.daysBetweenDates(
-                                                endDate: _.allPackages[index].endDate.toString(),
-                                              ) >=
-                                              3
+                                      eventDuration: calculateDays.isDays ? calculateDays.days.toString() : calculateDays.hour.toString(),
+                                      eventDurationColor: calculateDays.days >= 3
                                           ? AppColors.day3Color
-                                          : CalculateDays.daysBetweenDates(
-                                                    endDate: _.allPackages[index].endDate.toString(),
-                                                  ) ==
-                                                  2
+                                          : calculateDays.days == 2
                                               ? AppColors.day2Color
                                               : AppColors.day1Color,
                                       onTap: () {

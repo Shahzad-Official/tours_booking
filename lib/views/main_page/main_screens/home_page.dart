@@ -19,6 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  CalculateDays calculateDays = CalculateDays();
   final HomeController _controller = Get.put(HomeController());
   final GetAllPackages _getAllPackages = GetAllPackages();
   List<String> allTabs = [
@@ -34,6 +35,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     setState(() {
       isLoading = true;
     });
+
     await _getAllPackages.getAllPackages();
 
     _controller.searchPackage(
@@ -155,10 +157,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         backgroundColor: Colors.transparent,
                                         context: context,
                                         builder: (context) {
+                                          calculateDays.daysBetweenDates(
+                                            endDate: _.allPackages[index].endDate.toString(),
+                                            endTime: _.allPackages[index].endTime.toString(),
+                                            startTime: _.allPackages[index].startTime.toString(),
+                                          );
                                           return Container(
                                             height: 200,
                                             color: Colors.transparent,
                                             child: PackagesList(
+                                              isHour: calculateDays.isHours,
                                               rating: 0,
                                               eventImage: _.allPackages[index].thumbnailUrl.toString(),
                                               eventName: _.allPackages[index].packageName.toString(),
@@ -170,53 +178,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                 date: _.allPackages[index].endDate.toString(),
                                               )}",
                                               eventLocation: _.allPackages[index].location!.address.toString(),
-                                              eventDuration: CalculateDays.daysBetweenDates(
-                                                endDate: _.allPackages[index].endDate.toString(),
-                                              ).isNegative
-                                                  ? "E"
-                                                  : CalculateDays.daysBetweenDates(
-                                                      endDate: _.allPackages[index].endDate.toString(),
-                                                    ).toString(),
-                                              eventDurationColor: CalculateDays.daysBetweenDates(
-                                                        endDate: _.allPackages[index].endDate.toString(),
-                                                      ) >=
-                                                      3
-                                                  ? Colors.red
-                                                  : CalculateDays.daysBetweenDates(
-                                                            endDate: _.allPackages[index].endDate.toString(),
-                                                          ) ==
-                                                          2
-                                                      ? Colors.yellow
-                                                      : CalculateDays.daysBetweenDates(
-                                                          endDate: _.allPackages[index].endDate.toString(),
-                                                        ).isNegative
-                                                          ? Colors.purple
-                                                          : Colors.green,
-                                              onTap: CalculateDays.daysBetweenDates(
-                                                endDate: _.allPackages[index].endDate.toString(),
-                                              ).isNegative
-                                                  ? () {
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (context) {
-                                                          return const AlertDialog(
-                                                            title: AppText(
-                                                              text: "Package Expired!",
-                                                            ),
-                                                          );
-                                                        },
-                                                      );
-                                                    }
-                                                  : () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) => PackageSinglePage(
-                                                            packageData: _.allPackages[index],
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
+                                              eventDuration: calculateDays
+                                                  .daysBetweenDates(
+                                                    endDate: _.allPackages[index].endDate.toString(),
+                                                    endTime: _.allPackages[index].endTime.toString(),
+                                                    startTime: _.allPackages[index].startTime.toString(),
+                                                  )
+                                                  .toString(),
+                                              eventDurationColor: calculateDays.days >= 3
+                                                  ? AppColors.day3Color
+                                                  : calculateDays.days == 2
+                                                      ? AppColors.day2Color
+                                                      : AppColors.day1Color,
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => PackageSinglePage(
+                                                      packageData: _.allPackages[index],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           );
                                         },
@@ -231,15 +214,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   );
                                 },
                               ).toSet(),
-                              initialCameraPosition: CameraPosition(
+                              initialCameraPosition: const CameraPosition(
                                 target: LatLng(-43.2410662, 171.6122821),
                                 zoom: 8,
                               ),
-
-                              //  _.initialPosition(
-                              //   lat: 43.2410662,
-                              //   long: 171.6122821,
-                              // ),
                             ),
                     ),
                   ],

@@ -41,6 +41,7 @@ class AllPackagesController extends GetxController {
     Get.back();
   }
 
+  CalculateDays calculateDays = CalculateDays();
   searchPackage({
     String query = '',
     required List<PackagesModel> packagesList,
@@ -49,8 +50,10 @@ class AllPackagesController extends GetxController {
     double latitude = box.get("latitude");
     double longitude = box.get("longitude");
     allPackages = packagesList.where((element) {
-      int days = CalculateDays.daysBetweenDates(
+      int days = calculateDays.daysBetweenDates(
         endDate: element.endDate!,
+        endTime: element.endTime!,
+        startTime: element.startTime!,
       );
 
       if (days < 0) {

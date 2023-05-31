@@ -26,9 +26,15 @@ class Timer extends StatefulWidget {
 }
 
 class _TimerState extends State<Timer> {
+  CalculateDays calculateDays = CalculateDays();
   TimerController controller = Get.put(TimerController());
   @override
   void initState() {
+    calculateDays.daysBetweenDates(
+      endDate: widget.packageData.endDate.toString(),
+      endTime: widget.packageData.endTime.toString(),
+      startTime: widget.packageData.startTime.toString(),
+    );
     controller.startTimer(timestamp: widget.packageData.endDate!);
     super.initState();
   }
@@ -210,15 +216,9 @@ class _TimerState extends State<Timer> {
                           ),
                         ],
                       ),
-                      progressColor: CalculateDays.daysBetweenDates(
-                                endDate: widget.packageData.endDate.toString(),
-                              ) >=
-                              3
+                      progressColor: calculateDays.days >= 3
                           ? AppColors.day3Color
-                          : CalculateDays.daysBetweenDates(
-                                    endDate: widget.packageData.endDate.toString(),
-                                  ) ==
-                                  2
+                          : calculateDays.days == 2
                               ? AppColors.day2Color
                               : AppColors.day1Color,
                       backgroundColor: Colors.white,

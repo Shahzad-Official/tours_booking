@@ -27,6 +27,7 @@ class PackageSinglePage extends StatefulWidget {
 }
 
 class _PackageSinglePageState extends State<PackageSinglePage> {
+  CalculateDays calculateDays = CalculateDays();
   final ReviewsServices reviewsServices = ReviewsServices();
   TimerController controller = Get.put(TimerController());
   bool isLoading = false;
@@ -35,6 +36,11 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
     setState(() {
       isLoading = true;
     });
+    calculateDays.daysBetweenDates(
+      endDate: widget.packageData.endDate.toString(),
+      endTime: widget.packageData.endTime.toString(),
+      startTime: widget.packageData.startTime.toString(),
+    );
     await reviewsServices.getAllReviews(
       widget.packageData.packageId!,
     );
@@ -48,8 +54,9 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
 
   @override
   void initState() {
-    controller.startTimer(timestamp: widget.packageData.endDate!);
     getData();
+    controller.startTimer(timestamp: widget.packageData.endDate!);
+
     super.initState();
   }
 
@@ -282,15 +289,9 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                               circularStrokeCap: CircularStrokeCap.round,
                                               lineWidth: 7,
                                               backgroundColor: AppColors.headTextColor.withOpacity(0.5),
-                                              progressColor: CalculateDays.daysBetweenDates(
-                                                        endDate: widget.packageData.endDate.toString(),
-                                                      ) >=
-                                                      3
+                                              progressColor: calculateDays.days >= 3
                                                   ? AppColors.day3Color
-                                                  : CalculateDays.daysBetweenDates(
-                                                            endDate: widget.packageData.endDate.toString(),
-                                                          ) ==
-                                                          2
+                                                  : calculateDays.days == 2
                                                       ? AppColors.day2Color
                                                       : AppColors.day1Color,
                                               center: Column(
@@ -395,7 +396,11 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: _.time!.hour > 24 ? "${_.time == null ? null : _.time!.day} /days" : "${_.time == null ? null : _.time!.hour} +hours",
+                                        text: calculateDays.isHours
+                                            ? "${calculateDays.hour} +hours"
+                                            : calculateDays.days == 1
+                                                ? "${calculateDays.days} /day"
+                                                : "${calculateDays.days} /days",
                                         style: GoogleFonts.poppins(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,

@@ -10,6 +10,7 @@ class PackagesList extends StatelessWidget {
   final Color eventDurationColor;
   final double rating;
   final void Function()? onTap;
+  final bool isHour;
   const PackagesList({
     Key? key,
     required this.eventImage,
@@ -20,6 +21,7 @@ class PackagesList extends StatelessWidget {
     required this.eventDuration,
     required this.eventDurationColor,
     this.onTap,
+    required this.isHour,
   }) : super(key: key);
 
   @override
@@ -142,7 +144,11 @@ class PackagesList extends StatelessWidget {
                           child: Center(
                             child: AppText(
                               textAlign: TextAlign.center,
-                              text: "$eventDuration\ndays",
+                              text: isHour
+                                  ? "$eventDuration\nhours"
+                                  : int.parse(eventDuration) == 1
+                                      ? "$eventDuration\nday"
+                                      : "$eventDuration\ndays",
                               fontSize: 8,
                               textcolor: Colors.white,
                             ),
