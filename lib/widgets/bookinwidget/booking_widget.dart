@@ -27,8 +27,7 @@ class BookingWidget extends StatefulWidget {
 
 class _BookingWidgetState extends State<BookingWidget> {
   final BookingServices _bookingServices = BookingServices();
-  final OngoingBookingsController _bookingsController =
-      Get.put(OngoingBookingsController());
+  final OngoingBookingsController _bookingsController = Get.put(OngoingBookingsController());
   GetAllPackages getpackageData = GetAllPackages();
   bool isLoading = false;
   getData() async {
@@ -99,12 +98,10 @@ class _BookingWidgetState extends State<BookingWidget> {
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           return SingleTourContainer(
-                                            eventName:
-                                                _.allBookings[index].eventName!,
+                                            eventName: _.allBookings[index].eventName!,
                                             picUrl: snapshot.data!.thumbnailUrl,
                                             ratingBar: TourRatingBar(
-                                              initialRating:
-                                                  index == 2 ? 3 : null,
+                                              initialRating: index == 2 ? 3 : null,
                                             ),
                                             bottomButton: Align(
                                               alignment: Alignment.bottomRight,
@@ -113,12 +110,9 @@ class _BookingWidgetState extends State<BookingWidget> {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          BookingDetails(
-                                                        bookingData: _
-                                                            .allBookings[index],
-                                                        packageData:
-                                                            snapshot.data!,
+                                                      builder: (context) => BookingDetails(
+                                                        bookingData: _.allBookings[index],
+                                                        packageData: snapshot.data!,
                                                       ),
                                                     ),
                                                   );
@@ -126,18 +120,14 @@ class _BookingWidgetState extends State<BookingWidget> {
                                                 text: "view",
                                               ),
                                             ),
-                                            location: snapshot
-                                                .data!.location!.address
-                                                .toString(),
+                                            location: snapshot.data!.location!.address.toString(),
                                             startDate: FormatDate.formatedDate(
                                               formatPattern: "dd MMM",
-                                              date: snapshot.data!.startDate
-                                                  .toString(),
+                                              date: snapshot.data!.startDate.toString(),
                                             ),
                                             endDate: FormatDate.formatedDate(
                                               formatPattern: "dd MMM",
-                                              date: snapshot.data!.endDate
-                                                  .toString(),
+                                              date: snapshot.data!.endDate.toString(),
                                             ),
                                           );
                                         } else {

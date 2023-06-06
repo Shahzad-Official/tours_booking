@@ -163,7 +163,7 @@ class _FilterSheetState extends State<FilterSheet> {
               ),
               RangeSlider(
                 values: _.rangePriceValues,
-                max: 100,
+                max: 1500,
                 min: 0,
                 divisions: 10,
                 labels: RangeLabels(

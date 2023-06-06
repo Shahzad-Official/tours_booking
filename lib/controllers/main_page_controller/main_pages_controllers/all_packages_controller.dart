@@ -79,8 +79,8 @@ class AllPackagesController extends GetxController {
             element.dangerRating!.toLowerCase().contains(
                   filters.dangerRating!.toLowerCase(),
                 ) &&
-            (distance > filters.distanceRangs!.first && distance <= filters.distanceRangs![1]) &&
-            (price > filters.priceRanges!.first && price <= filters.priceRanges![1]) &&
+            (distance >= filters.distanceRangs!.first.toDouble() && distance <= filters.distanceRangs![1].toDouble()) &&
+            (price >= filters.priceRanges!.first.toDouble() && price <= filters.priceRanges![1].toDouble()) &&
             days == filters.days);
       }
     }).toList();

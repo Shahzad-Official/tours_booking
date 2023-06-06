@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/controllers/bookings_controllers/ongoing_bookings_controller.dart';
-import 'package:tours_booking/widgets/app_cache_image.dart';
 
 import '../../constants/app_padding.dart';
 import '../../models/user_profile/profile_model.dart';
@@ -18,8 +16,7 @@ class OngoingBookings extends StatefulWidget {
 }
 
 class _OngoingBookingsState extends State<OngoingBookings> {
-  final OngoingBookingsController bookingsController =
-      Get.put(OngoingBookingsController());
+  final OngoingBookingsController bookingsController = Get.put(OngoingBookingsController());
   ProfileModel userData = ProfileModel();
   getUserData() {
     Box box = Hive.box("DataBox");
@@ -34,29 +31,23 @@ class _OngoingBookingsState extends State<OngoingBookings> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
+        preferredSize: Size.fromHeight(80),
         child: Padding(
           padding: AppPadding.defaultPadding,
           child: Column(
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const AppText(
+                  AppText(
                     text: "Ongoing \nBookings",
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
-                  ),
-                  AppCircularCachedImage(
-                    picUrl: userData.profile == "" || userData.profile == null
-                        ? DummyData.profilePic
-                        : userData.profile!,
-                    picRadius: 20,
                   ),
                 ],
               ),
@@ -64,7 +55,7 @@ class _OngoingBookingsState extends State<OngoingBookings> {
           ),
         ),
       ),
-      body: const BookingWidget(),
+      body: BookingWidget(),
     );
   }
 }

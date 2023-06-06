@@ -216,7 +216,7 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: totalRating.toStringAsFixed(1),
+                                            text: " ${totalRating.toStringAsFixed(1)}",
                                             style: GoogleFonts.poppins(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w500,

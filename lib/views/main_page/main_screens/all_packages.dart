@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
-import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/controllers/main_page_controller/main_pages_controllers/all_packages_controller.dart';
 import 'package:tours_booking/models/user_profile/profile_model.dart';
 import 'package:tours_booking/services/package_services/get_all_packages.dart';
@@ -14,7 +13,6 @@ import 'package:tours_booking/utils/date_utils.dart/calculate_days.dart';
 import 'package:tours_booking/utils/date_utils.dart/format_date.dart';
 import 'package:tours_booking/views/single_package_page/tour_single_page.dart';
 import 'package:tours_booking/widgets/all_package_list.dart';
-import 'package:tours_booking/widgets/app_cache_image.dart';
 import 'package:tours_booking/widgets/app_text.dart';
 
 import '../../../constants/svg_icons.dart';
@@ -65,26 +63,22 @@ class _AllPackagesState extends State<AllPackages> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(80),
+          appBar: const PreferredSize(
+            preferredSize: Size.fromHeight(80),
             child: Padding(
               padding: AppPadding.defaultPadding,
               child: Column(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const AppText(
+                      AppText(
                         text: "All Packages",
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
-                      ),
-                      AppCircularCachedImage(
-                        picRadius: 20,
-                        picUrl: userData.profile == "" || userData.profile == null ? DummyData.profilePic : userData.profile!,
                       ),
                     ],
                   ),
@@ -218,11 +212,13 @@ class _AllPackagesState extends State<AllPackages> {
                                       )}",
                                       eventLocation: _.allPackages[index].location!.address.toString(),
                                       eventDuration: calculateDays.isDays ? calculateDays.days.toString() : calculateDays.hour.toString(),
-                                      eventDurationColor: calculateDays.days >= 3
-                                          ? AppColors.day3Color
-                                          : calculateDays.days == 2
-                                              ? AppColors.day2Color
-                                              : AppColors.day1Color,
+                                      eventDurationColor: calculateDays.isHours
+                                          ? AppColors.day1Color
+                                          : calculateDays.days >= 3
+                                              ? AppColors.day3Color
+                                              : calculateDays.days == 2
+                                                  ? AppColors.day2Color
+                                                  : AppColors.day1Color,
                                       onTap: () {
                                         Navigator.push(
                                           context,
