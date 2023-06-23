@@ -70,7 +70,7 @@ class HomeController extends GetxController {
   CalculateDays calculateDays = CalculateDays();
   searchPackage({String query = '', required List<PackagesModel> packagesList}) {
     allPackages = packagesList.where((element) {
-      return (element.packageName!.toLowerCase().contains(query.trim().toLowerCase()) &&
+      return (element.location!.address!.toLowerCase().contains(query.trim().toLowerCase()) &&
           calculateDays.daysBetweenDates(
                 endDate: element.endDate!,
                 endTime: element.endTime!,
@@ -78,6 +78,21 @@ class HomeController extends GetxController {
               ) >
               0);
     }).toList();
+
+    update();
+  }
+
+  categorizePackage({String query = '', required List<PackagesModel> packagesList}) {
+    allPackages = packagesList.where((element) {
+      return (element.category!.toLowerCase().contains(query.trim().toLowerCase()) &&
+          calculateDays.daysBetweenDates(
+                endDate: element.endDate!,
+                endTime: element.endTime!,
+                startTime: element.startTime!,
+              ) >
+              0);
+    }).toList();
+
     update();
   }
 }

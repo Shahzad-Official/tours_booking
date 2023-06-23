@@ -19,17 +19,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  GoogleMapController? _mapController;
   CalculateDays calculateDays = CalculateDays();
   final HomeController _controller = Get.put(HomeController());
   final GetAllPackages _getAllPackages = GetAllPackages();
-  List<String> allTabs = [
-    "Temple",
-    "Adventure",
-    "People",
-    "Community",
-    "Event",
-  ];
-  late TabController _tabController;
+
   bool isLoading = false;
   getAllPackages() async {
     setState(() {
@@ -37,7 +31,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
 
     await _getAllPackages.getAllPackages();
-
+    await _getAllPackages.getAllCategories();
     _controller.searchPackage(
       packagesList: _getAllPackages.allPackages,
     );
@@ -48,11 +42,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    _tabController = TabController(
-      length: allTabs.length,
-      vsync: this,
-    );
     getAllPackages();
+
     _controller.setCustomIcon();
     _controller.getMyCurrentLocation();
     super.initState();
@@ -61,7 +52,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: _getAllPackages.allCats.length,
       child: Scaffold(
         backgroundColor: AppColors.backgroundcolor,
         appBar: null,
@@ -89,10 +80,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           height: 60,
                           width: double.maxFinite,
                           child: TextFormField(
-                            onChanged: (value) {
+                            onFieldSubmitted: (value) {
                               _.searchPackage(
                                 packagesList: _getAllPackages.allPackages,
-                                query: value,
+                                query: value.toLowerCase(),
+                              );
+                              _mapController!.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: LatLng(
+                                      _.allPackages.first.location!.latitude!,
+                                      _.allPackages.first.location!.longitude!,
+                                    ),
+                                    zoom: value.isEmpty ? 8 : 12,
+                                  ),
+                                ),
                               );
                             },
                             decoration: InputDecoration(
@@ -125,12 +127,29 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     TabBar(
                       labelColor: Colors.black,
                       isScrollable: true,
-                      controller: _tabController,
-                      onTap: (value) {},
+                      onTap: (value) {
+                        _.categorizePackage(
+                          packagesList: _getAllPackages.allPackages,
+                          query: _getAllPackages.allCats[value].toLowerCase(),
+                        );
+                        if (_.allPackages.isNotEmpty) {
+                          _mapController!.animateCamera(
+                            CameraUpdate.newCameraPosition(
+                              CameraPosition(
+                                target: LatLng(
+                                  _.allPackages.first.location!.latitude!,
+                                  _.allPackages.first.location!.longitude!,
+                                ),
+                                zoom: _getAllPackages.allCats[value].isEmpty ? 8 : 12,
+                              ),
+                            ),
+                          );
+                        }
+                      },
                       tabs: List.generate(
-                        allTabs.length,
+                        _getAllPackages.allCats.length,
                         (index) => Tab(
-                          text: allTabs[index],
+                          text: _getAllPackages.allCats[index],
                         ),
                       ),
                     ),
@@ -147,6 +166,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             )
                           : GoogleMap(
+                              onMapCreated: (controller) async {
+                                _mapController = controller;
+                              },
                               markers: List.generate(
                                 _.allPackages.length,
                                 (index) {
@@ -214,8 +236,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   );
                                 },
                               ).toSet(),
-                              initialCameraPosition: const CameraPosition(
-                                target: LatLng(-43.2410662, 171.6122821),
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(double.parse(_.allPackages.first.location!.latitude.toString()), double.parse(_.allPackages.first.location!.longitude.toString())),
                                 zoom: 8,
                               ),
                             ),

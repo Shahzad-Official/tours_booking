@@ -535,7 +535,7 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                 ),
                               ),
                               TextSpan(
-                                text: "Adventure",
+                                text: widget.packageData.category.toString(),
                                 style: GoogleFonts.poppins(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,

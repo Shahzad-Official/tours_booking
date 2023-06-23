@@ -52,7 +52,7 @@
         </intent-filter>
     </activity>
      <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyBSp32hxkn2p8D6bF_HrkgsJKvq_x6tjV0"/>
+           android:value="AIzaSyDq33g2UnBUqsMbCPvHT8imFd20IsLuel0"/>
     </application>
     <queries>
   <!-- If your app checks for SMS support -->
