@@ -35,9 +35,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _controller.searchPackage(
       packagesList: _getAllPackages.allPackages,
     );
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/controllers/timer_page_controller.dart';
 import 'package:tours_booking/models/packages/packages_model.dart';
@@ -12,6 +12,7 @@ import 'package:tours_booking/widgets/app_button.dart';
 import 'package:tours_booking/widgets/app_text.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../../constants/app_colors.dart';
+import '../../main.dart';
 import '../../utils/date_utils.dart/calculate_days.dart';
 
 class Timer extends StatefulWidget {
@@ -35,7 +36,7 @@ class _TimerState extends State<Timer> {
       endTime: widget.packageData.endTime.toString(),
       startTime: widget.packageData.startTime.toString(),
     );
-    controller.startTimer(timestamp: widget.packageData.endDate!);
+
     super.initState();
   }
 
@@ -63,8 +64,8 @@ class _TimerState extends State<Timer> {
                   child: CircularProgressIndicator(),
                 );
               }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              return ListView(
+                shrinkWrap: true,
                 children: [
                   const SizedBox(
                     height: 50,
@@ -289,12 +290,11 @@ class _TimerState extends State<Timer> {
                   AppButton(
                     btnText: "GO NOW",
                     ontap: () async {
-                      SharedPreferences preferences = await SharedPreferences.getInstance();
-                      if (preferences.getBool("isLogedIn") == null) {
+                      if (box.get("loggedIn") == null) {
                         Get.off(
                           () => const Login(),
                         );
-                      } else if (preferences.getBool("isLogedIn")!) {
+                      } else if (box.get("loggedIn")) {
                         Get.to(
                           () => ReviewPage(
                             packageData: widget.packageData,

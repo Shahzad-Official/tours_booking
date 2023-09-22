@@ -7,6 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/controllers/main_page_controller/main_pages_controllers/all_packages_controller.dart';
+import 'package:tours_booking/models/packages/packages_model.dart';
 import 'package:tours_booking/models/user_profile/profile_model.dart';
 import 'package:tours_booking/services/package_services/get_all_packages.dart';
 import 'package:tours_booking/utils/date_utils.dart/calculate_days.dart';
@@ -31,6 +32,7 @@ class _AllPackagesState extends State<AllPackages> {
   final AllPackagesController _controller = Get.put(AllPackagesController());
   bool isLoading = false;
   ProfileModel userData = ProfileModel();
+  List<PackagesModel> allPackages = [];
   getAllPackages() async {
     Box box = Hive.box("DataBox");
 
@@ -45,13 +47,19 @@ class _AllPackagesState extends State<AllPackages> {
     _controller.searchPackage(
       packagesList: _getAllPackages.allPackages,
     );
-    setState(() {
-      isLoading = false;
-    });
+    allPackages = _controller.allPackages;
+
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
   void initState() {
+    _controller.getMyCurrentLocation();
+
     getAllPackages();
 
     super.initState();

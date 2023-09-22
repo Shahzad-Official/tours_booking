@@ -2,21 +2,12 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:tours_booking/utils/app_snackbar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class AuthenticationServices {
   var user = FirebaseAuth.instance.currentUser;
-
-  isUserLogedIn() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    if (user == null) {
-      preferences.setBool("isLogedIn", false);
-    } else {
-      preferences.setBool("isLogedIn", true);
-    }
-  }
 
   updateProfile(
     String uid, {
@@ -37,17 +28,10 @@ class AuthenticationServices {
         },
       ).then(
         (value) async {
-          await FirebaseStorage.instance
-              .ref("users_profiles")
-              .child(uid)
-              .putFile(image)
-              .then(
+          await FirebaseStorage.instance.ref("users_profiles").child(uid).putFile(image).then(
             (res) async {
               var url = await res.ref.getDownloadURL();
-              await FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(uid)
-                  .update(
+              await FirebaseFirestore.instance.collection("users").doc(uid).update(
                 {"profile": url},
               );
             },
@@ -57,5 +41,16 @@ class AuthenticationServices {
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
     }
+  }
+
+  forgetPassword({required String email}) async {
+    await FirebaseAuth.instance
+        .sendPasswordResetEmail(email: email)
+        .then(
+          (value) => AppSnackbar.snackBar(title: "Message", message: "The reset password link has been sent to your email!"),
+        )
+        .catchError((err) {
+      AppSnackbar.snackBar(title: "Error", message: err.toString());
+    });
   }
 }

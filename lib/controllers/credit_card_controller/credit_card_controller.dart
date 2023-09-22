@@ -1,19 +1,18 @@
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/services/booking_services.dart';
+import 'package:tours_booking/services/payment_services.dart';
 import 'package:tours_booking/utils/app_snackbar.dart';
-
-import '../../constants/app_colors.dart';
-import '../../views/main_page/main_page.dart';
-import '../../widgets/app_text.dart';
+import 'package:tours_booking/views/main_page/main_page.dart';
+import 'package:tours_booking/widgets/app_text.dart';
 
 class CreditCardController extends GetxController {
   TextEditingController cardNumber = TextEditingController();
   TextEditingController cvv = TextEditingController();
   TextEditingController expiryDate = TextEditingController();
-
+  TextEditingController name = TextEditingController();
   BookingServices bookingServices = BookingServices();
   currentDate() {
     var date = DateTime.now();
@@ -38,6 +37,7 @@ class CreditCardController extends GetxController {
     update();
   }
 
+  PaymentServices services = PaymentServices();
   bool isLoading = false;
 
   makeBooking(
@@ -51,33 +51,20 @@ class CreditCardController extends GetxController {
     if (cardNumber.text.trim().isEmpty || cardNumber.text.trim().length < 16) {
       AppSnackbar.snackBar(title: "Error", message: "Enter valid Card Number!");
     } else if (expiryDate.text.isEmpty) {
-      AppSnackbar.snackBar(
-          title: "Error", message: "Please enter card expiry Date!");
+      AppSnackbar.snackBar(title: "Error", message: "Please enter card expiry Date!");
     } else if (cvv.text.trim().isEmpty || cvv.text.trim().length < 3) {
-      AppSnackbar.snackBar(
-          title: "Error", message: "Please enter valid CVV number!");
+      AppSnackbar.snackBar(title: "Error", message: "Please enter valid CVV number!");
     } else {
       isLoading = true;
       update();
-      try {
-        await FirebaseFunctions.instance.httpsCallable("stripePayment").call({
-          "number": cardNumber.text.trim(),
-          "amount": int.parse(totalPrice),
-          "month": expiryDate.text.split("/").first,
-          "year": expiryDate.text.split("/").last,
-          "description": "Booked A Tour",
-          "cvv": cvv.text,
-        });
-        AppSnackbar.snackBar(
-          title: "Message",
-          message: "Payment Done Successfully!",
-        );
-      } on FirebaseFunctions catch (e) {
-        AppSnackbar.snackBar(
-          title: "Error",
-          message: e.toString(),
-        );
-      }
+      await services.makePayment(
+        cardNumber: cardNumber.text,
+        month: expiryDate.text.split("/").first,
+        year: expiryDate.text.split("/").last,
+        cvc: cvv.text,
+        amount: totalPrice,
+        name: name.text,
+      );
       await bookingServices.makeBooking(
         totalPrice: totalPrice,
         tourId: tourId,
@@ -101,8 +88,7 @@ class CreditCardController extends GetxController {
           actions: [
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(AppColors.primarycolor),
+                backgroundColor: MaterialStateProperty.all(AppColors.primarycolor),
               ),
               child: const AppText(text: "OK"),
               onPressed: () {
@@ -119,6 +105,8 @@ class CreditCardController extends GetxController {
           ],
         ),
       );
+      isLoading = false;
+      update();
     }
   }
 }

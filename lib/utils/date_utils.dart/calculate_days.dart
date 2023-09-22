@@ -1,3 +1,5 @@
+import 'package:tours_booking/main.dart';
+
 class CalculateDays {
   int hour = -1;
   int days = -1;
@@ -7,6 +9,7 @@ class CalculateDays {
     required String endDate,
     required String endTime,
     required String startTime,
+    String? startDate,
   }) {
     String time12to24Format(String time) {
       int h = int.parse(time.split(":").first);
@@ -27,16 +30,31 @@ class CalculateDays {
       return newTime;
     }
 
+    DateTime newStartDate;
+    if (startDate != null) {
+      String endTimeHour = time12to24Format(endTime).split(":").first;
+
+      String endTimeminute = time12to24Format(startTime).split(":").last;
+      DateTime startDate1 = DateTime.parse(startDate.toString());
+      newStartDate = DateTime(
+        startDate1.year,
+        startDate1.month,
+        startDate1.day,
+        int.parse(endTimeHour),
+        int.parse(endTimeminute),
+      );
+    } else {
+      newStartDate = DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        DateTime.now().hour,
+        DateTime.now().minute,
+      );
+    }
     String endTimeHour = time12to24Format(endTime).split(":").first;
 
     String endTimeminute = time12to24Format(startTime).split(":").last;
-    DateTime newStartDate = DateTime(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-      DateTime.now().hour,
-      DateTime.now().minute,
-    );
 
     DateTime endDate2 = DateTime.parse(endDate);
     DateTime newEndDate = DateTime(
@@ -61,5 +79,39 @@ class CalculateDays {
     } else {
       return -1;
     }
+  }
+
+  double priceLessInSecond = 0;
+
+  remainingTimePercent({
+    required String packageStartDateTime,
+    required String packageEndDateTime,
+    required String packageStartTime,
+    required String packageEndTime,
+    required String startPrice,
+    required String endPrice,
+  }) {
+    var packageTotalRemainingTime = daysBetweenDates(
+      endDate: packageEndDateTime,
+      endTime: packageEndTime,
+      startTime: packageStartTime,
+      startDate: packageStartDateTime,
+    );
+
+    if (isDays) {
+      var totalRemainingSeconds = packageTotalRemainingTime * 86400;
+      priceLessInSecond = (double.parse(startPrice) - double.parse(endPrice)) / totalRemainingSeconds;
+    } else if (isHours) {
+      var totalRemainingSeconds = packageTotalRemainingTime * 3600;
+      priceLessInSecond = (double.parse(startPrice) - double.parse(endPrice)) / totalRemainingSeconds;
+    }
+
+    // var packageCurrentRemainingTime = daysBetweenDates(
+    //   endDate: packageEndDateTime,
+    //   endTime: packageEndTime,
+    //   startTime: packageStartTime,
+    // );
+    // var percentage = packageCurrentRemainingTime / packageTotalRemainingTime * 100;
+    // return percentage;
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/controllers/main_page_controller/main_page_controller.dart';
+import 'package:tours_booking/main.dart';
 import 'package:tours_booking/widgets/app_bottom_sheet.dart';
 
 import '../../services/authentications/authentications_services.dart';
@@ -29,9 +30,7 @@ class _MainPageState extends State<MainPage> {
   final MainPageController controller = Get.put(MainPageController());
   bool isLogedIn = false;
   checkLogin() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await authervices.isUserLogedIn();
-    isLogedIn = preferences.getBool("isLogedIn")!;
+    isLogedIn = box.get("loggedIn") ?? false;
   }
 
   @override

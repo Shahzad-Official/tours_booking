@@ -21,19 +21,19 @@ class TourRatingBar extends StatelessWidget {
           itemSize: 20,
           initialRating: initialRating ?? 2.1,
           allowHalfRating: true,
-          itemCount: 4,
+          itemCount: 5,
           ratingWidget: RatingWidget(
             full: const Icon(
               Icons.star_rate_rounded,
-              color: AppColors.primarycolor,
+              color: Colors.amber,
             ),
             half: const Icon(
               Icons.star_half_rounded,
-              color: AppColors.primarycolor,
+              color: Colors.amber,
             ),
             empty: const Icon(
               Icons.star_border_rounded,
-              color: AppColors.primarycolor,
+              color: Colors.amber,
             ),
           ),
           onRatingUpdate: (double value) {},

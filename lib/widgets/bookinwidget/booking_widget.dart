@@ -38,9 +38,11 @@ class _BookingWidgetState extends State<BookingWidget> {
     _bookingsController.searchBooking(
       allBooking: _bookingServices.allBookings,
     );
-    setState(() {
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -100,9 +102,15 @@ class _BookingWidgetState extends State<BookingWidget> {
                                           return SingleTourContainer(
                                             eventName: _.allBookings[index].eventName!,
                                             picUrl: snapshot.data!.thumbnailUrl,
-                                            ratingBar: TourRatingBar(
-                                              initialRating: index == 2 ? 3 : null,
-                                            ),
+                                            ratingBar: FutureBuilder(
+                                                future: getpackageData.tourRating(
+                                                  _.allBookings[index].tourId,
+                                                ),
+                                                builder: (context, snap) {
+                                                  return TourRatingBar(
+                                                    initialRating: snap.data == null ? 0.0 : double.parse(snap.data.toString()),
+                                                  );
+                                                }),
                                             bottomButton: Align(
                                               alignment: Alignment.bottomRight,
                                               child: RoundButton(

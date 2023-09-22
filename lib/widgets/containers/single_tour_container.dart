@@ -27,7 +27,7 @@ class SingleTourContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 145,
+      height: 155,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: AppColors.backgroundcolor,
@@ -111,7 +111,10 @@ class SingleTourContainer extends StatelessWidget {
                   ),
                   ratingBar,
                   AppPadding.heightSpace10,
-                  bottomButton,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: bottomButton,
+                  ),
                 ],
               ),
             ),

@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:tours_booking/constants/app_colors.dart';
 import 'package:tours_booking/constants/app_padding.dart';
@@ -7,6 +10,7 @@ import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/models/user_profile/profile_model.dart';
 import 'package:tours_booking/services/get_user_data.dart';
 import 'package:tours_booking/views/mybookinpage/mybooking_page.dart';
+import 'package:tours_booking/views/registeration/login.dart';
 import 'package:tours_booking/views/user_account/profile.dart';
 import 'package:tours_booking/views/user_account/terms_and_conditions.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
@@ -45,10 +49,7 @@ class AccountSettings extends StatelessWidget {
                     Row(
                       children: [
                         AppCircularCachedImage(
-                          picUrl: snapshot.data!.profile == "" ||
-                                  snapshot.data!.profile == null
-                              ? DummyData.profilePic
-                              : snapshot.data!.profile!,
+                          picUrl: snapshot.data!.profile == "" || snapshot.data!.profile == null ? DummyData.profilePic : snapshot.data!.profile!,
                         ),
                         const SizedBox(
                           width: 20,
@@ -207,6 +208,38 @@ class AccountSettings extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         fontSize: 18,
                         textcolor: Color(0xff232332),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 4,
+                      width: double.infinity,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xffF8F8F8),
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      onTap: () async {
+                        Get.offAll(
+                          () => const Login(),
+                        );
+                        await FirebaseAuth.instance.signOut();
+                        await GoogleSignIn().signOut();
+                        await FacebookAuth.instance.logOut();
+                      },
+                      leading: const Icon(
+                        Icons.power_settings_new_rounded,
+                        color: Colors.red,
+                      ),
+                      horizontalTitleGap: 0,
+                      title: AppText(
+                        text: "LogOut",
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                        textcolor: Colors.red,
                       ),
                     ),
                   ],

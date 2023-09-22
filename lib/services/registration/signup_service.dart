@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -27,6 +28,7 @@ class SignupService {
     required String email,
     required String displayName,
     required String photoURL,
+    String? phoneNo,
   }) async {
     await FirebaseFirestore.instance.collection("users").get().then((value) async {
       if (value.docs.isEmpty) {
@@ -37,7 +39,7 @@ class SignupService {
           "userName": displayName,
           "profile": photoURL,
           "dob": "10-10-2000",
-          "phoneNo": "+923000000000",
+          "phoneNo": phoneNo ?? "+923000000000",
           "isVerified": false,
           "emailVerified": true,
           "created_on": DateTime.now(),
@@ -48,7 +50,7 @@ class SignupService {
           Map map = {
             "dob": "10-10-2000",
             "email": email,
-            "phone": "+923000000000",
+            "phone": phoneNo ?? "+923000000000",
             "profile": photoURL,
             "uid": uid,
             "userName": displayName,
@@ -73,7 +75,7 @@ class SignupService {
             "userName": displayName,
             "profile": photoURL,
             "dob": "10-10-2000",
-            "phoneNo": "+923000000000",
+            "phoneNo": phoneNo ?? "+923000000000",
             "isVerified": false,
             "emailVerified": true,
             "created_on": DateTime.now(),
@@ -84,7 +86,7 @@ class SignupService {
             Map map = {
               "dob": "10-10-2000",
               "email": email,
-              "phone": "+923000000000",
+              "phone": phoneNo ?? "+923000000000",
               "profile": photoURL,
               "uid": uid,
               "userName": displayName,
@@ -119,11 +121,13 @@ class SignupService {
         email: email,
         displayName: userName,
         photoURL: "",
+        phoneNo: phoneNo,
       );
 
       await _loginService.loginUser(email: email, password: password);
     } catch (e) {
       AppSnackbar.snackBar(title: "Error", message: e.toString());
+      debugPrint(e.toString());
     }
   }
 

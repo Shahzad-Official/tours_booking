@@ -88,8 +88,7 @@ class _CreditCardState extends State<CreditCard> {
                             color: Colors.grey,
                           ),
                         ),
-                        contentPadding:
-                            const EdgeInsets.only(top: 5, left: 10, right: 10),
+                        contentPadding: const EdgeInsets.only(top: 5, left: 10, right: 10),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(1.0),
                           borderSide: const BorderSide(
@@ -138,8 +137,7 @@ class _CreditCardState extends State<CreditCard> {
                                       color: Colors.grey,
                                     ),
                                   ),
-                                  contentPadding: const EdgeInsets.only(
-                                      top: 5, left: 10, right: 10),
+                                  contentPadding: const EdgeInsets.only(top: 5, left: 10, right: 10),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(1.0),
                                     borderSide: const BorderSide(
@@ -222,6 +220,7 @@ class _CreditCardState extends State<CreditCard> {
                   SizedBox(
                     height: 45,
                     child: TextFormField(
+                      controller: _.name,
                       keyboardType: TextInputType.name,
                       autofocus: false,
                       decoration: InputDecoration(
@@ -233,8 +232,7 @@ class _CreditCardState extends State<CreditCard> {
                             color: Colors.grey,
                           ),
                         ),
-                        contentPadding:
-                            const EdgeInsets.only(top: 5, left: 10, right: 10),
+                        contentPadding: const EdgeInsets.only(top: 5, left: 10, right: 10),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(1.0),
                           borderSide: const BorderSide(
@@ -250,8 +248,7 @@ class _CreditCardState extends State<CreditCard> {
                       Transform.scale(
                         scale: 1.2,
                         child: Checkbox(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(3)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
                           value: value,
                           checkColor: Colors.white,
                           activeColor: AppColors.primarycolor,
@@ -276,9 +273,7 @@ class _CreditCardState extends State<CreditCard> {
                     onTap: () async {
                       await _.makeBooking(
                         context,
-                        bookedSlots: widget.packageData.noOfPersonsInPackage!
-                            .split("-")
-                            .last,
+                        bookedSlots: widget.packageData.noOfPersonsInPackage!.split("-").last,
                         totalPrice: widget.packageData.endPrice!,
                         tourId: widget.packageData.packageId!,
                         eventName: widget.packageData.packageName!,
@@ -315,9 +310,7 @@ class _CreditCardState extends State<CreditCard> {
                     child: Container(
                       height: 45,
                       width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2),
-                          color: const Color(0xff111111)),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(2), color: const Color(0xff111111)),
                       child: const Center(
                         child: AppText(
                           text: "Cancel",

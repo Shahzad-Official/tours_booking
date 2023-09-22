@@ -43,6 +43,8 @@ class HomeController extends GetxController {
         latitude = box.get("latitude");
         longitude = box.get("longitude");
         update();
+      }).catchError((err) {
+        print(err);
       });
       isGettingLocation = false;
 
@@ -69,6 +71,7 @@ class HomeController extends GetxController {
   List<PackagesModel> allPackages = [];
   CalculateDays calculateDays = CalculateDays();
   searchPackage({String query = '', required List<PackagesModel> packagesList}) {
+    getMyCurrentLocation();
     allPackages = packagesList.where((element) {
       return (element.location!.address!.toLowerCase().contains(query.trim().toLowerCase()) &&
           calculateDays.daysBetweenDates(
@@ -84,13 +87,17 @@ class HomeController extends GetxController {
 
   categorizePackage({String query = '', required List<PackagesModel> packagesList}) {
     allPackages = packagesList.where((element) {
-      return (element.category!.toLowerCase().contains(query.trim().toLowerCase()) &&
-          calculateDays.daysBetweenDates(
-                endDate: element.endDate!,
-                endTime: element.endTime!,
-                startTime: element.startTime!,
-              ) >
-              0);
+      if (element.category == null) {
+        return false;
+      } else {
+        return (element.category!.toLowerCase().contains(query.trim().toLowerCase()) &&
+            calculateDays.daysBetweenDates(
+                  endDate: element.endDate!,
+                  endTime: element.endTime!,
+                  startTime: element.startTime!,
+                ) >
+                0);
+      }
     }).toList();
 
     update();

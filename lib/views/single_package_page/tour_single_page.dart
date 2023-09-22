@@ -12,6 +12,7 @@ import 'package:tours_booking/views/review/review.dart';
 import 'package:tours_booking/views/timer/timer.dart';
 import 'package:tours_booking/widgets/app_cache_image.dart';
 import 'package:tours_booking/widgets/app_text.dart';
+import 'package:tours_booking/widgets/app_tool_tip.dart';
 
 import '../../controllers/timer_page_controller.dart';
 
@@ -55,8 +56,15 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
   @override
   void initState() {
     getData();
-    controller.startTimer(timestamp: widget.packageData.endDate!);
 
+    controller.startTimer(
+      packageStartDateTime: widget.packageData.startDate!,
+      packageEndDateTime: widget.packageData.endDate!,
+      packageStartTime: widget.packageData.startTime!,
+      packageEndTime: widget.packageData.endTime!,
+      startPrice: widget.packageData.startPrice!,
+      endPrice: widget.packageData.endPrice!,
+    );
     super.initState();
   }
 
@@ -68,7 +76,7 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : Column(
+            : ListView(
                 children: [
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.47,
@@ -146,6 +154,9 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                     const Spacer(),
                                     Container(
                                       height: 90,
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                      ),
                                       decoration: widget.packageData.otherImage!.isEmpty
                                           ? null
                                           : BoxDecoration(
@@ -163,24 +174,20 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                                 ),
                                               ],
                                             ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: List.generate(
-                                          widget.packageData.otherImage!.length,
-                                          (index) => AppCachedImage(
-                                            picUrl: widget.packageData.otherImage![index].toString(),
-                                            height: 70,
-                                            width: 70,
-                                            borderRadius: 10,
-                                            child: widget.packageData.otherImage!.length > 4
-                                                ? Center(
-                                                    child: AppText(
-                                                      text: "+ ${widget.packageData.otherImage!.length - 4}",
-                                                      fontSize: 18,
-                                                      textcolor: Colors.white,
-                                                    ),
-                                                  )
-                                                : null,
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Center(
+                                          child: Wrap(
+                                            spacing: 20,
+                                            children: List.generate(
+                                              widget.packageData.otherImage!.length,
+                                              (index) => AppCachedImage(
+                                                picUrl: widget.packageData.otherImage![index].toString(),
+                                                height: 70,
+                                                width: 70,
+                                                borderRadius: 10,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -254,13 +261,15 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                   padding: const EdgeInsets.only(right: 20),
                                   child: InkWell(
                                     onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Timer(
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.8),
+                                        builder: (context) {
+                                          return Timer(
                                             packageData: widget.packageData,
-                                          ),
-                                        ),
+                                          );
+                                        },
                                       );
                                     },
                                     child: _.time == null
@@ -282,7 +291,7 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                             child: CircularPercentIndicator(
                                               reverse: true,
                                               radius: 55,
-                                              percent: 1,
+                                              percent: _.percent,
                                               animationDuration: 1000,
                                               animateFromLastPercent: true,
                                               animation: true,
@@ -298,7 +307,7 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
                                                   AppText(
-                                                    text: "\$${widget.packageData.startPrice}",
+                                                    text: "\$${_.remainingPrice}",
                                                     fontWeight: FontWeight.w700,
                                                     textcolor: AppColors.primarycolor,
                                                   ),
@@ -509,7 +518,7 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                               textcolor: Colors.black,
                             ),
                             AppText(
-                              text: widget.packageData.ageSuitability.toString(),
+                              text: "${widget.packageData.ageSuitability.toString()} +",
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
                               textcolor: AppColors.primarycolor,
@@ -544,6 +553,46 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                               ),
                             ],
                           ),
+                        ),
+                        AppPadding.heightSpace15,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 8,
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "Danger Rating : ",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: widget.packageData.dangerRating == "1"
+                                          ? "Easy Going"
+                                          : widget.packageData.dangerRating == "2"
+                                              ? "Excitement Guaranteed"
+                                              : "Excitement Blast",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.primarycolor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              child: AppToolTip(
+                                text: "Danger Rating hint",
+                              ),
+                            ),
+                          ],
                         ),
                         AppPadding.heightSpace20,
                         RichText(
@@ -584,7 +633,7 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: "${widget.packageData.noOfPersonsInPackage}",
+                                    text: "${widget.packageData.noOfPersonsInPackage} +",
                                     style: GoogleFonts.poppins(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
@@ -639,35 +688,3 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
     );
   }
 }
-
-// class Myslider extends StatelessWidget {
-//   final int value;
-//   const Myslider({
-//     Key? key,
-//     required this.value,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//         child: Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//             // mainAxisSize: MainAxisSize.max,
-//             children: [
-//           Expanded(
-//               child: Slider(
-//                   thumbColor: Colors.white,
-//                   value: value.toDouble(),
-//                   min: 1.0,
-//                   max: 20.0,
-//                   divisions: 15,
-//                   activeColor: Colors.blueAccent,
-//                   inactiveColor: Colors.black45,
-//                   label: 'Age',
-//                   onChanged: (double newValue) {},
-//                   semanticFormatterCallback: (double newValue) {
-//                     return '${newValue.round()} dollars';
-//                   })),
-//         ]));
-//   }
-// }

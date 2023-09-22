@@ -71,7 +71,7 @@ dependencies:
   google_sign_in: ^6.1.0
   
   #Local_database
-  shared_preferences: ^2.0.17
+  
   hive: any
   hive_flutter: any
 
@@ -84,7 +84,7 @@ dependencies:
   chat_bubbles: ^1.4.0
   intl: any
   flutter_widget_from_html: any
-  
+  http: any
 
  
 

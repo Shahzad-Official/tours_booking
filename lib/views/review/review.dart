@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hive/hive.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:tours_booking/constants/app_padding.dart';
 import 'package:tours_booking/constants/dummy_data.dart';
 import 'package:tours_booking/models/packages/packages_model.dart';
@@ -36,8 +36,8 @@ class _ReviewPageState extends State<ReviewPage> {
   bool isLoading = false;
   checkLogin() async {
     userData = ProfileModel.fromJson(box.get("userData"));
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    isLogedIn = preferences.getBool("isLogedIn");
+
+    isLogedIn = box.get("loggedIn") ?? false;
     setState(() {
       isLoading = true;
     });

@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tours_booking/controllers/filter_sheet_controller.dart';
 import 'package:tours_booking/models/filter_model.dart';
 import 'package:tours_booking/models/packages/packages_model.dart';
@@ -15,10 +16,41 @@ class AllPackagesController extends GetxController {
   List<PackagesModel> allPackages = [];
   final FilterSheetController _controller = Get.put(FilterSheetController());
   FilterModel filter = FilterModel();
+  double? latitude, longitude;
+  bool isGettingLocation = false;
+  getMyCurrentLocation() async {
+    if (box.get("latitude") == null) {
+      isGettingLocation = true;
+      update();
+      await Permission.location.request();
+      await Geolocator.requestPermission();
+      await Geolocator.getCurrentPosition().then((value) {
+        box.put("latitude", value.latitude);
+        box.put("longitude", value.longitude);
+        latitude = box.get("latitude");
+        longitude = box.get("longitude");
+        update();
+      });
+      isGettingLocation = false;
+
+      update();
+    } else {
+      isGettingLocation = true;
+      update();
+      latitude = box.get("latitude");
+      longitude = box.get("longitude");
+      update();
+      isGettingLocation = false;
+
+      update();
+    }
+  }
+
   applyFilter({
     String query = '',
     required List<PackagesModel> packagesList,
-  }) {
+  }) async {
+    await getMyCurrentLocation();
     var data = jsonEncode({
       "DistanceRangs": [
         _controller.rangeValues.start.round(),
@@ -33,7 +65,7 @@ class AllPackagesController extends GetxController {
       "Days": _controller.days,
     });
     filter = FilterModel.fromJson(jsonDecode(data));
-    debugPrint("Filter => ${filter.dangerRating}");
+
     searchPackage(
       packagesList: packagesList,
       filters: filter,
@@ -47,21 +79,30 @@ class AllPackagesController extends GetxController {
     required List<PackagesModel> packagesList,
     FilterModel? filters,
   }) {
-    double latitude = box.get("latitude");
-    double longitude = box.get("longitude");
+    double latitude = box.get("latitude") ?? 40.9006;
+    double longitude = box.get("longitude") ?? 174.8860;
+
     allPackages = packagesList.where((element) {
       int days = calculateDays.daysBetweenDates(
         endDate: element.endDate!,
         endTime: element.endTime!,
         startTime: element.startTime!,
       );
-
-      if (days < 0) {
+      print("Event remaining days => $days");
+      if (calculateDays.isHours || days < 0) {
         return false;
       } else if (filters == null) {
         return (element.packageName!.toLowerCase().contains(query.trim().toLowerCase()));
       } else {
-        int distance = CalculateDistance.calculateDistance(
+        int distance =
+            //  Geolocator.distanceBetween(
+            //   latitude,
+            //   longitude,
+            //   element.location!.latitude!,
+            //   element.location!.longitude!,
+            // );
+
+            CalculateDistance.calculateDistance(
           latitude,
           longitude,
           element.location!.latitude!,

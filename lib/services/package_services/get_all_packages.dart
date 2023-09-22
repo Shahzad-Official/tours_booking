@@ -20,6 +20,7 @@ class GetAllPackages {
     return allPackages;
   }
 
+  String totalRating = "0";
   PackagesModel packageData = PackagesModel();
   Future<PackagesModel> getPackageData(tourId) async {
     await FirebaseFirestore.instance.collection("packages").doc(tourId).get().then(
@@ -29,6 +30,25 @@ class GetAllPackages {
         );
 
     return packageData;
+  }
+
+  tourRating(tourId) async {
+    double rating = 0.0;
+    await FirebaseFirestore.instance
+        .collection("reviews")
+        .where(
+          "tourId",
+          isEqualTo: tourId,
+        )
+        .get()
+        .then((value) {
+      List ratings = [];
+      for (var i in value.docs) {
+        ratings.add(i.data()['rating']);
+      }
+      rating = ratings.fold(0.0, (p, e) => p + e);
+    });
+    return rating;
   }
 
   List<String> allCats = [];

@@ -1,46 +1,36 @@
 const functions = require("firebase-functions");
 require("dotenv").config();
-const stripe = require("stripe")(process.env.STRIPE_SECRET);
+const stripe = require("stripe")(process.env.SECRET);
 
-exports.stripePayment = functions.https.onCall(async (request, response) => {
-  try {
-    const number = request.number;
-    const month = request.month;
-    const year = request.year;
-    const cvv = request.cvv;
-    const amount = request.amount;
-    const description = request.description;
-    try {
-      var token = await stripe.tokens.create({
+exports.payNow = functions.https.onRequest(async (req, res) => {
+    const { number, month, year, cvc, amount, name } = req.body;
+  
+    await stripe.tokens
+      .create({
         card: {
           number: number,
           exp_month: month,
           exp_year: year,
-          cvc: cvv,
+          cvc: cvc,
+          name: name,
         },
-      });
-
-      try {
+      })
+      .then(async (value) => {
         await stripe.charges
           .create({
             amount: amount * 100,
             currency: "usd",
-            source: token.id,
-            description: description,
+            source: value.id,
+            description: "Booking has been done",
           })
-          .then((data) => {
-            response = { msg: "Payment Successfully Done", data };
+          .then((newVal) => {
+            res.send({ result: newVal });
+          })
+          .catch((err) => {
+            res.send({ error: err.message });
           });
-        return response;
-      } catch (error) {
-        response = { error };
-        return response;
-      }
-    } catch (e) {
-      return "payment Error!";
-    }
-  } catch (err) {
-    response = err;
-    return "Server Error";
-  }
-});
+      })
+      .catch((err) => {
+        res.send({ error: err.message });
+      });
+  });
