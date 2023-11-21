@@ -88,21 +88,13 @@ class AllPackagesController extends GetxController {
         endTime: element.endTime!,
         startTime: element.startTime!,
       );
-      print("Event remaining days => $days");
+
       if (calculateDays.isHours || days < 0) {
         return false;
       } else if (filters == null) {
         return (element.packageName!.toLowerCase().contains(query.trim().toLowerCase()));
       } else {
-        int distance =
-            //  Geolocator.distanceBetween(
-            //   latitude,
-            //   longitude,
-            //   element.location!.latitude!,
-            //   element.location!.longitude!,
-            // );
-
-            CalculateDistance.calculateDistance(
+        int distance = CalculateDistance.calculateDistance(
           latitude,
           longitude,
           element.location!.latitude!,

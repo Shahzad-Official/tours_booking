@@ -9,9 +9,11 @@ import 'app_text.dart';
 
 class FilterSheet extends StatefulWidget {
   final VoidCallback onTap;
+  final VoidCallback onReset;
   const FilterSheet({
     Key? key,
     required this.onTap,
+    required this.onReset,
   }) : super(key: key);
 
   @override
@@ -42,12 +44,21 @@ class _FilterSheetState extends State<FilterSheet> {
               const SizedBox(
                 height: 20,
               ),
-              const Row(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppText(
+                  const AppText(
                     text: "Sort by",
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
+                  ),
+                  TextButton(
+                    onPressed: widget.onReset,
+                    child: AppText(
+                      text: "Reset",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),

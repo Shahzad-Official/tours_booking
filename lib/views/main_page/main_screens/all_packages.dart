@@ -163,6 +163,12 @@ class _AllPackagesState extends State<AllPackages> {
                                           packagesList: _getAllPackages.allPackages,
                                         );
                                       },
+                                      onReset: () {
+                                        Get.back();
+                                        _.searchPackage(
+                                          packagesList: _getAllPackages.allPackages,
+                                        );
+                                      },
                                     ),
                                   );
                                 },

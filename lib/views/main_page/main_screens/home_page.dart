@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:tours_booking/constants/svg_icons.dart';
 import 'package:tours_booking/controllers/main_page_controller/main_pages_controllers/home_controller.dart';
 import 'package:tours_booking/services/package_services/get_all_packages.dart';
+import 'package:tours_booking/widgets/filter_sheet.dart';
 
 import '../../../constants/app_colors.dart';
 import '../../../utils/date_utils.dart/calculate_days.dart';
@@ -115,16 +118,58 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
-                      leading: InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: Color(0xff302A4E),
-                          size: 25,
+                      actions: [
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: InkWell(
+                            onTap: () => showModalBottomSheet(
+                              isScrollControlled: true,
+                              shape: const OutlineInputBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft: Radius.circular(10))),
+                              context: context,
+                              builder: (context) {
+                                return FractionallySizedBox(
+                                  heightFactor: 0.75,
+                                  child: FilterSheet(
+                                    onTap: () {
+                                      _.applyFilter(
+                                        packagesList: _getAllPackages.allPackages,
+                                      );
+                                    },
+                                    onReset: () {
+                                      Get.back();
+                                      _.searchPackage(
+                                        packagesList: _getAllPackages.allPackages,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                            child: Container(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width * 0.16,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: const Offset(1, 2),
+                                    color: Colors.grey.withOpacity(0.4),
+                                    blurRadius: 5,
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: SvgPicture.string(
+                                  SvgIcons.filter,
+                                  height: 25,
+                                  width: 25,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     TabBar(
                       labelColor: Colors.black,

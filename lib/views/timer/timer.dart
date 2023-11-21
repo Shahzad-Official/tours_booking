@@ -59,11 +59,6 @@ class _TimerState extends State<Timer> {
         child: GetBuilder<TimerController>(
             init: TimerController(),
             builder: (_) {
-              if (_.time == null) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
               return ListView(
                 shrinkWrap: true,
                 children: [

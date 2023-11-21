@@ -57,14 +57,14 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
   void initState() {
     getData();
 
-    controller.startTimer(
-      packageStartDateTime: widget.packageData.startDate!,
-      packageEndDateTime: widget.packageData.endDate!,
-      packageStartTime: widget.packageData.startTime!,
-      packageEndTime: widget.packageData.endTime!,
-      startPrice: widget.packageData.startPrice!,
-      endPrice: widget.packageData.endPrice!,
-    );
+    // controller.startTimer(
+    //   packageStartDateTime: widget.packageData.startDate!,
+    //   packageEndDateTime: widget.packageData.endDate!,
+    //   packageStartTime: widget.packageData.startTime!,
+    //   packageEndTime: widget.packageData.endTime!,
+    //   startPrice: widget.packageData.startPrice!,
+    //   endPrice: widget.packageData.endPrice!,
+    // );
     super.initState();
   }
 
@@ -272,100 +272,98 @@ class _PackageSinglePageState extends State<PackageSinglePage> {
                                         },
                                       );
                                     },
-                                    child: _.time == null
-                                        ? const CircularProgressIndicator()
-                                        : Container(
-                                            height: 120,
-                                            width: 120,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              shape: BoxShape.circle,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  offset: const Offset(1, 2),
-                                                  color: Colors.grey.withOpacity(0.5),
-                                                  blurRadius: 5,
-                                                ),
-                                              ],
+                                    child: Container(
+                                      height: 120,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            offset: const Offset(1, 2),
+                                            color: Colors.grey.withOpacity(0.5),
+                                            blurRadius: 5,
+                                          ),
+                                        ],
+                                      ),
+                                      child: CircularPercentIndicator(
+                                        reverse: true,
+                                        radius: 55,
+                                        percent: 1,
+                                        animationDuration: 1000,
+                                        animateFromLastPercent: true,
+                                        animation: true,
+                                        circularStrokeCap: CircularStrokeCap.round,
+                                        lineWidth: 7,
+                                        backgroundColor: AppColors.headTextColor.withOpacity(0.5),
+                                        progressColor: calculateDays.days >= 3
+                                            ? AppColors.day3Color
+                                            : calculateDays.days == 2
+                                                ? AppColors.day2Color
+                                                : AppColors.day1Color,
+                                        center: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            AppText(
+                                              text: "\$${widget.packageData.endPrice}",
+                                              fontWeight: FontWeight.w700,
+                                              textcolor: AppColors.primarycolor,
                                             ),
-                                            child: CircularPercentIndicator(
-                                              reverse: true,
-                                              radius: 55,
-                                              percent: _.percent,
-                                              animationDuration: 1000,
-                                              animateFromLastPercent: true,
-                                              animation: true,
-                                              circularStrokeCap: CircularStrokeCap.round,
-                                              lineWidth: 7,
-                                              backgroundColor: AppColors.headTextColor.withOpacity(0.5),
-                                              progressColor: calculateDays.days >= 3
-                                                  ? AppColors.day3Color
-                                                  : calculateDays.days == 2
-                                                      ? AppColors.day2Color
-                                                      : AppColors.day1Color,
-                                              center: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 15,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: [
-                                                  AppText(
-                                                    text: "\$${_.remainingPrice}",
-                                                    fontWeight: FontWeight.w700,
-                                                    textcolor: AppColors.primarycolor,
-                                                  ),
-                                                  Padding(
+                                                  Container(
                                                     padding: const EdgeInsets.symmetric(
-                                                      horizontal: 15,
+                                                      horizontal: 2,
                                                     ),
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                      children: [
-                                                        Container(
-                                                          padding: const EdgeInsets.symmetric(
-                                                            horizontal: 2,
-                                                          ),
-                                                          decoration: BoxDecoration(
-                                                            border: Border.all(
-                                                              color: AppColors.primarycolor,
-                                                              width: 0.5,
-                                                            ),
-                                                            borderRadius: BorderRadius.circular(
-                                                              4,
-                                                            ),
-                                                            color: AppColors.primarycolor.withOpacity(0.1),
-                                                          ),
-                                                          child: Center(
-                                                            child: AppText(
-                                                              text: widget.packageData.cuttOffTime!.split(":").first,
-                                                              fontSize: 10,
-                                                              fontWeight: FontWeight.w400,
-                                                              textcolor: Colors.blue,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          padding: const EdgeInsets.symmetric(
-                                                            horizontal: 2,
-                                                          ),
-                                                          decoration: BoxDecoration(
-                                                            border: Border.all(color: AppColors.primarycolor, width: 0.5),
-                                                            borderRadius: BorderRadius.circular(4),
-                                                            color: AppColors.primarycolor.withOpacity(0.1),
-                                                          ),
-                                                          child: Center(
-                                                            child: AppText(
-                                                              text: widget.packageData.cuttOffTime!.split(":").last,
-                                                              fontSize: 10,
-                                                              fontWeight: FontWeight.w400,
-                                                              textcolor: Colors.blue,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        color: AppColors.primarycolor,
+                                                        width: 0.5,
+                                                      ),
+                                                      borderRadius: BorderRadius.circular(
+                                                        4,
+                                                      ),
+                                                      color: AppColors.primarycolor.withOpacity(0.1),
+                                                    ),
+                                                    child: Center(
+                                                      child: AppText(
+                                                        text: widget.packageData.cuttOffTime!.split(":").first,
+                                                        fontSize: 10,
+                                                        fontWeight: FontWeight.w400,
+                                                        textcolor: Colors.blue,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding: const EdgeInsets.symmetric(
+                                                      horizontal: 2,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(color: AppColors.primarycolor, width: 0.5),
+                                                      borderRadius: BorderRadius.circular(4),
+                                                      color: AppColors.primarycolor.withOpacity(0.1),
+                                                    ),
+                                                    child: Center(
+                                                      child: AppText(
+                                                        text: widget.packageData.cuttOffTime!.split(":").last,
+                                                        fontSize: 10,
+                                                        fontWeight: FontWeight.w400,
+                                                        textcolor: Colors.blue,
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                          ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               );
